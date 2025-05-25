@@ -1,0 +1,70 @@
+﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.PolicyOffering>
+@{
+    ViewData["Title"] = "Manage Policy Offerings";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-action="Create" class="btn btn-primary rounded-pill px-4"><i class="bi bi-plus-circle-fill me-2"></i>Create New Offering</a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card shadow-sm rounded-3">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.OfferingName)</th>
+                        <th>@Html.DisplayNameFor(model => model.CoverageType)</th>
+                        <th>@Html.DisplayNameFor(model => model.CoverageAmount)</th>
+                        <th>@Html.DisplayNameFor(model => model.PremiumAmount)</th>
+                        <th>@Html.DisplayNameFor(model => model.DurationInMonths)</th>
+                        <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="7" class="text-center py-4">No policy offerings found.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.OfferingName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CoverageType)</td>
+                            <td>@item.CoverageAmount.ToString("C")</td>
+                            <td>@item.PremiumAmount.ToString("C")</td>
+                            <td>@Html.DisplayFor(modelItem => item.DurationInMonths) months</td>
+                            <td>
+                                <span class="badge @(item.IsActive ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                                    @(item.IsActive ? "Active" : "Inactive")
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@item.PolicyOfferingId" class="btn btn-sm btn-outline-info rounded-pill px-3 me-1" title="Details"><i class="bi bi-eye-fill"></i></a>
+                                <a asp-action="Edit" asp-route-id="@item.PolicyOfferingId" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.PolicyOfferingId" class="btn btn-sm btn-outline-danger rounded-pill px-3" title="Delete"><i class="bi bi-trash3-fill"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

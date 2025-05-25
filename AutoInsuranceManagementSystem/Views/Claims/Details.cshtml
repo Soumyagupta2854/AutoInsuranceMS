@@ -1,0 +1,70 @@
+﻿@model AutoInsuranceManagementSystem.Models.Claim
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-info text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-shield-check me-2"></i>@ViewData["Title"] - CLM-@Model.ClaimId.ToString("D5")</h4>
+            </div>
+            <div class="card-body p-4">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-semibold">Policy Number</dt>
+                    <dd class="col-sm-8"><a asp-controller="Policies" asp-action="Details" asp-route-id="@Model.PolicyId">@(Model.Policy?.PolicyNumber ?? "N/A")</a></dd>
+                    @if (Model.Policy?.Customer != null)
+                    {
+                        <dt class="col-sm-4 fw-semibold">Customer</dt>
+                        <dd class="col-sm-8">@(Model.Policy.Customer.FullName ?? Model.Policy.Customer.UserName)</dd>
+                    }
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ClaimAmount)</dt>
+                    <dd class="col-sm-8">@Model.ClaimAmount.ToString("C")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ClaimDate)</dt>
+                    <dd class="col-sm-8">@Model.ClaimDate.ToString("yyyy-MM-dd")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.DateSubmitted)</dt>
+                    <dd class="col-sm-8">@Model.DateSubmitted.ToString("yyyy-MM-dd HH:mm")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ClaimStatus)</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @(Model.ClaimStatus == ClaimStatus.APPROVED ? "bg-success-subtle text-success-emphasis" : Model.ClaimStatus == ClaimStatus.REJECTED ? "bg-danger-subtle text-danger-emphasis" : Model.ClaimStatus == ClaimStatus.CLOSED ? "bg-secondary-subtle text-secondary-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                            @Html.DisplayFor(model => model.ClaimStatus)
+                        </span>
+                    </dd>
+                    <dt class="col-sm-4 fw-semibold">Assigned Adjuster</dt>
+                    <dd class="col-sm-8">@(Model.Adjuster?.UserName ?? "Not Assigned")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Description)</dt>
+                    <dd class="col-sm-8" style="white-space: pre-wrap;">@Html.DisplayFor(model => model.Description)</dd>
+
+                    @if (!string.IsNullOrEmpty(Model.PhotoProofPath))
+                    {
+                        <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.PhotoProofPath)</dt>
+                        <dd class="col-sm-8">
+                            <a href="~/@Model.PhotoProofPath.Replace('\\', '/')" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-2 py-1"><i class="bi bi-image me-1"></i>View Photo</a>
+                        </dd>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.VideoProofPath))
+                    {
+                        <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.VideoProofPath)</dt>
+                        <dd class="col-sm-8">
+                            <a href="~/@Model.VideoProofPath.Replace('\\', '/')" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-2 py-1"><i class="bi bi-film me-1"></i>View Video</a>
+                        </dd>
+                    }
+                </dl>
+            </div>
+            <div class="card-footer bg-light d-flex justify-content-end gap-2 rounded-bottom-3">
+                @if (User.IsInRole("Admin") || User.IsInRole("Agent"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.ClaimId" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-fill me-2"></i>Update Claim</a>
+                }
+                @if (User.IsInRole("Customer"))
+                {
+                    <a asp-controller="Claims" asp-action="MyClaims" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to My Claims</a>
+                }
+                else if (User.IsInRole("Admin") || User.IsInRole("Agent"))
+                {
+                    <a asp-controller="Claims" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to Claims List</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

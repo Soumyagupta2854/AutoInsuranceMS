@@ -1,0 +1,83 @@
+﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.Claim>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "All Claims";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>@ViewData["Title"]</h1>
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-success rounded-pill px-4"><i class="bi bi-file-earmark-plus-fill me-2"></i>Submit New Claim (Admin)</a>
+    }
+</div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card shadow-sm rounded-3">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Claim ID</th>
+                        <th>Policy No.</th>
+                        <th>Customer</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().ClaimAmount)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().DateSubmitted)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().ClaimStatus)</th>
+                        <th>Adjuster</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="8" class="text-center py-4">No claims found.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>CLM-@item.ClaimId.ToString("D5")</td>
+                            <td>@(item.Policy?.PolicyNumber ?? "N/A")</td>
+                            <td>@(item.Policy?.Customer?.UserName ?? "N/A")</td>
+                            <td>@item.ClaimAmount.ToString("C")</td>
+                            <td>@item.DateSubmitted.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                <span class="badge @(item.ClaimStatus == ClaimStatus.APPROVED ? "bg-success-subtle text-success-emphasis" : item.ClaimStatus == ClaimStatus.REJECTED ? "bg-danger-subtle text-danger-emphasis" : item.ClaimStatus == ClaimStatus.CLOSED ? "bg-secondary-subtle text-secondary-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                                    @Html.DisplayFor(modelItem => item.ClaimStatus)
+                                </span>
+                            </td>
+                            <td>@(item.Adjuster?.UserName ?? "Not Assigned")</td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@item.ClaimId" class="btn btn-sm btn-outline-info rounded-pill px-3 me-1" title="Details"><i class="bi bi-eye-fill"></i></a>
+                                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Agent")))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.ClaimId" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+                                }
+                                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Delete" asp-route-id="@item.ClaimId" class="btn btn-sm btn-outline-danger rounded-pill px-3" title="Delete"><i class="bi bi-trash3-fill"></i></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.SupportTicket>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Support Ticket Queue";
+}
+
+<h1>@ViewData["Title"]</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card shadow-sm rounded-3 mt-3">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Subject</th>
+                        <th>Submitted By</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Assigned To</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="8" class="text-center py-4">No tickets in the queue matching your criteria.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>TIC-@item.TicketId.ToString("D5")</td>
+                            <td><a asp-action="Details" asp-route-id="@item.TicketId">@item.Subject</a></td>
+                            <td>@item.User?.UserName</td>
+                            <td>@item.Priority</td>
+                            <td>
+                                <span class="badge @(item.TicketStatus == TicketStatus.OPEN ? "bg-danger-subtle text-danger-emphasis" : item.TicketStatus == TicketStatus.IN_PROGRESS ? "bg-warning-subtle text-warning-emphasis" : "bg-info-subtle text-info-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                                    @Html.DisplayFor(modelItem => item.TicketStatus)
+                                </span>
+                            </td>
+                            <td>@item.CreatedDate.ToString("yyyy-MM-dd")</td>
+                            <td>@(item.AssignedAgent?.UserName ?? "Unassigned")</td>
+                            <td class="text-center">
+                                <a asp-action="Update" asp-route-id="@item.TicketId" class="btn btn-sm btn-primary rounded-pill px-3 me-1" title="Update/View"><i class="bi bi-pencil-square"></i> Update</a>
+                                @if (item.AssignedAgentId == null && item.TicketStatus == TicketStatus.OPEN)
+                                {
+                                    <form asp-action="AssignToSelf" asp-route-id="@item.TicketId" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-success rounded-pill px-3" title="Assign to Me"><i class="bi bi-person-check-fill"></i> Assign to Me</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

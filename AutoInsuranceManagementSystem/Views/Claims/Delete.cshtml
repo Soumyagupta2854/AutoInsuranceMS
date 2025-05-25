@@ -1,0 +1,35 @@
+﻿@model AutoInsuranceManagementSystem.Models.Claim
+@{
+    ViewData["Title"] = "Delete Claim";
+}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3 border-danger">
+            <div class="card-header bg-danger text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <h5 class="card-title">Are you sure you want to delete claim CLM-@Model.ClaimId.ToString("D5")?</h5>
+                <p class="text-muted">This action cannot be undone and will delete any associated proof files.</p>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-4 fw-semibold">Policy Number</dt>
+                    <dd class="col-sm-8">@(Model.Policy?.PolicyNumber ?? "N/A")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ClaimAmount)</dt>
+                    <dd class="col-sm-8">@Model.ClaimAmount.ToString("C")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ClaimDate)</dt>
+                    <dd class="col-sm-8">@Model.ClaimDate.ToString("yyyy-MM-dd")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ClaimStatus)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ClaimStatus)</dd>
+                </dl>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="ClaimId" />
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-danger rounded-pill px-4"><i class="bi bi-trash3-fill me-2"></i>Delete Claim</button>
+                        <a asp-controller="Claims" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

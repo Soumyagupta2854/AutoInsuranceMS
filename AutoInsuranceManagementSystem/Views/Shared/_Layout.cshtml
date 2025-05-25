@@ -1,0 +1,278 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using AutoInsuranceManagementSystem.Models 
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AutoInsurance Pro</title>
+    
+    <link rel="icon" type="image/png" href="~/images/favicon.png"> @* Example favicon link *@
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Primary font */
+            background-color: #f4f8fb; /* Lighter, slightly bluish background */
+            padding-top: 76px; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+        h1, h2, h3, h4, h5, h6, .navbar-brand, .nav-link.dropdown-toggle, .btn {
+            font-family: 'Poppins', sans-serif; /* Secondary font for headings and important elements */
+        }
+        .navbar {
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            background-color: #ffffff; 
+            border-bottom: 1px solid #e0e7ff; /* Subtle border */
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem; 
+            color: #2a6fdb !important; /* A more vibrant blue */
+        }
+        .navbar-brand .bi {
+            font-size: 1.8rem; 
+            vertical-align: sub; /* Align icon better with text */
+            margin-right: 0.3rem;
+        }
+        .nav-link {
+            color: #495057 !important; /* Darker gray for nav links for better contrast */
+            font-weight: 500;
+            padding: 0.6rem 1rem !important;
+            border-radius: 0.375rem;
+            margin: 0 0.2rem;
+        }
+        .nav-link:hover, .nav-link.active, .nav-link.show { /* .show for active dropdown toggle */
+            color: #2a6fdb !important; 
+            background-color: #e7f0ff; /* Light blue background on hover/active */
+        }
+        .nav-link .bi { 
+            margin-right: 0.5rem;
+            vertical-align: text-bottom; 
+            font-size: 1.1rem; 
+        }
+        .navbar-nav .dropdown-menu {
+            border-radius: 0.5rem;
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1);
+        }
+        .dropdown-item {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+        }
+        .dropdown-item:active {
+             background-color: #2a6fdb;
+             color: #fff !important;
+        }
+        .dropdown-item .bi {
+             margin-right: 0.6rem;
+             width: 20px; 
+             text-align: center;
+             color: #2a6fdb;
+        }
+        .dropdown-item:hover .bi, .dropdown-item:active .bi {
+            color: inherit; /* Icon color matches text on hover/active */
+        }
+
+        .btn {
+            border-radius: 0.375rem; 
+            font-weight: 600; /* Bolder buttons */
+            padding: 0.5rem 1.25rem; /* More padding */
+            transition: all 0.25s ease-in-out;
+            letter-spacing: 0.025em;
+        }
+         .btn:hover {
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 12px rgba(0,0,0,.15);
+        }
+        .btn-primary {
+            background-color: #2a6fdb;
+            border-color: #2a6fdb;
+        }
+        .btn-primary:hover {
+            background-color: #1e5abc;
+            border-color: #1c53ae;
+        }
+        .btn-success {
+             background-color: #198754; 
+             border-color: #198754;
+        }
+         .btn-success:hover {
+             background-color: #146c43;
+             border-color: #13653f;
+        }
+        .btn-outline-primary {
+            color: #2a6fdb;
+            border-color: #2a6fdb;
+        }
+        .btn-outline-primary:hover {
+            background-color: #2a6fdb;
+            color: #fff;
+        }
+
+
+        .card {
+            border: none; /* Remove default border, rely on shadow */
+            border-radius: 0.75rem; /* More pronounced rounding */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Softer shadow */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+        .card-header {
+            font-weight: 600;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+        }
+        .card-title {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .table th {
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #e7f0ff !important; /* Subtle hover for table rows */
+        }
+        
+        .footer {
+            background-color: #343a40; 
+            padding: 2rem 0;
+            color: #adb5bd; 
+            font-size: 0.9rem;
+            margin-top: auto; 
+        }
+        .footer a {
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #2a6fdb;
+            text-decoration: underline;
+        }
+
+        /* Utility classes */
+        .fs-tiny { font-size: 0.8rem !important; }
+        .fs-small { font-size: 0.9rem !important; }
+        .fw-medium { font-weight: 500 !important; }
+        .fw-semibold { font-weight: 600 !important; }
+        .fw-bold { font-weight: 700 !important; }
+
+        /* Alert styling */
+        .alert {
+            border-left-width: 5px;
+            border-radius: 0.375rem;
+        }
+        .alert-success { border-left-color: var(--bs-success); }
+        .alert-danger { border-left-color: var(--bs-danger); }
+        .alert-warning { border-left-color: var(--bs-warning); }
+        .alert-info { border-left-color: var(--bs-info); }
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-shield-check"></i> AutoInsurance Pro
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0"> @* Centered nav items with mx-auto *@
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door-fill"></i>Home</a>
+                        </li>
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                             <li class="nav-item">
+                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer2"></i>Dashboard</a>
+                            </li>
+
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-gear-wide-connected"></i> Admin Tools
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="adminMenuDropdown">
+                                        <li><a class="dropdown-item" asp-controller="PolicyOfferings" asp-action="Index"><i class="bi bi-tags-fill"></i>Offerings</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Policies" asp-action="Index"><i class="bi bi-journals"></i>Cust. Policies</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Claims" asp-action="Index"><i class="bi bi-file-earmark-medical-fill"></i>All Claims</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Payments" asp-action="Index"><i class="bi bi-credit-card-fill"></i>All Payments</a></li>
+                                        <li><a class="dropdown-item" asp-controller="SupportTickets" asp-action="AdminIndex"><i class="bi bi-life-preserver"></i>Support Tickets</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="UserManagement"><i class="bi bi-people-fill"></i>User Mgmt</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else if (User.IsInRole("Agent"))
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-controller="SupportTickets" asp-action="AgentQueue"><i class="bi bi-headset"></i>Support Queue</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Claims" asp-action="Index"><i class="bi bi-file-earmark-medical-fill"></i>View Claims</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Policies" asp-action="Index"><i class="bi bi-journals"></i>View Policies</a></li>
+                            }
+                            else if (User.IsInRole("Customer"))
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-controller="Policies" asp-action="AvailableOfferings"><i class="bi bi-patch-check-fill"></i>Get a Policy</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Policies" asp-action="MyPolicies"><i class="bi bi-journal-richtext"></i>My Policies</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Claims" asp-action="MyClaims"><i class="bi bi-file-earmark-ruled-fill"></i>My Claims</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="SupportTickets" asp-action="MyTickets"><i class="bi bi-question-circle-fill"></i>My Support</a></li>
+                            }
+                        }
+                        else // Not signed in
+                        {
+                             <li class="nav-item">
+                                <a class="nav-link" asp-controller="Policies" asp-action="AvailableOfferings"><i class="bi bi-patch-check-fill"></i>View Policy Offerings</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container mt-4 mb-5"> 
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer border-top text-center">
+        <div class="container">
+            &copy; @DateTime.Now.Year - AutoInsurance Pro. All Rights Reserved.
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="ms-3">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

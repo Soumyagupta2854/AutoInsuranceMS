@@ -1,0 +1,155 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using AutoInsuranceManagementSystem.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Your Trusted Auto Insurance Partner";
+    var currentUser = SignInManager.IsSignedIn(User) ? await UserManager.GetUserAsync(User) : null;
+    var userRole = currentUser?.Role;
+    var greetingName = currentUser?.FullName ?? currentUser?.UserName ?? "Guest";
+}
+
+<div class="container mt-3">
+    @* Hero Section *@
+    <div class="p-5 mb-4 bg-gradient-primary text-white rounded-3 shadow-lg" style="background: linear-gradient(135deg, #00509e 0%, #007bff 100%);">
+        <div class="container-fluid py-5 text-center">
+            <i class="bi bi-shield-fill-check display-1 mb-3"></i>
+            <h1 class="display-4 fw-bold">@ViewData["Title"]</h1>
+            <p class="fs-4 col-md-10 mx-auto">
+                Drive with confidence. AutoInsurance Pro offers reliable coverage, fast claims, and exceptional service to keep you protected on every journey.
+            </p>
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center mt-5">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a class="btn btn-light btn-lg rounded-pill px-4 py-3" asp-controller="Dashboard" asp-action="Index">
+                        <i class="bi bi-speedometer2 me-2"></i>Go to My Dashboard
+                    </a>
+                    @if (userRole == UserRole.CUSTOMER)
+                    {
+                        <a class="btn btn-outline-light btn-lg rounded-pill px-4 py-3" asp-controller="Policies" asp-action="AvailableOfferings">
+                            <i class="bi bi-patch-check-fill me-2"></i>Explore Policy Offerings
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a class="btn btn-light btn-lg rounded-pill px-4 py-3" asp-area="Identity" asp-page="/Account/Register">
+                        <i class="bi bi-person-plus-fill me-2"></i>Get a Free Quote & Register
+                    </a>
+                    <a class="btn btn-outline-light btn-lg rounded-pill px-4 py-3" asp-area="Identity" asp-page="/Account/Login">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Member Login
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    @* Features Section *@
+    <div class="row text-center mt-5 g-4">
+        <h2 class="fw-bold mb-4 display-6">Why Choose AutoInsurance Pro?</h2>
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-lift">
+                <div class="card-body p-4">
+                    <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
+                        <i class="bi bi-hand-thumbs-up-fill"></i>
+                    </div>
+                    <h5 class="card-title fw-semibold mb-2">Trusted & Reliable</h5>
+                    <p class="card-text fs-small text-muted">Join thousands of satisfied customers who trust us for their auto insurance needs.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-lift">
+                <div class="card-body p-4">
+                    <div class="icon-circle bg-success bg-opacity-10 text-success mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                    <h5 class="card-title fw-semibold mb-2">Competitive Rates</h5>
+                    <p class="card-text fs-small text-muted">Get the best value with our affordable premiums and flexible payment options.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-lift">
+                <div class="card-body p-4">
+                    <div class="icon-circle bg-warning bg-opacity-10 text-warning mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <h5 class="card-title fw-semibold mb-2">Fast Claims</h5>
+                    <p class="card-text fs-small text-muted">Our streamlined claims process ensures quick resolutions when you need it most.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-lift">
+                <div class="card-body p-4">
+                    <div class="icon-circle bg-info bg-opacity-10 text-info mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
+                        <i class="bi bi-person-check-fill"></i>
+                    </div>
+                    <h5 class="card-title fw-semibold mb-2">Personalized Service</h5>
+                    <p class="card-text fs-small text-muted">Our dedicated agents provide personalized advice and support tailored to you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* How It Works Section (Example) *@
+    <div class="row mt-5 py-5 bg-white rounded-3 shadow-sm">
+        <div class="col-lg-10 mx-auto text-center">
+            <h2 class="fw-bold mb-5 display-6">Getting Covered is Easy</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto fs-2" style="width: 70px; height: 70px; line-height: 70px;">1</div>
+                        <h5 class="fw-semibold">Choose Your Plan</h5>
+                        <p class="fs-small text-muted">Explore our range of policy offerings and select the one that best fits your needs.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto fs-2" style="width: 70px; height: 70px; line-height: 70px;">2</div>
+                        <h5 class="fw-semibold">Customize & Pay</h5>
+                        <p class="fs-small text-muted">Provide your details, customize your policy if needed, and complete a secure payment.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto fs-2" style="width: 70px; height: 70px; line-height: 70px;">3</div>
+                        <h5 class="fw-semibold">Drive Protected!</h5>
+                        <p class="fs-small text-muted">Once active, manage your policy, submit claims, and get support all online.</p>
+                    </div>
+                </div>
+            </div>
+            @if (!SignInManager.IsSignedIn(User))
+            {
+                <a class="btn btn-success btn-lg rounded-pill px-5 py-3 mt-5" asp-area="Identity" asp-page="/Account/Register">
+                    <i class="bi bi-shield-plus-fill me-2"></i>Sign Up & Get Covered Now
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+@* Add this to your site.css or in a <style> tag in _Layout.cshtml for the hover effect *@
+<style>
+    .hover-lift {
+        transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1) !important;
+        }
+
+    .icon-circle {
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-gradient-primary { /* Custom gradient */
+        background: linear-gradient(135deg, #00509e 0%, #007bff 100%);
+    }
+</style>

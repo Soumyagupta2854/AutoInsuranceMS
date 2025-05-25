@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Administrator Dashboard";
+    var adminName = ViewBag.AdminName as string;
+}
+<div class="container mt-4">
+    <h1 class="display-6 fw-bold mb-4">Administrator Dashboard - Welcome, @adminName!</h1>
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card text-center text-bg-primary shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-people-fill display-4"></i>
+                    <h3 class="card-title mt-2">@ViewBag.TotalUsers</h3>
+                    <p class="card-text">Total Users</p>
+                    <a asp-controller="Admin" asp-action="UserManagement" class="btn btn-outline-light rounded-pill btn-sm">Manage Users</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center text-bg-success shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-journal-check display-4"></i>
+                    <h3 class="card-title mt-2">@ViewBag.TotalPolicies</h3>
+                    <p class="card-text">Total Policies</p>
+                    <a asp-controller="Policies" asp-action="Index" class="btn btn-outline-light rounded-pill btn-sm">View Policies</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center text-bg-warning shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-file-earmark-medical-fill display-4"></i>
+                    <h3 class="card-title mt-2">@ViewBag.TotalClaims</h3>
+                    <p class="card-text">Total Claims</p>
+                    <a asp-controller="Claims" asp-action="Index" class="btn btn-outline-dark rounded-pill btn-sm">View Claims</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center text-bg-info shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-headset display-4"></i>
+                    <h3 class="card-title mt-2">@ViewBag.OpenTickets</h3>
+                    <p class="card-text">Open Support Tickets</p>
+                    <a asp-controller="SupportTickets" asp-action="AdminIndex" class="btn btn-outline-light rounded-pill btn-sm">View Tickets</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header"><h5 class="mb-0"><i class="bi bi-tags-fill me-2"></i>Manage Policy Offerings</h5></div>
+                <div class="card-body text-center">
+                    <p>Create, update, and manage the types of insurance policies offered to customers.</p>
+                    <a asp-controller="PolicyOfferings" asp-action="Index" class="btn btn-primary rounded-pill">Go to Offerings</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header"><h5 class="mb-0"><i class="bi bi-credit-card-2-front-fill me-2"></i>View All Payments</h5></div>
+                <div class="card-body text-center">
+                    <p>Oversee and manage all payment transactions within the system.</p>
+                    <a asp-controller="Payments" asp-action="Index" class="btn btn-primary rounded-pill">Go to Payments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

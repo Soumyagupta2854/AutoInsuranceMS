@@ -1,0 +1,72 @@
+﻿@model AutoInsuranceManagementSystem.Models.Policy
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Policy Details";
+}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-info text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-file-earmark-text-fill me-2"></i>@ViewData["Title"]: @Model.PolicyNumber</h4>
+            </div>
+            <div class="card-body p-4">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-semibold">Policy Number</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PolicyNumber)</dd>
+                    @if (Model.Customer != null)
+                    {
+                        <dt class="col-sm-4 fw-semibold">Customer</dt>
+                        <dd class="col-sm-8">@(Model.Customer.FullName ?? Model.Customer.UserName)</dd>
+                    }
+                    @if (Model.PolicyOffering != null)
+                    {
+                        <dt class="col-sm-4 fw-semibold">Based on Offering</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.PolicyOffering.OfferingName)</dd>
+                    }
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.VehicleDetails)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.VehicleDetails)</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ActualCoverageAmount)</dt>
+                    <dd class="col-sm-8">@Model.ActualCoverageAmount.ToString("C")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ActualPremiumAmount)</dt>
+                    <dd class="col-sm-8">@Model.ActualPremiumAmount.ToString("C")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.StartDate)</dt>
+                    <dd class="col-sm-8">@Model.StartDate.ToString("yyyy-MM-dd")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.EndDate)</dt>
+                    <dd class="col-sm-8">@Model.EndDate.ToString("yyyy-MM-dd")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.PolicyStatus)</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @(Model.PolicyStatus == PolicyStatus.ACTIVE ? "bg-success-subtle text-success-emphasis" :
+                                                                  Model.PolicyStatus == PolicyStatus.PENDING_PAYMENT ? "bg-info-subtle text-info-emphasis" :
+                                                                  Model.PolicyStatus == PolicyStatus.EXPIRED ? "bg-secondary-subtle text-secondary-emphasis" :
+                                                                  Model.PolicyStatus == PolicyStatus.CANCELLED ? "bg-danger-subtle text-danger-emphasis" :
+                                                                  "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                            @Html.DisplayFor(model => model.PolicyStatus)
+                        </span>
+                    </dd>
+                </dl>
+                @if (Model.PolicyStatus == PolicyStatus.PENDING_PAYMENT && User.IsInRole("Customer") && Model.Customer?.Id.ToString() == UserManager.GetUserId(User))
+                {
+                    <div class="mt-3 text-center">
+                        <a asp-controller="Payments" asp-action="InitiatePolicyPayment" asp-route-policyId="@Model.PolicyId" class="btn btn-warning rounded-pill px-4 py-2 fw-bold"><i class="bi bi-credit-card-fill me-2"></i>Pay Now to Activate Policy</a>
+                    </div>
+                }
+            </div>
+            <div class="card-footer bg-light d-flex justify-content-end gap-2 rounded-bottom-3">
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <a asp-action="EditInstantiatedPolicy" asp-route-id="@Model.PolicyId" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-fill me-2"></i>Edit This Policy</a>
+                }
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Customer"))
+                {
+                    <a asp-action="MyPolicies" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to My Policies</a>
+                }
+                else if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Agent")))
+                {
+                    <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to Policies List</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

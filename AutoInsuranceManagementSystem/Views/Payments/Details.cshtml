@@ -1,0 +1,62 @@
+﻿@model AutoInsuranceManagementSystem.Models.Payment
+@{
+    ViewData["Title"] = "Payment Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-info text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-receipt-cutoff me-2"></i>@ViewData["Title"] - PAY-@Model.PaymentId.ToString("D5")</h4>
+            </div>
+            <div class="card-body p-4">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-semibold">Policy Number</dt>
+                    <dd class="col-sm-8"><a asp-controller="Policies" asp-action="Details" asp-route-id="@Model.PolicyId">@Model.Policy?.PolicyNumber</a></dd>
+
+                    <dt class="col-sm-4 fw-semibold">Customer</dt>
+                    <dd class="col-sm-8">@Model.Policy?.Customer?.UserName</dd>
+
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Amount)</dt>
+                    <dd class="col-sm-8">@Model.Amount.ToString("C")</dd>
+
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.PaymentDate)</dt>
+                    <dd class="col-sm-8">@Model.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Method)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Method)</dd>
+
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Status)</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @(Model.Status == PaymentStatus.SUCCESS ? "bg-success-subtle text-success-emphasis" : Model.Status == PaymentStatus.FAILED ? "bg-danger-subtle text-danger-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                            @Html.DisplayFor(model => model.Status)
+                        </span>
+                    </dd>
+
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.TransactionId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.TransactionId)</dd>
+
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Notes)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Notes)</dd>
+                    }
+                </dl>
+            </div>
+            <div class="card-footer bg-light d-flex justify-content-end gap-2 rounded-bottom-3">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.PaymentId" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-fill me-2"></i>Edit Payment</a>
+                }
+                @if (User.IsInRole("Customer"))
+                {
+                    <a asp-action="MyPayments" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to My Payments</a>
+                }
+                else
+                {
+                    <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to Payments List</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+            <div class="card shadow-lg rounded-3 border-0">
+                <div class="card-header bg-primary text-white text-center rounded-top-3 p-4">
+                    <i class="bi bi-box-arrow-in-right display-4"></i>
+                    <h1 class="h3 mb-0 fw-normal mt-2">@ViewData["Title"] to Your Account</h1>
+                    <p class="mb-0 small">Welcome back to AutoInsurance Pro!</p>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <section>
+                        <form id="account" method="post">
+                            @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
+                            {
+                                <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 text-center" role="alert"></div>
+                            }
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Email" class="form-control rounded-pill" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                <label asp-for="Input.Email" class="form-label ms-2"><i class="bi bi-envelope-fill me-1"></i>Email address</label>
+                                <span asp-validation-for="Input.Email" class="text-danger small ms-2"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Password" class="form-control rounded-pill" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                <label asp-for="Input.Password" class="form-label ms-2"><i class="bi bi-lock-fill me-1"></i>Password</label>
+                                <span asp-validation-for="Input.Password" class="text-danger small ms-2"></span>
+                            </div>
+                            <div class="checkbox mb-3 ms-2">
+                                <label asp-for="Input.RememberMe" class="form-label fw-normal">
+                                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                            <div class="d-grid">
+                                <button id="login-submit" type="submit" class="btn btn-primary btn-lg rounded-pill">Log in</button>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <p class="mb-1">
+                                    <a id="forgot-password" asp-page="./ForgotPassword" class="small text-decoration-none">Forgot your password?</a>
+                                </p>
+                                <p class="mb-1">
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="small text-decoration-none">Register as a new user</a>
+                                </p>
+                                <p class="mb-0">
+                                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="small text-decoration-none">Resend email confirmation</a>
+                                </p>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+                @* Optional: External logins section, if you configure them *@
+                @*
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                    {
+                        <div class="card-footer text-center bg-light rounded-bottom-3 p-4">
+                            <p class="mb-2 text-muted small">Or sign in with:</p>
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div>
+                                    @foreach (var provider in Model.ExternalLogins!)
+                                    {
+                                        <button type="submit" class="btn btn-outline-secondary rounded-pill mx-1" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                            <i class="bi bi-@provider.Name.ToLower()"></i> @provider.DisplayName
+                                        </button>
+                                    }
+                                </div>
+                            </form>
+                        </div>
+                    }
+                }
+                *@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    /* You can add page-specific styles here or in site.css */
+    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        opacity: .65;
+        transform: scale(.85) translateY(-.5rem) translateX(.15rem);
+        padding-left: 0.25rem; /* Adjust if icons are present */
+    }
+
+    .form-floating > .form-control ~ label {
+        padding-left: 0.25rem; /* Adjust if icons are present */
+    }
+
+    .form-floating > label {
+        padding-left: 1rem; /* Default padding for label */
+    }
+
+        .form-floating > label .bi { /* Align icon with text in floating label */
+            vertical-align: text-bottom;
+        }
+</style>

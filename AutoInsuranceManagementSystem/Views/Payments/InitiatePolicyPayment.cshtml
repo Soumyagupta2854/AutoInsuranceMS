@@ -1,0 +1,84 @@
+﻿@model AutoInsuranceManagementSystem.ViewModels.PaymentViewModel
+@{
+    ViewData["Title"] = "Complete Policy Payment";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-success text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-credit-card-2-front-fill me-2"></i>@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <h5 class="mb-3">Policy: @Model.PolicyNumber (@Model.OfferingName)</h5>
+                <p>Customer: @Model.CustomerName</p>
+                <p class="fw-bold fs-5">Amount Due: @Model.Amount.ToString("C")</p>
+                <hr />
+                <form asp-action="ProcessPolicyPayment" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
+                    <input type="hidden" asp-for="PolicyId" />
+                    <input type="hidden" asp-for="Amount" />
+                    <input type="hidden" asp-for="PolicyNumber" />
+                    <input type="hidden" asp-for="CustomerName" />
+                    <input type="hidden" asp-for="OfferingName" />
+
+
+                    <div class="mb-3">
+                        <label asp-for="Method" class="form-label fw-semibold"></label>
+                        <select asp-for="Method" asp-items="Html.GetEnumSelectList<PaymentMethod>()" class="form-select rounded-pill" id="paymentMethodSelect"></select>
+                        <span asp-validation-for="Method" class="text-danger small"></span>
+                    </div>
+
+                    <div id="cardDetailsSection">
+                        <div class="mb-3">
+                            <label asp-for="CardNumber" class="form-label fw-semibold"></label>
+                            <input asp-for="CardNumber" class="form-control rounded-pill" placeholder="Enter 13-19 digit card number" />
+                            <span asp-validation-for="CardNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-7">
+                                <label asp-for="ExpiryDate" class="form-label fw-semibold"></label>
+                                <input asp-for="ExpiryDate" class="form-control rounded-pill" placeholder="MM/YY" />
+                                <span asp-validation-for="ExpiryDate" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-5">
+                                <label asp-for="CVV" class="form-label fw-semibold"></label>
+                                <input asp-for="CVV" class="form-control rounded-pill" placeholder="3 or 4 digits" />
+                                <span asp-validation-for="CVV" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning fs-small rounded-3 mt-3">
+                        <i class="bi bi-info-circle-fill me-1"></i> This is a simulated payment. No real transaction will occur.
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-success rounded-pill px-5"><i class="bi bi-lock-fill me-2"></i>Pay @Model.Amount.ToString("C")</button>
+                        <a asp-controller="Policies" asp-action="MyPolicies" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-x-circle-fill me-2"></i>Cancel Payment</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const paymentMethodSelect = document.getElementById('paymentMethodSelect');
+            const cardDetailsSection = document.getElementById('cardDetailsSection');
+
+            function toggleCardDetails() {
+                if (paymentMethodSelect.value === '@PaymentMethod.SIMULATED_CARD.ToString()') {
+                    cardDetailsSection.style.display = 'block';
+                } else {
+                    cardDetailsSection.style.display = 'none';
+                }
+            }
+            toggleCardDetails();
+            paymentMethodSelect.addEventListener('change', toggleCardDetails);
+        });
+    </script>
+}

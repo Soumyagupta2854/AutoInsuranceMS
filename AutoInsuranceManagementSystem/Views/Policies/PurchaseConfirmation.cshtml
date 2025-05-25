@@ -1,0 +1,66 @@
+﻿@model AutoInsuranceManagementSystem.ViewModels.PolicyPurchaseViewModel
+@{
+    ViewData["Title"] = "Confirm Policy Purchase";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-success text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-shield-check me-2"></i>@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <h5>You are about to purchase: <strong>@Model.OfferingName</strong></h5>
+                <p>@Model.Description</p>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-5">Coverage Type:</dt>
+                    <dd class="col-sm-7">@Model.CoverageType</dd>
+                    <dt class="col-sm-5">Coverage Amount:</dt>
+                    <dd class="col-sm-7">@Model.CoverageAmount.ToString("C")</dd>
+                    <dt class="col-sm-5">Base Premium:</dt>
+                    <dd class="col-sm-7">@Model.PremiumAmount.ToString("C")</dd>
+                    <dt class="col-sm-5">Duration:</dt>
+                    <dd class="col-sm-7">@Model.DurationInMonths months</dd>
+                </dl>
+                <hr />
+                <form asp-action="Purchase" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
+                    <input type="hidden" asp-for="PolicyOfferingId" />
+                    <input type="hidden" asp-for="OfferingName" />
+                    <input type="hidden" asp-for="Description" />
+                    <input type="hidden" asp-for="CoverageType" />
+                    <input type="hidden" asp-for="CoverageAmount" />
+                    <input type="hidden" asp-for="PremiumAmount" />
+                    <input type="hidden" asp-for="DurationInMonths" />
+
+
+                    <div class="mb-3">
+                        <label asp-for="VehicleDetails" class="form-label fw-semibold"></label>
+                        <textarea asp-for="VehicleDetails" class="form-control rounded-3" rows="3"></textarea>
+                        <span asp-validation-for="VehicleDetails" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="StartDate" class="form-label fw-semibold"></label>
+                        <input asp-for="StartDate" type="date" class="form-control rounded-pill" />
+                        <span asp-validation-for="StartDate" class="text-danger small"></span>
+                    </div>
+                    <div class="alert alert-info rounded-3 mt-3 fs-small">
+                        Your policy will end on <strong>@Model.StartDate.AddMonths(Model.DurationInMonths).ToString("MMMM dd, yyyy")</strong>.
+                        The actual premium might be subject to adjustments based on your specific vehicle details and risk profile.
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-success rounded-pill px-5"><i class="bi bi-check-circle-fill me-2"></i>Confirm Purchase</button>
+                        <a asp-action="AvailableOfferings" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

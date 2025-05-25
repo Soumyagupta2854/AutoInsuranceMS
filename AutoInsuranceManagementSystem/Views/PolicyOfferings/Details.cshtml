@@ -1,0 +1,35 @@
+﻿@model AutoInsuranceManagementSystem.Models.PolicyOffering
+@{
+    ViewData["Title"] = "Policy Offering Details";
+}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-info text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-tag-fill me-2"></i>@ViewData["Title"]: @Model.OfferingName</h4>
+            </div>
+            <div class="card-body p-4">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.OfferingName)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.OfferingName)</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Description)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.CoverageType)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CoverageType)</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.CoverageAmount)</dt>
+                    <dd class="col-sm-8">@Model.CoverageAmount.ToString("C")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.PremiumAmount)</dt>
+                    <dd class="col-sm-8">@Model.PremiumAmount.ToString("C")</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.DurationInMonths)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.DurationInMonths) months</dd>
+                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.IsActive)</dt>
+                    <dd class="col-sm-8">@(Model.IsActive ? "Yes" : "No")</dd>
+                </dl>
+            </div>
+            <div class="card-footer bg-light d-flex justify-content-end gap-2 rounded-bottom-3">
+                <a asp-action="Edit" asp-route-id="@Model.PolicyOfferingId" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-fill me-2"></i>Edit</a>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

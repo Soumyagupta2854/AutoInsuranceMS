@@ -1,0 +1,81 @@
+﻿@model AutoInsuranceManagementSystem.Models.SupportTicket
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Support Ticket Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-info text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-ticket-detailed-fill me-2"></i>@ViewData["Title"] - TIC-@Model.TicketId.ToString("D5")</h4>
+            </div>
+            <div class="card-body p-4">
+                <h5 class="card-title">@Model.Subject</h5>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-3 fw-semibold">Submitted By:</dt>
+                    <dd class="col-sm-9">@Model.User?.UserName</dd>
+
+                    <dt class="col-sm-3 fw-semibold">Date Created:</dt>
+                    <dd class="col-sm-9">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
+
+                    <dt class="col-sm-3 fw-semibold">Last Updated:</dt>
+                    <dd class="col-sm-9">@Model.LastUpdatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
+
+                    <dt class="col-sm-3 fw-semibold">Status:</dt>
+                    <dd class="col-sm-9">
+                        <span class="badge @(Model.TicketStatus == TicketStatus.OPEN ? "bg-danger-subtle text-danger-emphasis" : Model.TicketStatus == TicketStatus.IN_PROGRESS ? "bg-warning-subtle text-warning-emphasis" : Model.TicketStatus == TicketStatus.RESOLVED ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                            @Html.DisplayFor(model => model.TicketStatus)
+                        </span>
+                    </dd>
+
+                    <dt class="col-sm-3 fw-semibold">Priority:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Priority)</dd>
+
+                    <dt class="col-sm-3 fw-semibold">Assigned Agent:</dt>
+                    <dd class="col-sm-9">@(Model.AssignedAgent?.UserName ?? "Not Yet Assigned")</dd>
+
+                    @if (Model.RelatedPolicy != null)
+                    {
+                        <dt class="col-sm-3 fw-semibold">Related Policy:</dt>
+                        <dd class="col-sm-9"><a asp-controller="Policies" asp-action="Details" asp-route-id="@Model.RelatedPolicyId">@Model.RelatedPolicy.PolicyNumber (@Model.RelatedPolicy.PolicyOffering?.OfferingName)</a></dd>
+                    }
+                </dl>
+
+                <h6 class="mt-4 fw-semibold">Issue Description:</h6>
+                <p style="white-space: pre-wrap;">@Model.IssueDescription</p>
+
+                @if (!string.IsNullOrEmpty(Model.ResolutionNotes))
+                {
+                    <h6 class="mt-4 fw-semibold">Resolution / Agent Notes:</h6>
+                    <p style="white-space: pre-wrap;">@Model.ResolutionNotes</p>
+                    @if (Model.ResolvedDate.HasValue)
+                    {
+                        <p class="fs-small text-muted">Resolved on: @Model.ResolvedDate.Value.ToString("yyyy-MM-dd HH:mm")</p>
+                    }
+                }
+            </div>
+            <div class="card-footer bg-light d-flex justify-content-end gap-2 rounded-bottom-3">
+                @if (User.IsInRole("Admin") || (User.IsInRole("Agent") && (Model.AssignedAgentId == null || Model.AssignedAgentId.ToString() == UserManager.GetUserId(User))))
+                {
+                    <a asp-action="Update" asp-route-id="@Model.TicketId" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-fill me-2"></i>Update Ticket</a>
+                }
+                @if (User.IsInRole("Customer"))
+                {
+                    <a asp-action="MyTickets" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to My Tickets</a>
+                }
+                else if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="AdminIndex" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to All Tickets</a>
+                }
+                else if (User.IsInRole("Agent"))
+                {
+                    <a asp-action="AgentQueue" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to Queue</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

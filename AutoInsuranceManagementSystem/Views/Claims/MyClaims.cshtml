@@ -1,0 +1,70 @@
+﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.Claim>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "My Claims";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-controller="Claims" asp-action="Create" class="btn btn-success rounded-pill px-4"><i class="bi bi-file-earmark-plus-fill me-2"></i>Submit New Claim</a>
+</div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card shadow-sm rounded-3 mt-3">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Claim ID</th>
+                        <th>Policy No.</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().ClaimAmount)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().DateSubmitted)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().ClaimStatus)</th>
+                        <th>Adjuster</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="7" class="text-center py-4">You have not submitted any claims.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>CLM-@item.ClaimId.ToString("D5")</td>
+                            <td><a asp-controller="Policies" asp-action="Details" asp-route-id="@item.PolicyId">@(item.Policy?.PolicyNumber ?? "N/A")</a></td>
+                            <td>@item.ClaimAmount.ToString("C")</td>
+                            <td>@item.DateSubmitted.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                <span class="badge @(item.ClaimStatus == ClaimStatus.APPROVED ? "bg-success-subtle text-success-emphasis" : item.ClaimStatus == ClaimStatus.REJECTED ? "bg-danger-subtle text-danger-emphasis" : item.ClaimStatus == ClaimStatus.CLOSED ? "bg-secondary-subtle text-secondary-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                                    @Html.DisplayFor(modelItem => item.ClaimStatus)
+                                </span>
+                            </td>
+                            <td>@(item.Adjuster?.UserName ?? "Not Assigned")</td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@item.ClaimId" class="btn btn-sm btn-outline-info rounded-pill px-3" title="View Details"><i class="bi bi-eye-fill"></i> View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

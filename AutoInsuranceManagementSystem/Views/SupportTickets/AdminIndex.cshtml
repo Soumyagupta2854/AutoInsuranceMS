@@ -1,0 +1,69 @@
+﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.SupportTicket>
+@{
+    ViewData["Title"] = "All Support Tickets (Admin)";
+}
+
+<h1>@ViewData["Title"]</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card shadow-sm rounded-3 mt-3">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Subject</th>
+                        <th>Submitted By</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Last Updated</th>
+                        <th>Assigned To</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="9" class="text-center py-4">No support tickets found.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>TIC-@item.TicketId.ToString("D5")</td>
+                            <td><a asp-action="Details" asp-route-id="@item.TicketId">@item.Subject</a></td>
+                            <td>@item.User?.UserName</td>
+                            <td>@item.Priority</td>
+                            <td>
+                                <span class="badge @(item.TicketStatus == TicketStatus.OPEN ? "bg-danger-subtle text-danger-emphasis" : item.TicketStatus == TicketStatus.IN_PROGRESS ? "bg-warning-subtle text-warning-emphasis" : item.TicketStatus == TicketStatus.RESOLVED ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                                    @Html.DisplayFor(modelItem => item.TicketStatus)
+                                </span>
+                            </td>
+                            <td>@item.CreatedDate.ToString("yyyy-MM-dd")</td>
+                            <td>@item.LastUpdatedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@(item.AssignedAgent?.UserName ?? "Unassigned")</td>
+                            <td class="text-center">
+                                <a asp-action="Update" asp-route-id="@item.TicketId" class="btn btn-sm btn-primary rounded-pill px-3 me-1" title="Update/Assign"><i class="bi bi-pencil-square"></i> Update</a>
+                                <a asp-action="Delete" asp-route-id="@item.TicketId" class="btn btn-sm btn-outline-danger rounded-pill px-3" title="Delete"><i class="bi bi-trash3-fill"></i> Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

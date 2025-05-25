@@ -1,0 +1,33 @@
+﻿@model AutoInsuranceManagementSystem.Models.Policy
+@{
+    ViewData["Title"] = "Delete Customer Policy";
+}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3 border-danger">
+            <div class="card-header bg-danger text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <h5 class="card-title">Are you sure you want to delete policy "@Model.PolicyNumber" for customer @(Model.Customer?.UserName ?? "N/A")?</h5>
+                <p class="text-muted">This action cannot be undone and might affect related claims and payments.</p>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-4 fw-semibold">Policy Number</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PolicyNumber)</dd>
+                    <dt class="col-sm-4 fw-semibold">Customer</dt>
+                    <dd class="col-sm-8">@(Model.Customer?.UserName ?? "N/A")</dd>
+                    <dt class="col-sm-4 fw-semibold">Based on Offering</dt>
+                    <dd class="col-sm-8">@(Model.PolicyOffering?.OfferingName ?? "N/A")</dd>
+                </dl>
+                <form asp-action="DeleteInstantiatedPolicy">
+                    <input type="hidden" asp-for="PolicyId" />
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-danger rounded-pill px-4"><i class="bi bi-trash3-fill me-2"></i>Delete This Policy</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

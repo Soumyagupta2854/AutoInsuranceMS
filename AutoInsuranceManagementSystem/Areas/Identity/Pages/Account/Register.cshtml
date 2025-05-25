@@ -1,0 +1,110 @@
+﻿@page
+@model AutoInsuranceManagementSystem.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3 my-5">
+            <div class="card-header bg-primary text-white text-center rounded-top-3">
+                <h1 class="h3 mb-0 fw-normal">@ViewData["Title"] a New Account</h1>
+                <p class="mb-0 small">Join AutoInsurance Pro today!</p>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <h4 class="mb-3">Account Details</h4>
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Input.Email" class="form-control rounded-pill" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.PhoneNumber" class="form-label fw-semibold"></label>
+                            <input asp-for="Input.PhoneNumber" class="form-control rounded-pill" autocomplete="tel" aria-required="true" placeholder="Your phone number" />
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.Password" class="form-label fw-semibold"></label>
+                            <input asp-for="Input.Password" class="form-control rounded-pill" autocomplete="new-password" aria-required="true" placeholder="Create a password" />
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.ConfirmPassword" class="form-label fw-semibold"></label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control rounded-pill" autocomplete="new-password" aria-required="true" placeholder="Confirm your password" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <h4 class="mt-4 mb-3">Personal & Vehicle Information</h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.FullName" class="form-label fw-semibold"></label>
+                            <input asp-for="Input.FullName" class="form-control rounded-pill" placeholder="Your full name" />
+                            <span asp-validation-for="Input.FullName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.DateOfBirth" class="form-label fw-semibold"></label>
+                            <input asp-for="Input.DateOfBirth" type="date" class="form-control rounded-pill" />
+                            <span asp-validation-for="Input.DateOfBirth" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.Gender" class="form-label fw-semibold"></label>
+                        <select asp-for="Input.Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="form-select rounded-pill">
+                            <option value="">-- Select Gender --</option>
+                        </select>
+                        <span asp-validation-for="Input.Gender" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.NumberOfVehicles" class="form-label fw-semibold"></label>
+                            <input asp-for="Input.NumberOfVehicles" type="number" class="form-control rounded-pill" min="0" />
+                            <span asp-validation-for="Input.NumberOfVehicles" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.VehicleType" class="form-label fw-semibold"></label>
+                            <input asp-for="Input.VehicleType" class="form-control rounded-pill" placeholder="e.g., Sedan, SUV" />
+                            <span asp-validation-for="Input.VehicleType" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.VehicleNumber" class="form-label fw-semibold"></label>
+                        <input asp-for="Input.VehicleNumber" class="form-control rounded-pill" placeholder="e.g., ABC-1234" />
+                        <span asp-validation-for="Input.VehicleNumber" class="text-danger small"></span>
+                    </div>
+
+                    @* Role Selection - Re-enabled as per user request. *@
+                    @* SECURITY NOTE: For production, this should be removed or heavily restricted. *@
+                    <div class="mb-3">
+                        <label asp-for="Input.SelectedRole" class="form-label fw-semibold">Register As</label>
+                        <select asp-for="Input.SelectedRole" asp-items="Html.GetEnumSelectList<UserRole>()" class="form-select rounded-pill">
+                            @* User will see all roles here. Default is Customer as per InputModel *@
+                        </select>
+                        <span asp-validation-for="Input.SelectedRole" class="text-danger small"></span>
+                        <div class="form-text text-danger fw-bold">Security Warning: Selecting 'Admin' or 'Agent' grants high privileges. This option is intended for authorized personnel during initial setup ONLY. For a public site, this dropdown should be removed, and users should default to 'Customer'.</div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg rounded-pill">Register</button>
+                    </div>
+                </form>
+                <div class="mt-4 text-center">
+                    <p class="mb-0">Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="fw-semibold">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

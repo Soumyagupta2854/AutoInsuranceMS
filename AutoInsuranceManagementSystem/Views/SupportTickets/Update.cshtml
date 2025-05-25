@@ -1,0 +1,87 @@
+﻿@model AutoInsuranceManagementSystem.ViewModels.SupportTicketUpdateViewModel
+@{
+    ViewData["Title"] = "Update Support Ticket";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-primary text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-tools me-2"></i>@ViewData["Title"] - TIC-@Model.TicketId.ToString("D5")</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Update" asp-route-id="@Model.TicketId">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
+                    <input type="hidden" asp-for="TicketId" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Subject</label>
+                        <input type="text" class="form-control rounded-pill" value="@Model.Subject" readonly disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Submitted By</label>
+                        <input type="text" class="form-control rounded-pill" value="@Model.SubmittedByUserName" readonly disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Date Created</label>
+                        <input type="text" class="form-control rounded-pill" value="@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")" readonly disabled />
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.RelatedPolicyNumber) && Model.RelatedPolicyNumber != "N/A")
+                    {
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Related Policy</label>
+                            <input type="text" class="form-control rounded-pill" value="@Model.RelatedPolicyNumber" readonly disabled />
+                        </div>
+                    }
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Issue Description</label>
+                        <textarea class="form-control rounded-3" rows="5" readonly disabled>@Model.IssueDescription</textarea>
+                    </div>
+                    <hr />
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="TicketStatus" class="form-label fw-semibold"></label>
+                            <select asp-for="TicketStatus" asp-items="Html.GetEnumSelectList<TicketStatus>()" class="form-select rounded-pill"></select>
+                            <span asp-validation-for="TicketStatus" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Priority" class="form-label fw-semibold"></label>
+                            <select asp-for="Priority" asp-items="Html.GetEnumSelectList<TicketPriority>()" class="form-select rounded-pill"></select>
+                            <span asp-validation-for="Priority" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="AssignedAgentId" class="form-label fw-semibold"></label>
+                        <select asp-for="AssignedAgentId" asp-items="Model.AvailableAgents" class="form-select rounded-pill">
+                            <option value="">-- Unassign / Keep Unassigned --</option>
+                        </select>
+                        <span asp-validation-for="AssignedAgentId" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ResolutionNotes" class="form-label fw-semibold"></label>
+                        <textarea asp-for="ResolutionNotes" class="form-control rounded-3" rows="5" placeholder="Add internal notes or resolution details..."></textarea>
+                        <span asp-validation-for="ResolutionNotes" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-success rounded-pill px-4"><i class="bi bi-save-fill me-2"></i>Save Changes</button>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="AdminIndex" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to All Tickets</a>
+                        }
+                        else
+                        {
+                            <a asp-action="AgentQueue" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-arrow-left-circle-fill me-2"></i>Back to Queue</a>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

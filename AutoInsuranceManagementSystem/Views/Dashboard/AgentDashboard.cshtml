@@ -1,0 +1,67 @@
+﻿@using AutoInsuranceManagementSystem.Models
+@{
+    ViewData["Title"] = "Agent Dashboard";
+    var assignedTickets = ViewBag.AssignedTickets as List<SupportTicket>;
+    var recentClaimsAssigned = ViewBag.RecentClaimsAssigned as List<Claim>;
+    var agentName = ViewBag.AgentName as string;
+}
+<div class="container mt-4">
+    <h1 class="display-6 fw-bold mb-4">Welcome, Agent @agentName!</h1>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white"><h5 class="mb-0"><i class="bi bi-headset me-2"></i>Your Active Support Tickets</h5></div>
+                <div class="card-body">
+                    @if (assignedTickets != null && assignedTickets.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var ticket in assignedTickets)
+                            {
+                                <li class="list-group-item">
+                                    <a asp-controller="SupportTickets" asp-action="Update" asp-route-id="@ticket.TicketId">TIC-@ticket.TicketId.ToString("D5"): @ticket.Subject</a>
+                                    <small class="d-block text-muted">By: @ticket.User?.UserName | Priority: @ticket.Priority</small>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+
+                        <p class="text-muted">No active tickets assigned to you.</p>
+                    }
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <a asp-controller="SupportTickets" asp-action="AgentQueue" class="btn btn-sm btn-outline-primary rounded-pill">View Full Queue</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-warning text-dark"><h5 class="mb-0"><i class="bi bi-file-earmark-medical-fill me-2"></i>Claims Awaiting Your Attention</h5></div>
+                <div class="card-body">
+                    @if (recentClaimsAssigned != null && recentClaimsAssigned.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var claim in recentClaimsAssigned)
+                            {
+                                <li class="list-group-item">
+                                    <a asp-controller="Claims" asp-action="Edit" asp-route-id="@claim.ClaimId">CLM-@claim.ClaimId.ToString("D5") for Policy @claim.Policy?.PolicyNumber</a>
+                                    <small class="d-block text-muted">Status: @claim.ClaimStatus | Submitted: @claim.DateSubmitted.ToShortDateString()</small>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+
+                        <p class="text-muted">No claims currently requiring your attention.</p>
+                    }
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <a asp-controller="Claims" asp-action="Index" class="btn btn-sm btn-outline-warning rounded-pill">View All Claims</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

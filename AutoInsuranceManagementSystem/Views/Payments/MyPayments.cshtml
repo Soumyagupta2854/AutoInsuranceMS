@@ -1,0 +1,61 @@
+﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.Payment>
+@{
+    ViewData["Title"] = "My Payment History";
+}
+
+<h1>@ViewData["Title"]</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card shadow-sm rounded-3 mt-3">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Policy No.</th>
+                        <th>Offering</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Amount)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().PaymentDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Method)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Status)</th>
+                        <th>Transaction ID</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="9" class="text-center py-4">You have no payment records.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>PAY-@item.PaymentId.ToString("D5")</td>
+                            <td><a asp-controller="Policies" asp-action="Details" asp-route-id="@item.PolicyId">@item.Policy?.PolicyNumber</a></td>
+                            <td>@item.Policy?.PolicyOffering?.OfferingName</td>
+                            <td>@item.Amount.ToString("C")</td>
+                            <td>@item.PaymentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@Html.DisplayFor(modelItem => item.Method)</td>
+                            <td>
+                                <span class="badge @(item.Status == PaymentStatus.SUCCESS ? "bg-success-subtle text-success-emphasis" : item.Status == PaymentStatus.FAILED ? "bg-danger-subtle text-danger-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </span>
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.TransactionId)</td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@item.PaymentId" class="btn btn-sm btn-outline-info rounded-pill px-3" title="View Details"><i class="bi bi-receipt"></i> View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

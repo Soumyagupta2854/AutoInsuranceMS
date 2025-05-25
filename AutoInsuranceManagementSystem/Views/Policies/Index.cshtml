@@ -1,0 +1,79 @@
+﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.Policy>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Customer Policies";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>@ViewData["Title"]</h1>
+</div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="card shadow-sm rounded-3">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().PolicyNumber)</th>
+                        <th>Customer</th>
+                        <th>Offering</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().ActualPremiumAmount)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().StartDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().EndDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().PolicyStatus)</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="8" class="text-center py-4">No customer policies found.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.PolicyNumber)</td>
+                            <td>@(item.Customer?.UserName ?? "N/A")</td>
+                            <td>@(item.PolicyOffering?.OfferingName ?? "N/A")</td>
+                            <td>@item.ActualPremiumAmount.ToString("C")</td>
+                            <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                            <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <span class="badge @(item.PolicyStatus == PolicyStatus.ACTIVE ? "bg-success-subtle text-success-emphasis" :
+                                                                          item.PolicyStatus == PolicyStatus.PENDING_PAYMENT ? "bg-info-subtle text-info-emphasis" :
+                                                                          item.PolicyStatus == PolicyStatus.EXPIRED ? "bg-secondary-subtle text-secondary-emphasis" :
+                                                                          item.PolicyStatus == PolicyStatus.CANCELLED ? "bg-danger-subtle text-danger-emphasis" :
+                                                                          "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                                @Html.DisplayFor(modelItem => item.PolicyStatus)
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a asp-action="Details" asp-route-id="@item.PolicyId" class="btn btn-sm btn-outline-info rounded-pill px-3 me-1" title="Details"><i class="bi bi-eye-fill"></i></a>
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="EditInstantiatedPolicy" asp-route-id="@item.PolicyId" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1" title="Edit Policy"><i class="bi bi-pencil-fill"></i></a>
+                                    <a asp-action="DeleteInstantiatedPolicy" asp-route-id="@item.PolicyId" class="btn btn-sm btn-outline-danger rounded-pill px-3" title="Delete Policy"><i class="bi bi-trash3-fill"></i></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

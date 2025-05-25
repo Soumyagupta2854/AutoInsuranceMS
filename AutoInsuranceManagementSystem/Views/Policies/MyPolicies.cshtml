@@ -1,0 +1,93 @@
+﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.Policy>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "My Insurance Policies";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-controller="Policies" asp-action="AvailableOfferings" class="btn btn-info rounded-pill px-4"><i class="bi bi-shop me-2"></i>View Available Policies</a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show rounded-3" role="alert">
+        @TempData["InfoMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card shadow-sm rounded-3">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().PolicyNumber)</th>
+                        <th>Offering</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().ActualPremiumAmount)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().StartDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().EndDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().PolicyStatus)</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4">You currently have no policies.</td>
+                        </tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.PolicyNumber)</td>
+                            <td>@(item.PolicyOffering?.OfferingName ?? "N/A")</td>
+                            <td>@item.ActualPremiumAmount.ToString("C")</td>
+                            <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                            <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <span class="badge @(item.PolicyStatus == PolicyStatus.ACTIVE ? "bg-success-subtle text-success-emphasis" :
+                                                                          item.PolicyStatus == PolicyStatus.PENDING_PAYMENT ? "bg-info-subtle text-info-emphasis" :
+                                                                          item.PolicyStatus == PolicyStatus.EXPIRED ? "bg-secondary-subtle text-secondary-emphasis" :
+                                                                          item.PolicyStatus == PolicyStatus.CANCELLED ? "bg-danger-subtle text-danger-emphasis" :
+                                                                          "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                                @Html.DisplayFor(modelItem => item.PolicyStatus)
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a asp-action="Details" asp-route-id="@item.PolicyId" class="btn btn-sm btn-outline-info rounded-pill px-3 me-1" title="View Details"><i class="bi bi-eye-fill"></i> View</a>
+                            @if (item.PolicyStatus == PolicyStatus.ACTIVE)
+                                {
+                                    <a asp-controller="Claims" asp-action="Create" asp-route-policyId="@item.PolicyId" class="btn btn-sm btn-success rounded-pill px-3 ms-1" title="Submit Claim for this Policy"><i class="bi bi-file-earmark-plus-fill"></i> Submit Claim</a>
+                                }
+                                @if (item.PolicyStatus == PolicyStatus.PENDING_PAYMENT)
+                                {
+                                    <a asp-controller="Payments" asp-action="InitiatePolicyPayment" asp-route-policyId="@item.PolicyId" class="btn btn-sm btn-warning rounded-pill px-3 ms-1" title="Pay Now"><i class="bi bi-credit-card-fill"></i> Pay Now</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

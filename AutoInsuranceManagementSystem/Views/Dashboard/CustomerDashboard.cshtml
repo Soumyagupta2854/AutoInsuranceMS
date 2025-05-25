@@ -1,0 +1,124 @@
+﻿@using AutoInsuranceManagementSystem.Models
+@{
+    ViewData["Title"] = "My Dashboard";
+    var recentPolicies = ViewBag.RecentPolicies as List<Policy>;
+    var recentClaims = ViewBag.RecentClaims as List<Claim>;
+    var recentPayments = ViewBag.RecentPayments as List<Payment>; // Assuming Payment model
+    var customerName = ViewBag.CustomerName as string;
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 fw-bold">Welcome Back, @customerName!</h1>
+        <a asp-controller="Policies" asp-action="AvailableOfferings" class="btn btn-lg btn-success rounded-pill shadow-sm">
+            <i class="bi bi-plus-circle-fill me-2"></i>Get New Policy
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm hover-lift">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-journal-richtext me-2"></i>My Policies</h5>
+                </div>
+                <div class="card-body">
+                    @if (recentPolicies != null && recentPolicies.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var policy in recentPolicies)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a asp-controller="Policies" asp-action="Details" asp-route-id="@policy.PolicyId" class="fw-semibold text-decoration-none">@policy.PolicyNumber</a>
+                                        <small class="d-block text-muted">Ends: @policy.EndDate.ToString("MMM dd, yyyy")</small>
+                                    </div>
+                                    <span class="badge @(policy.PolicyStatus == PolicyStatus.ACTIVE ? "bg-success-subtle text-success-emphasis" : policy.PolicyStatus == PolicyStatus.PENDING_PAYMENT ? "bg-warning-subtle text-warning-emphasis" : "bg-secondary-subtle text-secondary-emphasis") rounded-pill">
+                                        @policy.PolicyStatus.ToString().Replace("_", " ")
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                        @if (ViewBag.TotalPoliciesCount > recentPolicies.Count) // Assuming you pass total count
+                        {
+                            <div class="text-center mt-3">
+                                <a asp-controller="Policies" asp-action="MyPolicies" class="btn btn-sm btn-outline-primary rounded-pill">View All My Policies</a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">You have no active policies yet.</p>
+                        <a asp-controller="Policies" asp-action="AvailableOfferings" class="btn btn-primary rounded-pill"><i class="bi bi-search me-1"></i> Explore Offerings</a>
+                    }
+                </div>
+                @if (recentPolicies != null && recentPolicies.Any())
+                {
+                    <div class="card-footer text-center bg-light">
+                        <a asp-controller="Policies" asp-action="MyPolicies" class="btn btn-sm btn-outline-primary rounded-pill">View All My Policies</a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm hover-lift">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-ruled-fill me-2"></i>My Claims</h5>
+                </div>
+                <div class="card-body">
+                    @if (recentClaims != null && recentClaims.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var claim in recentClaims)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a asp-controller="Claims" asp-action="Details" asp-route-id="@claim.ClaimId" class="fw-semibold text-decoration-none">Claim #@claim.ClaimId</a>
+                                        <small class="d-block text-muted">Policy: @claim.Policy?.PolicyNumber | Submitted: @claim.DateSubmitted.ToString("MMM dd, yyyy")</small>
+                                    </div>
+                                    <span class="badge @(claim.ClaimStatus == ClaimStatus.APPROVED ? "bg-success-subtle text-success-emphasis" : claim.ClaimStatus == ClaimStatus.OPEN || claim.ClaimStatus == ClaimStatus.UNDER_REVIEW ? "bg-warning-subtle text-warning-emphasis" : "bg-danger-subtle text-danger-emphasis") rounded-pill">
+                                        @claim.ClaimStatus.ToString().Replace("_", " ")
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">You have no recent claims.</p>
+                    }
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <a asp-controller="Claims" asp-action="MyClaims" class="btn btn-sm btn-outline-warning rounded-pill me-2">View All My Claims</a>
+                    <a asp-controller="Claims" asp-action="Create" class="btn btn-sm btn-warning rounded-pill"><i class="bi bi-plus-lg"></i> Submit New Claim</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+            @* Full width on medium for this one *@
+            <div class="card h-100 shadow-sm hover-lift">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="bi bi-lightning-charge-fill me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Payments" asp-action="MyPayments" class="btn btn-outline-info btn-lg rounded-pill mb-2"><i class="bi bi-wallet2 me-2"></i>View Payment History</a>
+                        <a asp-controller="SupportTickets" asp-action="MyTickets" class="btn btn-outline-info btn-lg rounded-pill mb-2"><i class="bi bi-headset me-2"></i>My Support Tickets</a>
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-outline-secondary btn-lg rounded-pill"><i class="bi bi-person-circle me-2"></i>Manage My Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .hover-lift {
+        transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1) !important;
+        }
+</style>

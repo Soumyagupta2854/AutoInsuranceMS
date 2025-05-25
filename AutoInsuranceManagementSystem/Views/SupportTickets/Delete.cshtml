@@ -1,0 +1,31 @@
+﻿@model AutoInsuranceManagementSystem.Models.SupportTicket
+@{
+    ViewData["Title"] = "Delete Support Ticket";
+}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm rounded-3 border-danger">
+            <div class="card-header bg-danger text-white rounded-top-3">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <h5 class="card-title">Are you sure you want to delete ticket TIC-@Model.TicketId.ToString("D5") ("@Model.Subject")?</h5>
+                <p class="text-muted">This action cannot be undone.</p>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-4 fw-semibold">Submitted By</dt>
+                    <dd class="col-sm-8">@Model.User?.UserName</dd>
+                    <dt class="col-sm-4 fw-semibold">Status</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.TicketStatus)</dd>
+                </dl>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="TicketId" />
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-danger rounded-pill px-4"><i class="bi bi-trash3-fill me-2"></i>Delete Ticket</button>
+                        <a asp-action="AdminIndex" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
