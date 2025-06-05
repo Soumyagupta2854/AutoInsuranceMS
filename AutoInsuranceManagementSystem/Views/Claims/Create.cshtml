@@ -17,7 +17,9 @@
 
                     <div class="mb-3">
                         <label asp-for="PolicyId" class="form-label fw-semibold"></label>
-                        <select asp-for="PolicyId" class="form-select rounded-pill" asp-items="Model.AvailablePolicies">
+                        <select asp-for="PolicyId" class="form-select rounded-pill" asp-items="ViewBag.AvailablePolicies">
+
+                        @* <select asp-for="PolicyId" class="form-select rounded-pill" asp-items="Model.AvailablePolicies"> *@
                             <option value="">-- Select Policy --</option>
                         </select>
                         <span asp-validation-for="PolicyId" class="text-danger small"></span>

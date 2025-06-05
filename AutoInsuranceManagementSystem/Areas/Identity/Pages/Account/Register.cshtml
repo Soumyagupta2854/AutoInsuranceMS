@@ -90,7 +90,7 @@
                             @* User will see all roles here. Default is Customer as per InputModel *@
                         </select>
                         <span asp-validation-for="Input.SelectedRole" class="text-danger small"></span>
-                        <div class="form-text text-danger fw-bold">Security Warning: Selecting 'Admin' or 'Agent' grants high privileges. This option is intended for authorized personnel during initial setup ONLY. For a public site, this dropdown should be removed, and users should default to 'Customer'.</div>
+                        @* <div class="form-text text-danger fw-bold">Security Warning: Selecting 'Admin' or 'Agent' grants high privileges. This option is intended for authorized personnel during initial setup ONLY. For a public site, this dropdown should be removed, and users should default to 'Customer'.</div> *@
                     </div>
 
                     <div class="d-grid mt-4">
