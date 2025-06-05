@@ -1,114 +1,116 @@
-# Auto Insurance Management System
+# 🚗 Auto Insurance Management System
 
-## Overview
-
-The **Auto Insurance Management System** is a comprehensive web application designed to handle the end-to-end process of managing auto insurance policies, claims, payments, and customer support. Built with MVC architecture (supporting both Java Spring MVC and ASP.NET Core MVC), the system streamlines key insurance operations through modular development.
+A **comprehensive, modular web application** for managing auto insurance policies, claims, payments, and customer support. Designed for scalability and maintainability, this system leverages MVC architecture (Java Spring MVC or ASP.NET Core MVC) and a robust database schema to streamline key insurance business operations.
 
 ---
 
-## Core Modules
+## ✨ Features at a Glance
 
-1. **Policy Management**
-   - Creation, modification, and retrieval of insurance policies.
-2. **Claim Management**
-   - Submission, review, and approval/rejection of policy claims.
-3. **Payment Management**
-   - Payment processing, history, and refunds for policies and claims.
-4. **Customer Support**
-   - Ticketing system for customer inquiries and issue resolution.
-5. **User Authentication & Authorization**
-   - Secure registration, login, and role-based access control (Admin, Agent, Customer).
+- **Policy Lifecycle Management:** Effortless creation, modification, renewal, and tracking of insurance policies.
+- **Claims Processing:** Seamless submission, review, and adjudication of insurance claims.
+- **Integrated Payments:** Secure management of payments, refunds, and payment history.
+- **Customer Support Portal:** Built-in ticketing system for prompt issue resolution.
+- **Enterprise-Grade Security:** Role-based access (Admin, Agent, Customer) with secure authentication and authorization.
 
 ---
 
-## Module Structure
+## 🏗️ Core Modules & APIs
 
-### 1. Policy Management Module
+### 1. Policy Management
 
-- **Endpoints:**  
-  - `createPolicy()`, `updatePolicy()`, `getPolicyById()`, `getAllPolicies()`, `deletePolicy()`
-- **Model Fields:**  
-  - `policyId`, `policyNumber`, `vehicleDetails`, `coverageAmount`, `coverageType`, `premiumAmount`, `startDate`, `endDate`, `policyStatus` (ACTIVE, INACTIVE, RENEWED)
+| Action          | Endpoint           | Key Fields                                                    |
+|-----------------|--------------------|---------------------------------------------------------------|
+| Create Policy   | `createPolicy()`   | `policyId`, `policyNumber`, `vehicleDetails`, `coverageAmount`, `premiumAmount`, `startDate`, `endDate`, `policyStatus` (ACTIVE, INACTIVE, RENEWED) |
+| Update Policy   | `updatePolicy()`   | ...                                                           |
+| Get Policy      | `getPolicyById()`  | ...                                                           |
+| List Policies   | `getAllPolicies()` | ...                                                           |
+| Delete Policy   | `deletePolicy()`   | ...                                                           |
 
-### 2. Claim Management Module
+### 2. Claim Management
 
-- **Endpoints:**  
-  - `submitClaim()`, `getClaimDetails()`, `updateClaimStatus()`, `getAllClaims()`
-- **Model Fields:**  
-  - `claimId`, `policyId`, `claimAmount`, `claimDate`, `claimStatus` (OPEN, APPROVED, REJECTED), `adjusterId`
+| Action             | Endpoint                 | Key Fields                                                  |
+|--------------------|--------------------------|-------------------------------------------------------------|
+| Submit Claim       | `submitClaim()`          | `claimId`, `policyId`, `claimAmount`, `claimDate`, `claimStatus` (OPEN, APPROVED, REJECTED), `adjusterId` |
+| Get Claim Details  | `getClaimDetails()`      | ...                                                         |
+| Update Claim Status| `updateClaimStatus()`    | ...                                                         |
+| List Claims        | `getAllClaims()`         | ...                                                         |
 
-### 3. Payment Management Module
+### 3. Payment Management
 
-- **Endpoints:**  
-  - `makePayment()`, `getPaymentDetails()`, `getPaymentsByPolicy()`
-- **Model Fields:**  
-  - `paymentId`, `paymentAmount`, `paymentDate`, `paymentStatus` (SUCCESS, FAILED, PENDING), `policyId`
+| Action               | Endpoint                  | Key Fields                                    |
+|----------------------|---------------------------|-----------------------------------------------|
+| Make Payment         | `makePayment()`           | `paymentId`, `paymentAmount`, `paymentDate`, `paymentStatus` (SUCCESS, FAILED, PENDING), `policyId` |
+| Get Payment Details  | `getPaymentDetails()`     | ...                                           |
+| Payments by Policy   | `getPaymentsByPolicy()`   | ...                                           |
 
-### 4. Customer Support Module
+### 4. Customer Support
 
-- **Endpoints:**  
-  - `createTicket()`, `getTicketDetails()`, `resolveTicket()`, `getAllTickets()`
-- **Model Fields:**  
-  - `ticketId`, `userId`, `issueDescription`, `ticketStatus` (OPEN, RESOLVED), `createdDate`, `resolvedDate`
+| Action              | Endpoint                 | Key Fields                                           |
+|---------------------|--------------------------|------------------------------------------------------|
+| Create Ticket       | `createTicket()`         | `ticketId`, `userId`, `issueDescription`, `ticketStatus` (OPEN, RESOLVED), `createdDate`, `resolvedDate` |
+| Get Ticket Details  | `getTicketDetails()`     | ...                                                  |
+| Resolve Ticket      | `resolveTicket()`        | ...                                                  |
+| List All Tickets    | `getAllTickets()`        | ...                                                  |
 
-### 5. User Authentication & Authorization Module
+### 5. User Authentication & Authorization
 
-- **Endpoints:**  
-  - `login()`, `registerUser()`, `logout()`, `getUserProfile()`
-- **Model Fields:**  
-  - `userId`, `username`, `password (hashed)`, `email`, `role` (ADMIN, AGENT, CUSTOMER)
+| Action            | Endpoint               | Key Fields                                 |
+|-------------------|------------------------|--------------------------------------------|
+| Register          | `registerUser()`        | `userId`, `username`, `password (hashed)`, `email`, `role` (ADMIN, AGENT, CUSTOMER) |
+| Login             | `login()`               | ...                                        |
+| Logout            | `logout()`              | ...                                        |
+| Get Profile       | `getUserProfile()`      | ...                                        |
 
 ---
 
-## Database Schema
+## 🗄️ Database Schema Overview
 
-### 1. Policy Table
+- **Policy**: Policies and coverage details  
+- **Claim**: Claims linked to policies & users  
+- **Payment**: Tracks all payments  
+- **SupportTicket**: Customer support requests  
+- **User**: All users and roles  
+
+<details>
+<summary>View SQL Table Definitions</summary>
 
 ```sql
+-- Policy Table
 CREATE TABLE Policy (
   policyId INT AUTO_INCREMENT PRIMARY KEY,
   policyNumber VARCHAR(50) NOT NULL,
   vehicleDetails TEXT,
-  coverageAmount DECIMAL(10, 2),
+  coverageAmount DECIMAL(10,2),
   coverageType VARCHAR(100),
-  premiumAmount DECIMAL(10, 2),
+  premiumAmount DECIMAL(10,2),
   startDate DATE,
   endDate DATE,
   policyStatus ENUM('ACTIVE', 'INACTIVE', 'RENEWED')
 );
-```
 
-### 2. Claim Table
-
-```sql
+-- Claim Table
 CREATE TABLE Claim (
   claimId INT AUTO_INCREMENT PRIMARY KEY,
   policyId INT,
-  claimAmount DECIMAL(10, 2),
+  claimAmount DECIMAL(10,2),
   claimDate DATE,
   claimStatus ENUM('OPEN', 'APPROVED', 'REJECTED'),
   adjusterId INT,
   FOREIGN KEY (policyId) REFERENCES Policy(policyId),
   FOREIGN KEY (adjusterId) REFERENCES User(userId)
 );
-```
 
-### 3. Payment Table
-
-```sql
+-- Payment Table
 CREATE TABLE Payment (
   paymentId INT AUTO_INCREMENT PRIMARY KEY,
   policyId INT,
-  paymentAmount DECIMAL(10, 2),
+  paymentAmount DECIMAL(10,2),
   paymentDate DATE,
   paymentStatus ENUM('SUCCESS', 'FAILED', 'PENDING'),
   FOREIGN KEY (policyId) REFERENCES Policy(policyId)
 );
-```
 
-### 4. SupportTicket Table
-
-```sql
+-- SupportTicket Table
 CREATE TABLE SupportTicket (
   ticketId INT AUTO_INCREMENT PRIMARY KEY,
   userId INT,
@@ -118,11 +120,8 @@ CREATE TABLE SupportTicket (
   resolvedDate DATE,
   FOREIGN KEY (userId) REFERENCES User(userId)
 );
-```
 
-### 5. User Table
-
-```sql
+-- User Table
 CREATE TABLE User (
   userId INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) UNIQUE,
@@ -131,59 +130,66 @@ CREATE TABLE User (
   role ENUM('ADMIN', 'AGENT', 'CUSTOMER')
 );
 ```
+</details>
 
 ---
 
-## Assumptions
-
-- Local deployment with MySQL or SQL Server as the database.
-- Role-based access for Admin, Agent, Customer.
-- Uses ORM tools: Hibernate (Java) or Entity Framework (.NET).
-- Responsive and user-friendly UI.
-
----
-
-## Local Deployment
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- MySQL or SQL Server installed and configured.
-- Required SDKs:
-  - Java: JDK 17
+- **Database:** MySQL or SQL Server
+- **SDKs:**  
+  - Java: JDK 17  
   - .NET: .NET SDK 7.0
-- Web server:
-  - Java: Apache Tomcat
+- **Web Server:**  
+  - Java: Apache Tomcat  
   - .NET: Kestrel
 
-### Steps
+### 1. Clone the Repository
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/krishnana388/AutoInsuranceMS.git
-   cd AutoInsuranceMS
-   ```
-2. **Set up the database:**  
-   Execute the provided SQL schema in your MySQL or SQL Server instance.
-3. **Configure application settings:**  
-   Update the database connection details in `application.properties` (Java) or `appsettings.json` (.NET).
-4. **Build and run the application:**  
-   - Java: Deploy using Apache Tomcat  
-   - .NET: Run with Kestrel (`dotnet run`)
+```bash
+git clone https://github.com/krishnana388/AutoInsuranceMS.git
+cd AutoInsuranceMS
+```
 
----
+### 2. Set Up the Database
 
-## Conclusion
+Run the provided SQL scripts on your MySQL or SQL Server instance.
 
-The Auto Insurance Management System offers a robust, modular, and scalable platform for managing all aspects of auto insurance operations—policy management, claims, payments, support, and user access—following industry best practices with clear separation of concerns and a clean database design.
+### 3. Configure Application
 
----
+Update your database connection in:
+- `application.properties` (Java)
+- `appsettings.json` (.NET)
 
-## License
+### 4. Build & Deploy
 
-This project is licensed under the MIT License.
+- **Java:** Deploy to Apache Tomcat
+- **.NET:** Run with Kestrel
 
 ---
 
-## Author
+## 💡 Highlights & Best Practices
+
+- **Clean MVC Separation:** Ensures maintainability and testability.
+- **ORM Support:** Hibernate (Java) or Entity Framework (.NET).
+- **Responsive Design:** UI adapts to desktops, tablets, and mobiles.
+- **Role-Based Security:** Fine-grained access for Admin, Agent, and Customer.
+- **Scalable & Modular:** Easily extend modules or integrate new features.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+## 👤 Author
 
 - [krishnana388](https://github.com/krishnana388)
+
+---
+
+> _Empowering insurers and customers with efficient, secure, and scalable auto insurance management._
