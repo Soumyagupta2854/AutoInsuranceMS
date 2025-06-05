@@ -7223,6 +7223,88 @@
           "Value": "sha256-OZVI+w57FGwS9boYCZpH1ZSpcP7pYhLu4KtIUvPlZ4I="
         }
       ]
+    },
+    {
+      "Route": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg",
+      "AssetFile": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "535639"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 04:45:54 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.lnt41bfa1j.jpg",
+      "AssetFile": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "535639"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 04:45:54 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lnt41bfa1j"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk="
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg"
+        }
+      ]
     }
   ]
 }

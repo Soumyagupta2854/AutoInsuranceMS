@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "qehTmGwT3034BAoXl2ZgwxDqwGO5l4lkSlD2Dn/YCME=",
+  "Hash": "WCSVmsNmJEWs9HBg3I3xl4y4ninCO2A3NWjGmVP5pVY=",
   "Source": "AutoInsuranceManagementSystem",
   "BasePath": "_content/AutoInsuranceManagementSystem",
   "Mode": "Default",
@@ -2577,6 +2577,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\2406749\\source\\repos\\AutoInsuranceMS\\AutoInsuranceManagementSystem\\wwwroot\\uploads\\claim_proofs\\claim_1\\photos\\fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg",
+      "SourceId": "AutoInsuranceManagementSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\2406749\\source\\repos\\AutoInsuranceMS\\AutoInsuranceManagementSystem\\wwwroot\\",
+      "BasePath": "_content/AutoInsuranceManagementSystem",
+      "RelativePath": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "lnt41bfa1j",
+      "Integrity": "IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\claim_proofs\\claim_1\\photos\\fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg"
     }
   ],
   "Endpoints": [
@@ -9881,6 +9902,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-16aFlqtpsG9RyieKZUUUjkJpqTgcJtWXwT312I4Iz1s="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg",
+      "AssetFile": "C:\\Users\\2406749\\source\\repos\\AutoInsuranceMS\\AutoInsuranceManagementSystem\\wwwroot\\uploads\\claim_proofs\\claim_1\\photos\\fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "535639"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 04:45:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.lnt41bfa1j.jpg",
+      "AssetFile": "C:\\Users\\2406749\\source\\repos\\AutoInsuranceMS\\AutoInsuranceManagementSystem\\wwwroot\\uploads\\claim_proofs\\claim_1\\photos\\fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "535639"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 04:45:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lnt41bfa1j"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/claim_proofs/claim_1/photos/fb573ed5-d3eb-4838-ba62-68c489ae543d_IMG_20241119_135202.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-IYwv+AGTw2wFrovpedf8OSNgsD/mg8ga0gAfaIlSwqk="
         }
       ]
     }
