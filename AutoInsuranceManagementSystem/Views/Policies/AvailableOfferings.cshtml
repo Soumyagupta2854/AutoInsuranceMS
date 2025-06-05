@@ -1,68 +1,259 @@
 ﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.PolicyOffering>
 @using Microsoft.AspNetCore.Identity
+@using AutoInsuranceManagementSystem.Models 
 @inject SignInManager<ApplicationUser> SignInManager
 @{
-    ViewData["Title"] = "Available Policy Offerings";
+    ViewData["Title"] = "Explore Our Policy Offerings"; /* More engaging title */
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>@ViewData["Title"]</h1>
-</div>
+@section Styles {
+    <style>
+        :root {
+            /* Assuming --brand-primary and other color vars are in _Layout.cshtml */
+            --offering-card-radius: 0.75rem;
+            --offering-header-bg: linear-gradient(135deg, var(--brand-primary-darker, #1e5abc), var(--brand-primary, #2a6fdb));
+            /* Fallback if Bootstrap RGB CSS variables are not available */
+            --bs-primary-rgb-fallback: 42, 111, 219;
+            --bs-success-rgb-fallback: 25, 135, 84;
+            --bs-info-rgb-fallback: 13, 202, 240;
+            --offering-detail-icon-color: var(--brand-primary, #2a6fdb);
+            --offering-button-get-policy-bg: var(--bs-success, #198754);
+            --offering-button-get-policy-hover-bg: var(--bs-success-darker, #146c43); /* Define in :root if not in _Layout */
+            --offering-button-details-bg: var(--bs-info, #0dcaf0);
+            --offering-button-details-hover-bg: var(--bs-info-darker, #0aa6c0); /* Define in :root if not in _Layout */
+        }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
-        @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        .page-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 2rem;
+            text-align: center; /* Center title for a landing page feel */
+            margin-bottom: 2.5rem !important; /* More space below title */
+        }
+
+            .page-header h1::after { /* Optional: decorative underline for title */
+                content: '';
+                display: block;
+                width: 100px;
+                height: 3px;
+                background-color: var(--brand-primary, #2a6fdb);
+                margin: 0.75rem auto 0;
+                border-radius: 2px;
+            }
+
+
+        .offering-card {
+            border-radius: var(--offering-card-radius);
+            background-color: #fff;
+            /* box-shadow from global .card in _Layout.cshtml is assumed */
+            border: 1px solid #e0e7ff; /* Match global card border if any */
+            display: flex;
+            flex-direction: column; /* Ensures footer stays at bottom */
+            transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+        }
+
+            .offering-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.12); /* Enhanced hover shadow */
+            }
+
+            .offering-card .card-header {
+                background: var(--offering-header-bg) !important;
+                color: #fff !important;
+                border-bottom: none;
+                padding: 1.1rem 1.5rem;
+                border-top-left-radius: var(--offering-card-radius) !important;
+                border-top-right-radius: var(--offering-card-radius) !important;
+            }
+
+                .offering-card .card-header .card-title {
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.3rem; /* Prominent offering name */
+                    margin-bottom: 0;
+                }
+
+            .offering-card .card-body {
+                padding: 1.5rem;
+                flex-grow: 1; /* Allows body to expand */
+                display: flex;
+                flex-direction: column;
+            }
+
+            .offering-card .card-text.offering-description {
+                font-size: 0.95rem; /* Inter */
+                color: #495057;
+                margin-bottom: 1.25rem;
+                line-height: 1.6;
+                min-height: 60px; /* Give some min height for description consistency */
+            }
+
+            .offering-card .list-unstyled {
+                font-size: 0.9rem; /* Inter */
+                color: #343a40;
+                margin-top: auto; /* Pushes details to bottom if description is short */
+            }
+
+                .offering-card .list-unstyled li {
+                    padding: 0.4rem 0;
+                    display: flex;
+                    align-items: center;
+                    border-bottom: 1px dashed #f0f3f7; /* Subtle dashed separator */
+                }
+
+                    .offering-card .list-unstyled li:last-child {
+                        border-bottom: none;
+                    }
+
+                    .offering-card .list-unstyled li .bi {
+                        color: var(--offering-detail-icon-color);
+                        margin-right: 0.75rem;
+                        font-size: 1.1em;
+                        width: 20px; /* Align icons */
+                        text-align: center;
+                    }
+
+                    .offering-card .list-unstyled li strong {
+                        font-weight: 500; /* Inter medium */
+                        color: #2c3e50;
+                        min-width: 130px; /* Align the colons */
+                        display: inline-block;
+                    }
+
+
+            .offering-card .card-footer {
+                background-color: #f8f9fc;
+                border-top: 1px solid #e9ecef;
+                padding: 1.25rem 1.5rem;
+                border-bottom-left-radius: var(--offering-card-radius) !important;
+                border-bottom-right-radius: var(--offering-card-radius) !important;
+            }
+
+                .offering-card .card-footer .btn {
+                    font-weight: 500; /* Inter or Poppins */
+                    padding: 0.6rem 1rem; /* Standardized padding */
+                    width: 100%; /* Make button full width of footer */
+                    font-size: 0.95rem;
+                }
+
+                    .offering-card .card-footer .btn .bi {
+                        vertical-align: -0.1em;
+                    }
+            /* Specific Button Colors */
+            .offering-card .btn-success { /* Get This Policy */
+                background-color: var(--offering-button-get-policy-bg);
+                border-color: var(--offering-button-get-policy-bg);
+            }
+
+                .offering-card .btn-success:hover {
+                    background-color: var(--offering-button-get-policy-hover-bg);
+                    border-color: var(--offering-button-get-policy-hover-bg);
+                }
+
+            .offering-card .btn-outline-info { /* View Offering Details */
+                color: var(--bs-info);
+                border-color: var(--bs-info);
+            }
+
+                .offering-card .btn-outline-info:hover {
+                    background-color: var(--offering-button-details-bg);
+                    border-color: var(--offering-button-details-bg);
+                    color: #fff;
+                }
+
+            .offering-card .btn-outline-primary { /* Login to Purchase */
+                /* Inherits from _Layout */
+            }
+
+
+        /* "No offerings" alert styling */
+        .alert-no-offerings {
+            background-color: rgba(var(--bs-info-rgb-fallback), 0.1); /* Using fallback for example */
+            border-left: 5px solid var(--bs-info, #0dcaf0);
+            color: var(--bs-info-text-emphasis, #087990); /* Bootstrap variable */
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+            .alert-no-offerings .bi {
+                font-size: 2.5rem;
+                display: block;
+                margin-bottom: 0.75rem;
+            }
+
+    </style>
+}
+
+<div class="container py-4">
+    @* Added py-4 for vertical padding *@
+    <div class="page-header">
+        <h1>@ViewData["Title"]</h1>
     </div>
-}
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
-        @TempData["ErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
 
-@if (!Model.Any())
-{
-    <div class="alert alert-info rounded-3">Currently, there are no policy offerings available. Please check back later.</div>
-}
-else
-{
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var offering in Model)
-        {
-            <div class="col">
-                <div class="card h-100 shadow-sm rounded-3">
-                    <div class="card-header bg-primary text-white rounded-top-3">
-                        <h5 class="card-title mb-0">@offering.OfferingName</h5>
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text">@offering.Description</p>
-                        <ul class="list-unstyled mt-auto">
-                            <li><strong>Coverage Type:</strong> @offering.CoverageType</li>
-                            <li><strong>Coverage Amount:</strong> @offering.CoverageAmount.ToString("C")</li>
-                            <li><strong>Premium:</strong> @offering.PremiumAmount.ToString("C")</li>
-                            <li><strong>Duration:</strong> @offering.DurationInMonths months</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer bg-light text-center rounded-bottom-3">
-                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Customer"))
-                        {
-                            <a asp-controller="Policies" asp-action="PurchaseConfirmation" asp-route-offeringId="@offering.PolicyOfferingId" class="btn btn-success rounded-pill px-4 w-100"><i class="bi bi-cart-plus-fill me-2"></i>Get This Policy</a>
-                        }
-                        else if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Agent")))
-                        {
-                            <a asp-controller="PolicyOfferings" asp-action="Details" asp-route-id="@offering.PolicyOfferingId" class="btn btn-outline-info rounded-pill px-4 w-100"><i class="bi bi-eye-fill me-2"></i>View Offering Details</a>
-                        }
-                        else
-                        {
-                            <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Url.Action("AvailableOfferings", "Policies")" class="btn btn-outline-primary rounded-pill px-4 w-100"><i class="bi bi-box-arrow-in-right me-2"></i>Login to Purchase</a>
-                        }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-no-offerings rounded-3 text-center">
+            <i class="bi bi-info-circle-fill"></i>
+            Currently, there are no policy offerings available. Please check back later or contact support for assistance.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var offering in Model)
+            {
+                <div class="col d-flex">
+                    @* Added d-flex for equal height cards *@
+                    <div class="card offering-card h-100">
+                        @* Removed shadow-sm, rounded-3 *@
+                        <div class="card-header">
+                            @* Removed bg-primary text-white rounded-top-3 *@
+                            <h5 class="card-title mb-0">@offering.OfferingName</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text offering-description">@offering.Description</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-tags-fill"></i><strong>Coverage Type:</strong> @offering.CoverageType</li>
+                                <li><i class="bi bi-cash-coin"></i><strong>Coverage Amount:</strong> @offering.CoverageAmount.ToString("C", new System.Globalization.CultureInfo("en-IN"))</li>
+                                <li><i class="bi bi-wallet2"></i><strong>Premium:</strong> @offering.PremiumAmount.ToString("C", new System.Globalization.CultureInfo("en-IN"))</li>
+                                <li><i class="bi bi-calendar3"></i><strong>Duration:</strong> @offering.DurationInMonths months</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer text-center">
+                            @* Removed bg-light, rounded-bottom-3 *@
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Customer"))
+                            {
+                                <a asp-controller="Policies" asp-action="PurchaseConfirmation" asp-route-offeringId="@offering.PolicyOfferingId" class="btn btn-success rounded-pill"><i class="bi bi-cart-plus-fill me-2"></i>Get This Policy</a>
+                            }
+                            else if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Agent")))
+                            {
+                                <a asp-controller="PolicyOfferings" asp-action="Details" asp-route-id="@offering.PolicyOfferingId" class="btn btn-outline-info rounded-pill"><i class="bi bi-eye-fill me-2"></i>View Offering Details</a>
+                            }
+                            else
+                            {
+                                <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("AvailableOfferings", "Policies")" class="btn btn-outline-primary rounded-pill"><i class="bi bi-box-arrow-in-right me-2"></i>Login to Purchase</a>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
-}
+            }
+        </div>
+    }
+</div>

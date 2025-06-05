@@ -1,64 +1,253 @@
 ﻿@model AutoInsuranceManagementSystem.Models.SupportTicket
 @using Microsoft.AspNetCore.Identity
+@using AutoInsuranceManagementSystem.Models 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Support Ticket Details";
 }
 
+@section Styles {
+    <style>
+        :root {
+            /* Assuming --brand-primary and other color vars are in _Layout.cshtml */
+            --ticket-details-card-radius: 0.75rem;
+            --ticket-header-bg: linear-gradient(135deg, #0D9488, #14B8A6); /* Teal/Info inspired gradient */
+            --ticket-dt-color: #2c3e50; /* Dark blue-grey for definition terms */
+            --ticket-dd-color: #495057; /* Softer color for definition details */
+            --ticket-section-border: #e9ecef;
+            /* Badge colors (ensure Bootstrap 5.3 variables or fallbacks are available) */
+            --bs-danger-rgb-fallback: 220, 53, 69;
+            --bs-warning-rgb-fallback: 255, 193, 7;
+            --bs-success-rgb-fallback: 25, 135, 84;
+            --bs-secondary-rgb-fallback: 108, 117, 125;
+            --badge-open-bg: rgba(var(--bs-danger-rgb, var(--bs-danger-rgb-fallback)), 0.15);
+            --badge-open-text: var(--bs-danger-text-emphasis);
+            --badge-in-progress-bg: rgba(var(--bs-warning-rgb, var(--bs-warning-rgb-fallback)), 0.15);
+            --badge-in-progress-text: var(--bs-warning-text-emphasis);
+            --badge-resolved-bg: rgba(var(--bs-success-rgb, var(--bs-success-rgb-fallback)), 0.15);
+            --badge-resolved-text: var(--bs-success-text-emphasis);
+            --badge-closed-bg: rgba(var(--bs-secondary-rgb, var(--bs-secondary-rgb-fallback)), 0.15);
+            --badge-closed-text: var(--bs-secondary-text-emphasis);
+        }
+
+        .ticket-details-card {
+            border-radius: var(--ticket-details-card-radius);
+            background-color: #fff;
+            /* Base shadow/border from global .card in _Layout.cshtml */
+        }
+
+            .ticket-details-card .card-header {
+                background: var(--ticket-header-bg) !important;
+                color: #fff !important;
+                border-bottom: none;
+                padding: 1.25rem 1.75rem;
+                border-top-left-radius: var(--ticket-details-card-radius) !important;
+                border-top-right-radius: var(--ticket-details-card-radius) !important;
+            }
+
+                .ticket-details-card .card-header h4 {
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.5rem;
+                    margin-bottom: 0;
+                }
+
+                .ticket-details-card .card-header .bi {
+                    font-size: 1.2em;
+                    vertical-align: -0.1em;
+                    margin-right: 0.6rem;
+                }
+
+            .ticket-details-card .card-body {
+                padding: 2rem 2.25rem;
+            }
+
+            .ticket-details-card .card-title { /* Subject */
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                color: #2c3e50;
+                font-size: 1.6rem; /* Prominent subject */
+                margin-bottom: 0.75rem;
+            }
+
+            .ticket-details-card hr {
+                margin-top: 1rem;
+                margin-bottom: 1.75rem;
+                border-color: var(--ticket-section-border);
+            }
+
+
+            .ticket-details-card dl.row dt {
+                font-family: 'Inter', sans-serif;
+                font-weight: 600 !important; /* More emphasis */
+                color: var(--ticket-dt-color);
+                padding-top: 0.85rem;
+                padding-bottom: 0.85rem;
+                border-bottom: 1px solid var(--ticket-section-border);
+            }
+
+            .ticket-details-card dl.row dd {
+                font-family: 'Inter', sans-serif;
+                color: var(--ticket-dd-color);
+                padding-top: 0.85rem;
+                padding-bottom: 0.85rem;
+                margin-bottom: 0;
+                border-bottom: 1px solid var(--ticket-section-border);
+                display: flex;
+                align-items: center;
+                word-break: break-word; /* Prevent long strings from breaking layout */
+            }
+
+                .ticket-details-card dl.row dt:last-of-type,
+                .ticket-details-card dl.row dd:last-of-type {
+                    /* border-bottom: none; */ /* Optional: keep border on all for consistency */
+                }
+
+                .ticket-details-card dl.row dd a { /* For related policy link */
+                    color: var(--brand-primary, #007bff);
+                    text-decoration: none;
+                    font-weight: 500;
+                }
+
+                    .ticket-details-card dl.row dd a:hover {
+                        text-decoration: underline;
+                    }
+
+
+            .ticket-details-card .badge {
+                font-weight: 500; /* Inter */
+                padding: 0.45em 0.8em;
+                font-size: 0.85rem;
+                letter-spacing: 0.02em;
+            }
+        /* Specific badge styling using CSS variables */
+        .badge.status-open {
+            background-color: var(--badge-open-bg) !important;
+            color: var(--badge-open-text) !important;
+        }
+
+        .badge.status-in-progress {
+            background-color: var(--badge-in-progress-bg) !important;
+            color: var(--badge-in-progress-text) !important;
+        }
+
+        .badge.status-resolved {
+            background-color: var(--badge-resolved-bg) !important;
+            color: var(--badge-resolved-text) !important;
+        }
+
+        .badge.status-closed {
+            background-color: var(--badge-closed-bg) !important;
+            color: var(--badge-closed-text) !important;
+        }
+
+
+        .ticket-details-card .section-subtitle { /* For "Issue Description", "Resolution Notes" */
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--ticket-dt-color);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .ticket-details-card .content-block { /* For <p> tags holding description/notes */
+            font-size: 0.95rem; /* Inter */
+            line-height: 1.7;
+            color: var(--ticket-dd-color);
+            background-color: #f8f9fc; /* Light bg for text blocks */
+            padding: 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid var(--ticket-section-border);
+        }
+
+
+        .ticket-details-card .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e0e7ff;
+            padding: 1.25rem 1.75rem;
+            border-bottom-left-radius: var(--ticket-details-card-radius) !important;
+            border-bottom-right-radius: var(--ticket-details-card-radius) !important;
+        }
+
+            .ticket-details-card .card-footer .btn {
+                /* General button styling from _Layout.cshtml */
+                padding-top: 0.65rem;
+                padding-bottom: 0.65rem;
+                min-width: 140px; /* Consistent button width */
+            }
+
+                .ticket-details-card .card-footer .btn .bi {
+                    vertical-align: -0.1em;
+                }
+
+    </style>
+}
+
 <div class="row justify-content-center">
-    <div class="col-md-9 col-lg-8">
-        <div class="card shadow-sm rounded-3">
-            <div class="card-header bg-info text-white rounded-top-3">
-                <h4 class="mb-0"><i class="bi bi-ticket-detailed-fill me-2"></i>@ViewData["Title"] - TIC-@Model.TicketId.ToString("D5")</h4>
+    <div class="col-md-10 col-lg-9">
+        @* Slightly wider for content *@
+        <div class="card ticket-details-card">
+            @* Removed shadow-sm, rounded-3 *@
+            <div class="card-header">
+                @* Removed bg-info text-white rounded-top-3 *@
+                <h4 class="mb-0"><i class="bi bi-ticket-detailed-fill"></i>@ViewData["Title"] - TIC-@Model.TicketId.ToString("D5")</h4>
             </div>
             <div class="card-body p-4">
                 <h5 class="card-title">@Model.Subject</h5>
                 <hr />
                 <dl class="row">
-                    <dt class="col-sm-3 fw-semibold">Submitted By:</dt>
-                    <dd class="col-sm-9">@Model.User?.UserName</dd>
+                    <dt class="col-sm-4 col-md-3">Submitted By:</dt> @* Adjusted col width for responsiveness *@
+                    <dd class="col-sm-8 col-md-9">@(Model.User?.FullName ?? Model.User?.UserName ?? "N/A")</dd>
 
-                    <dt class="col-sm-3 fw-semibold">Date Created:</dt>
-                    <dd class="col-sm-9">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
+                    <dt class="col-sm-4 col-md-3">Date Created:</dt>
+                    <dd class="col-sm-8 col-md-9">@Model.CreatedDate.ToLocalTime().ToString("dd MMM, yyyy HH:mm") IST</dd>
 
-                    <dt class="col-sm-3 fw-semibold">Last Updated:</dt>
-                    <dd class="col-sm-9">@Model.LastUpdatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
+                    <dt class="col-sm-4 col-md-3">Last Updated:</dt>
+                    <dd class="col-sm-8 col-md-9">@Model.LastUpdatedDate.ToLocalTime().ToString("dd MMM, yyyy HH:mm") IST</dd>
 
-                    <dt class="col-sm-3 fw-semibold">Status:</dt>
-                    <dd class="col-sm-9">
-                        <span class="badge @(Model.TicketStatus == TicketStatus.OPEN ? "bg-danger-subtle text-danger-emphasis" : Model.TicketStatus == TicketStatus.IN_PROGRESS ? "bg-warning-subtle text-warning-emphasis" : Model.TicketStatus == TicketStatus.RESOLVED ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") rounded-pill px-2 py-1 fs-tiny">
-                            @Html.DisplayFor(model => model.TicketStatus)
+                    <dt class="col-sm-4 col-md-3">Status:</dt>
+                    <dd class="col-sm-8 col-md-9">
+                        @{
+                            string statusClass = "status-closed"; // Default
+                            if (Model.TicketStatus == TicketStatus.OPEN) { statusClass = "status-open"; }
+                            else if (Model.TicketStatus == TicketStatus.IN_PROGRESS) { statusClass = "status-in-progress"; }
+                            else if (Model.TicketStatus == TicketStatus.RESOLVED) { statusClass = "status-resolved"; }
+                        }
+                        <span class="badge @statusClass rounded-pill">
+                            @Model.TicketStatus.ToString().Replace("_", " ")
                         </span>
                     </dd>
 
-                    <dt class="col-sm-3 fw-semibold">Priority:</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Priority)</dd>
+                    <dt class="col-sm-4 col-md-3">Priority:</dt>
+                    <dd class="col-sm-8 col-md-9">@Html.DisplayFor(model => model.Priority)</dd>
 
-                    <dt class="col-sm-3 fw-semibold">Assigned Agent:</dt>
-                    <dd class="col-sm-9">@(Model.AssignedAgent?.UserName ?? "Not Yet Assigned")</dd>
+                    <dt class="col-sm-4 col-md-3">Assigned Agent:</dt>
+                    <dd class="col-sm-8 col-md-9">@(Model.AssignedAgent?.FullName ?? Model.AssignedAgent?.UserName ?? "Not Yet Assigned")</dd>
 
                     @if (Model.RelatedPolicy != null)
                     {
-                        <dt class="col-sm-3 fw-semibold">Related Policy:</dt>
-                        <dd class="col-sm-9"><a asp-controller="Policies" asp-action="Details" asp-route-id="@Model.RelatedPolicyId">@Model.RelatedPolicy.PolicyNumber (@Model.RelatedPolicy.PolicyOffering?.OfferingName)</a></dd>
+                        <dt class="col-sm-4 col-md-3">Related Policy:</dt>
+                        <dd class="col-sm-8 col-md-9"><a asp-controller="Policies" asp-action="Details" asp-route-id="@Model.RelatedPolicyId">@Model.RelatedPolicy.PolicyNumber (@Model.RelatedPolicy.PolicyOffering?.OfferingName)</a></dd>
                     }
                 </dl>
 
-                <h6 class="mt-4 fw-semibold">Issue Description:</h6>
-                <p style="white-space: pre-wrap;">@Model.IssueDescription</p>
+                <h6 class="section-subtitle">Issue Description:</h6>
+                <p class="content-block" style="white-space: pre-wrap;">@Model.IssueDescription</p>
 
                 @if (!string.IsNullOrEmpty(Model.ResolutionNotes))
                 {
-                    <h6 class="mt-4 fw-semibold">Resolution / Agent Notes:</h6>
-                    <p style="white-space: pre-wrap;">@Model.ResolutionNotes</p>
+                    <h6 class="section-subtitle">Resolution / Agent Notes:</h6>
+                    <p class="content-block" style="white-space: pre-wrap;">@Model.ResolutionNotes</p>
                     @if (Model.ResolvedDate.HasValue)
                     {
-                        <p class="fs-small text-muted">Resolved on: @Model.ResolvedDate.Value.ToString("yyyy-MM-dd HH:mm")</p>
+                        <p class="fs-small text-muted mt-2">Resolved on: @Model.ResolvedDate.Value.ToLocalTime().ToString("dd MMM, yyyy HH:mm") IST</p>
                     }
                 }
             </div>
-            <div class="card-footer bg-light d-flex justify-content-end gap-2 rounded-bottom-3">
+            <div class="card-footer d-flex justify-content-end gap-2">
+                @* Removed bg-light, rounded-bottom-3 *@
                 @if (User.IsInRole("Admin") || (User.IsInRole("Agent") && (Model.AssignedAgentId == null || Model.AssignedAgentId.ToString() == UserManager.GetUserId(User))))
                 {
                     <a asp-action="Update" asp-route-id="@Model.TicketId" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-fill me-2"></i>Update Ticket</a>

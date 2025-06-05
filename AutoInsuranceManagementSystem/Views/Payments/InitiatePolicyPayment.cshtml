@@ -1,20 +1,166 @@
 ﻿@model AutoInsuranceManagementSystem.ViewModels.PaymentViewModel
+@using Microsoft.AspNetCore.Identity
+@using AutoInsuranceManagementSystem.Models /* Ensure PaymentMethod enum is accessible */
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Complete Policy Payment";
 }
 
+@section Styles {
+    <style>
+        :root {
+            /* Assuming --brand-primary and color vars are in _Layout.cshtml */
+            --payment-form-card-radius: 0.75rem;
+            --payment-header-bg: linear-gradient(135deg, var(--bs-success-darker, #146c43), var(--bs-success, #198754)); /* Green for payment */
+            --form-section-title-color: #2c3e50;
+            --form-field-border: #ced4da;
+            --form-focus-border: var(--bs-success, #198754); /* Green focus for payment form */
+            --form-focus-shadow: rgba(var(--bs-success-rgb, 25, 135, 84), 0.25);
+        }
+
+        .payment-form-card {
+            border-radius: var(--payment-form-card-radius);
+            background-color: #fff;
+            /* Base shadow/border should come from global .card in _Layout.cshtml */
+        }
+
+            .payment-form-card .card-header {
+                background: var(--payment-header-bg) !important;
+                color: #fff !important;
+                border-bottom: none;
+                padding: 1.25rem 1.75rem;
+                border-top-left-radius: var(--payment-form-card-radius) !important;
+                border-top-right-radius: var(--payment-form-card-radius) !important;
+            }
+
+                .payment-form-card .card-header h4 {
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.5rem;
+                    margin-bottom: 0;
+                }
+
+                .payment-form-card .card-header .bi {
+                    font-size: 1.2em;
+                    vertical-align: -0.1em;
+                    margin-right: 0.6rem;
+                }
+
+            .payment-form-card .card-body {
+                padding: 2rem 2.25rem;
+            }
+
+        .payment-summary h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #343a40;
+        }
+
+        .payment-summary p {
+            font-size: 0.95rem; /* Inter */
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-summary .amount-due {
+            color: var(--bs-success, #198754); /* Green for amount */
+            font-weight: 700; /* Poppins */
+        }
+
+        .payment-form-card hr {
+            margin-top: 1.5rem;
+            margin-bottom: 1.75rem;
+            border-color: #e0e7ff;
+        }
+
+        .form-label.fw-semibold {
+            font-weight: 500 !important; /* Inter */
+            color: #343a40;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control, .form-select {
+            border-radius: 0.375rem; /* Default Bootstrap */
+            border: 1px solid var(--form-field-border);
+            padding: 0.6rem 0.9rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+
+            .form-control.rounded-pill, .form-select.rounded-pill {
+                border-radius: 50px !important;
+                padding: 0.65rem 1rem;
+            }
+
+            .form-control:focus, .form-select:focus {
+                border-color: var(--form-focus-border);
+                box-shadow: 0 0 0 0.2rem var(--form-focus-shadow);
+            }
+
+        #cardDetailsSection {
+            border: 1px solid #e9ecef;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.25rem;
+            background-color: #f8f9fc;
+        }
+
+            #cardDetailsSection .form-label.fw-semibold {
+                font-size: 0.9rem; /* Slightly smaller labels within card details */
+            }
+
+
+        .alert.fs-small {
+            font-size: 0.875rem !important;
+            padding: 0.85rem 1.25rem;
+        }
+
+            .alert.fs-small .bi {
+                vertical-align: -0.125em;
+            }
+
+        .action-buttons {
+            margin-top: 2.5rem;
+        }
+
+            .action-buttons .btn {
+                min-width: 160px; /* Slightly wider buttons */
+                padding-top: 0.7rem;
+                padding-bottom: 0.7rem;
+                font-weight: 500; /* Or 600 if Poppins is desired for button text */
+            }
+
+                .action-buttons .btn .bi {
+                    vertical-align: -0.1em;
+                }
+
+            .action-buttons .btn-success {
+                /* Styles from _Layout.cshtml */
+            }
+
+            .action-buttons .btn-outline-secondary {
+                /* Styles from _Layout.cshtml */
+            }
+
+    </style>
+}
+
 <div class="row justify-content-center">
-    <div class="col-md-7 col-lg-6">
-        <div class="card shadow-sm rounded-3">
-            <div class="card-header bg-success text-white rounded-top-3">
-                <h4 class="mb-0"><i class="bi bi-credit-card-2-front-fill me-2"></i>@ViewData["Title"]</h4>
+    <div class="col-md-8 col-lg-7">
+        @* Adjusted column width slightly *@
+        <div class="card payment-form-card">
+            @* Removed shadow-sm, rounded-3 to rely on CSS/global *@
+            <div class="card-header">
+                @* Removed bg-success, text-white, rounded-top-3 *@
+                <h4 class="mb-0"><i class="bi bi-credit-card-2-front-fill"></i>@ViewData["Title"]</h4>
             </div>
             <div class="card-body p-4">
-                <h5 class="mb-3">Policy: @Model.PolicyNumber (@Model.OfferingName)</h5>
-                <p>Customer: @Model.CustomerName</p>
-                <p class="fw-bold fs-5">Amount Due: @Model.Amount.ToString("C")</p>
+                <div class="payment-summary mb-3">
+                    <h5 class="mb-2">Policy: @Model.PolicyNumber (@Model.OfferingName)</h5>
+                    <p>Customer: @Model.CustomerName</p>
+                    <p class="fw-bold fs-5 amount-due">Amount Due: @Model.Amount.ToString("C", new System.Globalization.CultureInfo("en-IN"))</p>
+                </div>
                 <hr />
-                <form asp-action="ProcessPolicyPayment" method="post">
+                <form asp-action="ProcessPolicyPayment" method="post" id="paymentForm">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
                     <input type="hidden" asp-for="PolicyId" />
                     <input type="hidden" asp-for="Amount" />
@@ -22,38 +168,48 @@
                     <input type="hidden" asp-for="CustomerName" />
                     <input type="hidden" asp-for="OfferingName" />
 
-
-                    <div class="mb-3">
-                        <label asp-for="Method" class="form-label fw-semibold"></label>
-                        <select asp-for="Method" asp-items="Html.GetEnumSelectList<PaymentMethod>()" class="form-select rounded-pill" id="paymentMethodSelect"></select>
+                    <div class="mb-4">
+                        @* Increased margin *@
+                        <label asp-for="Method" class="form-label fw-semibold">Payment Method</label>
+                        <select asp-for="Method" asp-items="Html.GetEnumSelectList<PaymentMethod>()" class="form-select rounded-pill" id="paymentMethodSelect">
+                            @* The GetEnumSelectList by default will create options. If your enum doesn't have a "None" or "Select" option,
+                                you might consider adding a default <option value="">-- Select Method --</option> here manually,
+                                but ensure your ViewModel property for Method handles this (e.g., it's nullable or has a default that isn't a valid payment method).
+                                For simplicity with GetEnumSelectList, often the first enum value is the default if not nullable.
+                             *@
+                        </select>
                         <span asp-validation-for="Method" class="text-danger small"></span>
                     </div>
 
-                    <div id="cardDetailsSection">
+                    @* Card details section, initially hidden by JS if not default method *@
+                    <div id="cardDetailsSection" style="display:none;">
+                        <h6 class="mb-3 fw-semibold" style="color: var(--form-section-title-color);">Enter Card Details (Simulated)</h6>
                         <div class="mb-3">
                             <label asp-for="CardNumber" class="form-label fw-semibold"></label>
-                            <input asp-for="CardNumber" class="form-control rounded-pill" placeholder="Enter 13-19 digit card number" />
+                            <input asp-for="CardNumber" class="form-control rounded-pill" placeholder="Enter 13-19 digit card number" id="cardNumber" />
                             <span asp-validation-for="CardNumber" class="text-danger small"></span>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-md-7">
                                 <label asp-for="ExpiryDate" class="form-label fw-semibold"></label>
-                                <input asp-for="ExpiryDate" class="form-control rounded-pill" placeholder="MM/YY" />
+                                <input asp-for="ExpiryDate" class="form-control rounded-pill" placeholder="MM/YY" id="expiryDate" />
                                 <span asp-validation-for="ExpiryDate" class="text-danger small"></span>
                             </div>
                             <div class="col-md-5">
                                 <label asp-for="CVV" class="form-label fw-semibold"></label>
-                                <input asp-for="CVV" class="form-control rounded-pill" placeholder="3 or 4 digits" />
+                                <input asp-for="CVV" class="form-control rounded-pill" placeholder="3 or 4 digits" id="cvv" />
                                 <span asp-validation-for="CVV" class="text-danger small"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="alert alert-warning fs-small rounded-3 mt-3">
+
+                    <div class="alert alert-warning fs-small rounded-3 mt-4">
+                        @* Increased margin *@
                         <i class="bi bi-info-circle-fill me-1"></i> This is a simulated payment. No real transaction will occur.
                     </div>
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <button type="submit" class="btn btn-success rounded-pill px-5"><i class="bi bi-lock-fill me-2"></i>Pay @Model.Amount.ToString("C")</button>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end action-buttons">
+                        <button type="submit" class="btn btn-success rounded-pill px-5"><i class="bi bi-lock-fill me-2"></i>Pay @Model.Amount.ToString("C", new System.Globalization.CultureInfo("en-IN"))</button>
                         <a asp-controller="Policies" asp-action="MyPolicies" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-x-circle-fill me-2"></i>Cancel Payment</a>
                     </div>
                 </form>
@@ -61,6 +217,7 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -69,16 +226,48 @@
         document.addEventListener('DOMContentLoaded', function () {
             const paymentMethodSelect = document.getElementById('paymentMethodSelect');
             const cardDetailsSection = document.getElementById('cardDetailsSection');
+            // Get references to the card detail input fields
+            const cardNumberInput = document.getElementById('cardNumber');
+            const expiryDateInput = document.getElementById('expiryDate');
+            const cvvInput = document.getElementById('cvv');
+
+            // Correctly get the integer value of the PaymentMethod.SIMULATED_CARD enum member as a string
+            // This will be rendered by Razor as the actual integer value (e.g., "0", "1", etc.)
+            const simulatedCardEnumValue = '@((int)PaymentMethod.SIMULATED_CARD)';
 
             function toggleCardDetails() {
-                if (paymentMethodSelect.value === '@PaymentMethod.SIMULATED_CARD.ToString()') {
+                // paymentMethodSelect.value will be the string representation of the enum's integer value
+                if (paymentMethodSelect.value === simulatedCardEnumValue) {
                     cardDetailsSection.style.display = 'block';
+                    // Enable fields for validation and submission
+                    if (cardNumberInput) cardNumberInput.disabled = false;
+                    if (expiryDateInput) expiryDateInput.disabled = false;
+                    if (cvvInput) cvvInput.disabled = false;
                 } else {
                     cardDetailsSection.style.display = 'none';
+                    // Disable fields to exclude from validation and submission
+                    if (cardNumberInput) {
+                        cardNumberInput.disabled = true;
+                        cardNumberInput.value = ''; // Clear the value when hiding
+                    }
+                    if (expiryDateInput) {
+                        expiryDateInput.disabled = true;
+                        expiryDateInput.value = ''; // Clear the value when hiding
+                    }
+                    if (cvvInput) {
+                        cvvInput.disabled = true;
+                        cvvInput.value = ''; // Clear the value when hiding
+                    }
                 }
             }
-            toggleCardDetails();
-            paymentMethodSelect.addEventListener('change', toggleCardDetails);
+
+            // Initial check when the page loads
+            if (paymentMethodSelect) { // Ensure the select element exists
+                 toggleCardDetails();
+                 paymentMethodSelect.addEventListener('change', toggleCardDetails);
+            } else {
+                console.error("Payment method select dropdown not found.");
+            }
         });
     </script>
 }

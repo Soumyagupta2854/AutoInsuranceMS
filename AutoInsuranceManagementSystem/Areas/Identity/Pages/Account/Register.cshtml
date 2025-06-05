@@ -4,10 +4,156 @@
     ViewData["Title"] = "Register";
 }
 
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font stack */
+        }
+
+        .card {
+            border: none; /* Remove default border if adding custom */
+            border-radius: 15px !important; /* Softer rounded corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important; /* Softer, more pronounced shadow */
+            overflow: hidden; /* Ensures header/footer rounded corners clip properly */
+            display: flex; /* Added for proper footer attachment if card body is short */
+            flex-direction: column; /* Added for proper footer attachment */
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important; /* Professional blue gradient */
+            border-bottom: none;
+            padding: 20px 25px !important;
+            border-radius: 15px 15px 0 0 !important; /* Match card's top corners */
+        }
+
+            .card-header h1 {
+                font-weight: 600 !important; /* Slightly bolder title */
+                font-size: 1.75rem; /* Adjust size as needed */
+                color: #fff; /* Ensure text is white */
+            }
+
+            .card-header p {
+                opacity: 0.9;
+                color: #fff; /* Ensure text is white */
+            }
+
+        .card-body {
+            padding: 30px 35px !important; /* More padding inside the card */
+            flex-grow: 1; /* Allows card-body to expand and push footer down */
+        }
+
+        .form-label.fw-semibold {
+            color: #495057; /* Darker label color for better contrast */
+            font-weight: 500 !important; /* Slightly less bold for a cleaner look */
+            margin-bottom: 0.3rem;
+        }
+
+        .form-control.rounded-pill,
+        .form-select.rounded-pill {
+            border-radius: 50px !important;
+            padding: 10px 20px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+            .form-control.rounded-pill:focus,
+            .form-select.rounded-pill:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+            }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+            opacity: 1; /* Ensure placeholder is visible */
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #e9ecef; /* Lighter, more subtle HR */
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-primary.btn-lg.rounded-pill {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 500;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+        }
+
+            .btn-primary.btn-lg.rounded-pill:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+                background: linear-gradient(135deg, #0069d9 0%, #004085 100%); /* Slightly darker on hover */
+            }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            border-radius: 8px !important; /* Softer corners for alerts */
+        }
+
+        .text-danger.small {
+            font-size: 0.8em;
+        }
+
+        /* Original fw-semibold for links NOT in card-footer */
+        /* We will override for card-footer specifically */
+        .fw-semibold {
+            color: #0056b3 !important;
+            text-decoration: none;
+        }
+
+            .fw-semibold:hover {
+                text-decoration: underline;
+            }
+
+        /* Section headings styling */
+        h4.mb-3, h4.mt-4.mb-3 {
+            color: #0056b3; /* Use a theme color for headings */
+            font-weight: 600;
+            padding-bottom: 5px;
+            /* border-bottom: 2px solid #007bff; */ /* Optional: if you want an underline for section titles */
+        }
+
+        /* Card Footer Styling */
+        .card-footer {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important; /* Match header */
+            color: white; /* Text color on gradient */
+            padding: 15px 25px !important;
+            border-top: none;
+            border-radius: 0 0 15px 15px !important; /* Match card's bottom corners */
+            text-align: center; /* Ensures content within is centered */
+        }
+
+            .card-footer p {
+                margin-bottom: 0;
+                color: #fff; /* Ensure paragraph text is white */
+            }
+
+            .card-footer a.fw-semibold { /* Specific styling for links within the new card-footer */
+                color: #ffffff !important; /* Make link white */
+                font-weight: 600 !important; /* Bolder for better visibility */
+                text-decoration: none;
+            }
+
+                .card-footer a.fw-semibold:hover {
+                    color: #e0e0e0 !important; /* Slightly off-white on hover */
+                    text-decoration: underline;
+                }
+
+    </style>
+}
+
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-7">
         <div class="card shadow-sm rounded-3 my-5">
-            <div class="card-header bg-primary text-white text-center rounded-top-3">
+            <div class="card-header text-white text-center rounded-top-3">
                 <h1 class="h3 mb-0 fw-normal">@ViewData["Title"] a New Account</h1>
                 <p class="mb-0 small">Join AutoInsurance Pro today!</p>
             </div>
@@ -84,23 +230,25 @@
 
                     @* Role Selection - Re-enabled as per user request. *@
                     @* SECURITY NOTE: For production, this should be removed or heavily restricted. *@
-                    <div class="mb-3">
-                        @* <label asp-for="Input.SelectedRole" class="form-label fw-semibold">Register As</label> *@
-                        @* <select asp-for="Input.SelectedRole" asp-items="Html.GetEnumSelectList<UserRole>()" class="form-select rounded-pill"> *@
-                            @* User will see all roles here. Default is Customer as per InputModel *@
-                    @*     </select> *@
-                    @*     <span asp-validation-for="Input.SelectedRole" class="text-danger small"></span> *@
-                    @*     <div class="form-text text-danger fw-bold">Security Warning: Selecting 'Admin' or 'Agent' grants high privileges. This option is intended for authorized personnel during initial setup ONLY. For a public site, this dropdown should be removed, and users should default to 'Customer'.</div> *@
+                    @* <div class="mb-3"> *@
+                    @* <label asp-for="Input.SelectedRole" class="form-label fw-semibold">Register As</label> *@
+                    @* <select asp-for="Input.SelectedRole" asp-items="Html.GetEnumSelectList<UserRole>()" class="form-select rounded-pill"> *@
+                    @* User will see all roles here. Default is Customer as per InputModel *@
+                    @* </select> *@
+                    @* <span asp-validation-for="Input.SelectedRole" class="text-danger small"></span> *@
+                    @* <div class="form-text text-danger fw-bold">Security Warning: Selecting 'Admin' or 'Agent' grants high privileges. This option is intended for authorized personnel during initial setup ONLY. For a public site, this dropdown should be removed, and users should default to 'Customer'.</div> *@
                     @* </div> *@
                     <div class="d-grid mt-4">
                         <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg rounded-pill">Register</button>
                     </div>
                 </form>
-                <div class="mt-4 text-center">
-                    <p class="mb-0">Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="fw-semibold">Login here</a></p>
-                </div>
+            </div> @* End of card-body *@
+
+            @* Moved the "Login here" section to a new card-footer *@
+            <div class="card-footer">
+                <p class="mb-0">Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="fw-semibold">Login here</a></p>
             </div>
-        </div>
+        </div> @* End of card *@
     </div>
 </div>
 

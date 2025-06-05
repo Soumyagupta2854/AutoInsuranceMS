@@ -7,9 +7,245 @@
     var customerName = ViewBag.CustomerName as string;
 }
 
+@section Styles {
+    <style>
+        :root {
+            --dashboard-card-radius: 0.75rem; /* Match global card style from _Layout */
+            --dashboard-card-shadow: 0 6px 15px rgba(0,0,0,0.07);
+            --dashboard-card-hover-shadow: 0 12px 25px rgba(0,0,0,0.12); /* Matched your hover shadow */
+
+            --policy-header-bg: linear-gradient(135deg, #005f99, #007bff);
+            --policy-accent: #007bff;
+            --policy-btn-outline: var(--policy-accent);
+            --claim-header-bg: linear-gradient(135deg, #c85100, #ff8c00);
+            --claim-accent: #ff8c00;
+            --claim-btn-outline: var(--claim-accent);
+            --claim-btn-solid: var(--claim-accent);
+            --actions-header-bg: linear-gradient(135deg, #00796b, #009688);
+            --actions-accent: #009688;
+            --actions-btn-outline: var(--actions-accent);
+            --card-header-text-color: #fff;
+            --card-body-link-color: #0056b3; /* Darker blue for links in card body */
+            --card-body-link-hover-color: #003d80;
+        }
+
+        .dashboard-welcome-header {
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 1rem;
+        }
+
+            .dashboard-welcome-header h1 {
+                font-weight: 700 !important; /* Poppins from _Layout should handle font */
+                color: #2c3e50; /* Darker, more serious welcome text */
+            }
+
+        /* General styles for dashboard cards */
+        .dashboard-card {
+            border-radius: var(--dashboard-card-radius);
+            background-color: #fff;
+            /* Uses hover-lift for shadow and transform, ensure _Layout card styles don't conflict negatively */
+            border: 1px solid #e9ecef; /* Softer border than default card if needed */
+        }
+
+            .dashboard-card .card-header {
+                color: var(--card-header-text-color);
+                padding: 1.15rem 1.35rem; /* Slightly more padding */
+                border-bottom: none;
+                border-top-left-radius: var(--dashboard-card-radius); /* Ensure it respects the parent's radius */
+                border-top-right-radius: var(--dashboard-card-radius);
+            }
+
+                .dashboard-card .card-header h5 {
+                    font-weight: 600; /* Poppins */
+                    margin-bottom: 0; /* Remove default margin */
+                }
+
+                .dashboard-card .card-header .bi {
+                    font-size: 1.3em;
+                    margin-right: 0.6rem;
+                    vertical-align: -0.18em; /* Fine-tune vertical alignment */
+                }
+
+        /* Specific card header backgrounds */
+        .policy-card .card-header {
+            background: var(--policy-header-bg);
+        }
+
+        .claims-card .card-header {
+            background: var(--claim-header-bg);
+        }
+
+        .actions-card .card-header {
+            background: var(--actions-header-bg);
+        }
+
+        .dashboard-card .card-body {
+            padding: 1.25rem; /* Consistent padding */
+        }
+
+        .dashboard-card .list-group-flush { /* Remove card body padding when list is flush */
+            /* padding: 0; */ /* Handled by list-group-flush behavior */
+        }
+
+        .dashboard-card .list-group-item {
+            padding: 0.9rem 0.25rem; /* Padding for items within a flush list inside card-body */
+            border-bottom: 1px solid #f0f0f0; /* Softer border */
+            transition: background-color 0.2s ease;
+            background-color: transparent; /* Ensure no interference */
+        }
+
+            .dashboard-card .list-group-item:last-child {
+                border-bottom: none;
+            }
+
+            .dashboard-card .list-group-item:hover {
+                background-color: #f8f9fa; /* Subtle hover */
+            }
+
+            .dashboard-card .list-group-item a.fw-semibold {
+                color: var(--card-body-link-color);
+                transition: color 0.2s ease;
+            }
+
+                .dashboard-card .list-group-item a.fw-semibold:hover {
+                    color: var(--card-body-link-hover-color);
+                }
+
+            .dashboard-card .list-group-item .text-muted {
+                font-size: 0.85em;
+            }
+
+        .dashboard-card .badge {
+            font-size: 0.78em;
+            padding: 0.5em 0.8em;
+            font-weight: 600;
+        }
+
+        .dashboard-card .card-footer {
+            background-color: #f9fafb; /* Very light grey for footer */
+            border-top: 1px solid #e9ecef; /* Separator line */
+            padding: 1rem 1.25rem;
+            border-bottom-left-radius: var(--dashboard-card-radius); /* Ensure it respects the parent's radius */
+            border-bottom-right-radius: var(--dashboard-card-radius);
+        }
+
+            .dashboard-card .card-footer .btn {
+                font-size: 0.9rem; /* Slightly larger footer buttons */
+                padding: 0.5rem 1.2rem;
+            }
+        /* Card specific button styling */
+        .policy-card .card-footer .btn-outline-primary {
+            border-color: var(--policy-accent);
+            color: var(--policy-accent);
+        }
+
+            .policy-card .card-footer .btn-outline-primary:hover {
+                background-color: var(--policy-accent);
+                color: #fff;
+            }
+
+        .claims-card .card-footer .btn-outline-warning { /* Bootstrap warning is #ffc107 */
+            border-color: var(--claim-accent);
+            color: var(--claim-accent);
+        }
+
+            .claims-card .card-footer .btn-outline-warning:hover {
+                background-color: var(--claim-accent);
+                color: #fff;
+            }
+
+        .claims-card .card-footer .btn-warning { /* Solid button for submit new */
+            background-color: var(--claim-btn-solid);
+            border-color: var(--claim-btn-solid);
+            color: #fff;
+        }
+
+            .claims-card .card-footer .btn-warning:hover {
+                background-color: #e67300;
+                border-color: #e67300; /* Darker shade of claim-accent */
+            }
+
+
+        /* Quick Actions Card Buttons */
+        .actions-card .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Vertically center buttons if card body has extra space */
+            min-height: 250px; /* Ensure a minimum height for aesthetic spacing */
+        }
+
+            .actions-card .card-body .btn {
+                padding: 0.85rem 1rem;
+                font-size: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start; /* Align text to left */
+                text-align: left;
+            }
+
+                .actions-card .card-body .btn .bi {
+                    margin-right: 0.85rem;
+                    font-size: 1.3em;
+                    width: 25px; /* Give icon a fixed width for alignment */
+                }
+
+        .actions-card .btn-outline-info {
+            border-color: var(--actions-accent);
+            color: var(--actions-accent);
+        }
+
+            .actions-card .btn-outline-info:hover {
+                background-color: var(--actions-accent);
+                color: #fff;
+            }
+
+        .actions-card .btn-outline-secondary:hover {
+            background-color: #5a6268;
+            color: #fff;
+            border-color: #5a6268;
+        }
+
+
+        /* 'Get New Policy' button in welcome header */
+        .btn-success.rounded-pill.shadow-sm {
+            padding: 0.7rem 1.6rem; /* Make it more prominent */
+            font-size: 1rem;
+            font-weight: 600; /* Poppins from _Layout should handle font */
+        }
+
+            .btn-success.rounded-pill.shadow-sm .bi {
+                font-size: 1.2em; /* Slightly larger icon */
+                vertical-align: -0.1em;
+            }
+
+
+        /* Provided hover-lift from user, ensure it integrates */
+        .hover-lift {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+
+            .hover-lift:hover {
+                transform: translateY(-6px); /* Slightly more lift */
+                box-shadow: 0 12px 20px rgba(0,0,0,0.1) !important; /* User's preferred shadow */
+            }
+
+        /* Styling for the "Explore Offerings" button when no policies */
+        .dashboard-card .card-body .btn-primary.rounded-pill {
+            background: var(--policy-accent);
+            border-color: var(--policy-accent);
+        }
+
+            .dashboard-card .card-body .btn-primary.rounded-pill:hover {
+                background: #005f99; /* Darker shade of policy-accent */
+                border-color: #005f99;
+            }
+
+    </style>
+}
+
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-6 fw-bold">Welcome Back, @customerName!</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4 dashboard-welcome-header">
+        <h1 class="display-6">Welcome Back, @customerName!</h1>
         <a asp-controller="Policies" asp-action="AvailableOfferings" class="btn btn-lg btn-success rounded-pill shadow-sm">
             <i class="bi bi-plus-circle-fill me-2"></i>Get New Policy
         </a>
@@ -17,15 +253,15 @@
 
     <div class="row g-4">
         <div class="col-lg-4 col-md-6">
-            <div class="card h-100 shadow-sm hover-lift">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="bi bi-journal-richtext me-2"></i>My Policies</h5>
+            <div class="card h-100 shadow-sm hover-lift dashboard-card policy-card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-journal-richtext"></i>My Policies</h5>
                 </div>
                 <div class="card-body">
                     @if (recentPolicies != null && recentPolicies.Any())
                     {
                         <ul class="list-group list-group-flush">
-                            @foreach (var policy in recentPolicies)
+                            @foreach (var policy in recentPolicies.Take(3)) @* Show a limited number, e.g., 3 *@
                             {
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
@@ -38,22 +274,19 @@
                                 </li>
                             }
                         </ul>
-                        @if (ViewBag.TotalPoliciesCount > recentPolicies.Count) // Assuming you pass total count
-                        {
-                            <div class="text-center mt-3">
-                                <a asp-controller="Policies" asp-action="MyPolicies" class="btn btn-sm btn-outline-primary rounded-pill">View All My Policies</a>
-                            </div>
-                        }
                     }
                     else
                     {
-                        <p class="text-muted">You have no active policies yet.</p>
-                        <a asp-controller="Policies" asp-action="AvailableOfferings" class="btn btn-primary rounded-pill"><i class="bi bi-search me-1"></i> Explore Offerings</a>
+                        <div class="text-center py-3">
+                            <i class="bi bi-shield-slash fs-1 text-muted mb-2 d-block"></i>
+                            <p class="text-muted mb-3">You have no active policies yet.</p>
+                            <a asp-controller="Policies" asp-action="AvailableOfferings" class="btn btn-primary rounded-pill"><i class="bi bi-search me-1"></i> Explore Offerings</a>
+                        </div>
                     }
                 </div>
                 @if (recentPolicies != null && recentPolicies.Any())
                 {
-                    <div class="card-footer text-center bg-light">
+                    <div class="card-footer text-center">
                         <a asp-controller="Policies" asp-action="MyPolicies" class="btn btn-sm btn-outline-primary rounded-pill">View All My Policies</a>
                     </div>
                 }
@@ -61,22 +294,23 @@
         </div>
 
         <div class="col-lg-4 col-md-6">
-            <div class="card h-100 shadow-sm hover-lift">
-                <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0"><i class="bi bi-file-earmark-ruled-fill me-2"></i>My Claims</h5>
+            <div class="card h-100 shadow-sm hover-lift dashboard-card claims-card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-ruled-fill"></i>My Claims</h5>
                 </div>
                 <div class="card-body">
                     @if (recentClaims != null && recentClaims.Any())
                     {
                         <ul class="list-group list-group-flush">
-                            @foreach (var claim in recentClaims)
+                            @foreach (var claim in recentClaims.Take(3)) @* Show a limited number *@
                             {
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
                                         <a asp-controller="Claims" asp-action="Details" asp-route-id="@claim.ClaimId" class="fw-semibold text-decoration-none">Claim #@claim.ClaimId</a>
                                         <small class="d-block text-muted">Policy: @claim.Policy?.PolicyNumber | Submitted: @claim.DateSubmitted.ToString("MMM dd, yyyy")</small>
                                     </div>
-                                    <span class="badge @(claim.ClaimStatus == ClaimStatus.APPROVED ? "bg-success-subtle text-success-emphasis" : claim.ClaimStatus == ClaimStatus.OPEN || claim.ClaimStatus == ClaimStatus.UNDER_REVIEW ? "bg-warning-subtle text-warning-emphasis" : "bg-danger-subtle text-danger-emphasis") rounded-pill">
+                                    @* THE FIX IS APPLIED IN THE LINE BELOW *@
+                                    <span class="badge @(claim.ClaimStatus == ClaimStatus.APPROVED ? "bg-success-subtle text-success-emphasis" : claim.ClaimStatus == ClaimStatus.OPEN || claim.ClaimStatus == ClaimStatus.UNDER_REVIEW ? "bg-info-subtle text-info-emphasis" : claim.ClaimStatus == ClaimStatus.REJECTED ? "bg-danger-subtle text-danger-emphasis" : "bg-secondary-subtle text-secondary-emphasis") rounded-pill">
                                         @claim.ClaimStatus.ToString().Replace("_", " ")
                                     </span>
                                 </li>
@@ -85,10 +319,13 @@
                     }
                     else
                     {
-                        <p class="text-muted">You have no recent claims.</p>
+                        <div class="text-center py-3">
+                            <i class="bi bi-journal-x fs-1 text-muted mb-2 d-block"></i>
+                            <p class="text-muted">You have no recent claims.</p>
+                        </div>
                     }
                 </div>
-                <div class="card-footer text-center bg-light">
+                <div class="card-footer text-center">
                     <a asp-controller="Claims" asp-action="MyClaims" class="btn btn-sm btn-outline-warning rounded-pill me-2">View All My Claims</a>
                     <a asp-controller="Claims" asp-action="Create" class="btn btn-sm btn-warning rounded-pill"><i class="bi bi-plus-lg"></i> Submit New Claim</a>
                 </div>
@@ -96,29 +333,19 @@
         </div>
 
         <div class="col-lg-4 col-md-12">
-            @* Full width on medium for this one *@
-            <div class="card h-100 shadow-sm hover-lift">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0"><i class="bi bi-lightning-charge-fill me-2"></i>Quick Actions</h5>
+            <div class="card h-100 shadow-sm hover-lift dashboard-card actions-card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-lightning-charge-fill"></i>Quick Actions</h5>
                 </div>
                 <div class="card-body d-flex flex-column justify-content-center">
-                    <div class="d-grid gap-2">
-                        <a asp-controller="Payments" asp-action="MyPayments" class="btn btn-outline-info btn-lg rounded-pill mb-2"><i class="bi bi-wallet2 me-2"></i>View Payment History</a>
-                        <a asp-controller="SupportTickets" asp-action="MyTickets" class="btn btn-outline-info btn-lg rounded-pill mb-2"><i class="bi bi-headset me-2"></i>My Support Tickets</a>
-                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-outline-secondary btn-lg rounded-pill"><i class="bi bi-person-circle me-2"></i>Manage My Profile</a>
+                    <div class="d-grid gap-3">
+                        @* Increased gap for better spacing *@
+                        <a asp-controller="Payments" asp-action="MyPayments" class="btn btn-outline-info btn-lg rounded-pill"><i class="bi bi-wallet2"></i>View Payment History</a>
+                        <a asp-controller="SupportTickets" asp-action="MyTickets" class="btn btn-outline-info btn-lg rounded-pill"><i class="bi bi-headset"></i>My Support Tickets</a>
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-outline-secondary btn-lg rounded-pill"><i class="bi bi-person-circle"></i>Manage My Profile</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<style>
-    .hover-lift {
-        transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-    }
-
-        .hover-lift:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1) !important;
-        }
-</style>

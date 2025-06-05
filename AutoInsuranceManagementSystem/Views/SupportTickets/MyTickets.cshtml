@@ -1,34 +1,188 @@
 ﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.SupportTicket>
 @using Microsoft.AspNetCore.Identity
+@using AutoInsuranceManagementSystem.Models 
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "My Support Tickets";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+@section Styles {
+    <style>
+        :root {
+            /* Assuming --brand-primary and other color vars are in _Layout.cshtml */
+            --table-header-bg: #f8f9fc; /* Light grey, consistent with _Layout */
+            --table-row-hover-bg: #eef2f7; /* Subtle blueish hover */
+            --table-border-color: #e9ecef;
+            /* Badge colors - ensure these Bootstrap 5.3 variables are available or define custom versions */
+            /* Using fallback RGB values as an example if Bootstrap CSS vars for RGB are not directly accessible */
+            --bs-danger-rgb-fallback: 220, 53, 69;
+            --bs-warning-rgb-fallback: 255, 193, 7;
+            --bs-success-rgb-fallback: 25, 135, 84;
+            --bs-secondary-rgb-fallback: 108, 117, 125;
+            --badge-open-bg: rgba(var(--bs-danger-rgb, var(--bs-danger-rgb-fallback)), 0.15);
+            --badge-open-text: var(--bs-danger-text-emphasis);
+            --badge-in-progress-bg: rgba(var(--bs-warning-rgb, var(--bs-warning-rgb-fallback)), 0.15);
+            --badge-in-progress-text: var(--bs-warning-text-emphasis);
+            --badge-resolved-bg: rgba(var(--bs-success-rgb, var(--bs-success-rgb-fallback)), 0.15);
+            --badge-resolved-text: var(--bs-success-text-emphasis);
+            --badge-closed-bg: rgba(var(--bs-secondary-rgb, var(--bs-secondary-rgb-fallback)), 0.15);
+            --badge-closed-text: var(--bs-secondary-text-emphasis);
+            --button-outline-info-hover-bg: var(--bs-info, #0dcaf0); /* Fallback color */
+            --button-outline-info-hover-text: #fff;
+            --button-success-bg: var(--bs-success, #198754); /* Fallback color */
+            --button-success-hover-bg: var(--bs-success-darker, #146c43); /* Define if not in _Layout */
+        }
+
+        .page-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+
+        .page-header .btn-success { /* "Create New Ticket" button */
+            background-color: var(--button-success-bg);
+            border-color: var(--button-success-bg);
+            color: #fff;
+            padding: 0.6rem 1.25rem;
+            font-weight: 500; /* Or 600 if Poppins */
+        }
+
+            .page-header .btn-success:hover {
+                background-color: var(--button-success-hover-bg);
+                border-color: var(--button-success-hover-bg);
+            }
+
+            .page-header .btn-success .bi {
+                vertical-align: -0.1em;
+            }
+
+        .tickets-list-card {
+            /* Base card styles (shadow, border, radius) should be inherited from global .card in _Layout.cshtml */
+        }
+
+            .tickets-list-card .card-body {
+                padding: 0;
+            }
+
+        .table.align-middle th {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #495057;
+            background-color: var(--table-header-bg);
+            border-bottom-width: 1px;
+            border-top: none;
+            padding: 1rem 1.25rem;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .table.align-middle td {
+            padding: 0.9rem 1.25rem;
+            vertical-align: middle;
+            border-top-color: var(--table-border-color);
+            font-size: 0.95rem; /* Inter font */
+            color: #343a40;
+        }
+
+        .table.table-hover tbody tr:hover {
+            background-color: var(--table-row-hover-bg) !important;
+        }
+
+        .table .badge {
+            font-weight: 500; /* Inter */
+            font-size: 0.8rem;
+            padding: 0.45em 0.8em;
+            letter-spacing: 0.02em;
+        }
+        /* Specific badge styling using CSS variables */
+        .badge.status-open {
+            background-color: var(--badge-open-bg) !important;
+            color: var(--badge-open-text) !important;
+        }
+
+        .badge.status-in-progress {
+            background-color: var(--badge-in-progress-bg) !important;
+            color: var(--badge-in-progress-text) !important;
+        }
+
+        .badge.status-resolved {
+            background-color: var(--badge-resolved-bg) !important;
+            color: var(--badge-resolved-text) !important;
+        }
+
+        .badge.status-closed {
+            background-color: var(--badge-closed-bg) !important;
+            color: var(--badge-closed-text) !important;
+        }
+
+
+        .table .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.9rem;
+            font-weight: 500; /* Inter */
+        }
+
+            .table .btn-sm .bi {
+                vertical-align: -0.1em;
+                margin-right: 0.3rem;
+            }
+
+        .table .btn-outline-info { /* View Details */
+            color: var(--bs-info, #0dcaf0); /* Fallback color */
+            border-color: var(--bs-info, #0dcaf0); /* Fallback color */
+        }
+
+            .table .btn-outline-info:hover {
+                background-color: var(--button-outline-info-hover-bg);
+                color: var(--button-outline-info-hover-text);
+                border-color: var(--button-outline-info-hover-bg);
+            }
+
+        .no-tickets-message td {
+            font-style: italic;
+            color: #6c757d;
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+        }
+
+            .no-tickets-message td .bi { /* Icon for no tickets */
+                font-size: 2.5rem;
+                display: block;
+                margin-bottom: 0.75rem;
+                opacity: 0.6;
+            }
+
+    </style>
+}
+
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
     <h1>@ViewData["Title"]</h1>
     <a asp-action="Create" class="btn btn-success rounded-pill px-4"><i class="bi bi-plus-square-dotted me-2"></i>Create New Ticket</a>
 </div>
+
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+    <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
         @TempData["SuccessMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 @if (TempData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
         @TempData["ErrorMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
-<div class="card shadow-sm rounded-3">
+<div class="card tickets-list-card">
+    @* Removed shadow-sm rounded-3 for global style inheritance *@
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover align-middle">
-                <thead class="table-light">
+                <thead>
+                    @* Removed table-light *@
                     <tr>
                         <th>Ticket ID</th>
                         <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Subject)</th>
@@ -42,7 +196,12 @@
                 <tbody>
                     @if (!Model.Any())
                     {
-                        <tr><td colspan="7" class="text-center py-4">You have not submitted any support tickets.</td></tr>
+                        <tr class="no-tickets-message">
+                            <td colspan="7" class="text-center">
+                                <i class="bi bi-ticket-detailed"></i>
+                                You have not submitted any support tickets.
+                            </td>
+                        </tr>
                     }
                     @foreach (var item in Model)
                     {
@@ -51,12 +210,19 @@
                             <td>@Html.DisplayFor(modelItem => item.Subject)</td>
                             <td>@Html.DisplayFor(modelItem => item.Priority)</td>
                             <td>
-                                <span class="badge @(item.TicketStatus == TicketStatus.OPEN ? "bg-danger-subtle text-danger-emphasis" : item.TicketStatus == TicketStatus.IN_PROGRESS ? "bg-warning-subtle text-warning-emphasis" : item.TicketStatus == TicketStatus.RESOLVED ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") rounded-pill px-2 py-1 fs-tiny">
-                                    @Html.DisplayFor(modelItem => item.TicketStatus)
+                                @{
+                                    string statusClass = "status-closed"; // Default for any other status
+                                    if (item.TicketStatus == TicketStatus.OPEN) { statusClass = "status-open"; }
+                                    else if (item.TicketStatus == TicketStatus.IN_PROGRESS) { statusClass = "status-in-progress"; }
+                                    else if (item.TicketStatus == TicketStatus.RESOLVED) { statusClass = "status-resolved"; }
+                                    // CLOSED will use status-closed
+                                }
+                                <span class="badge @statusClass rounded-pill">
+                                    @item.TicketStatus.ToString().Replace("_", " ")
                                 </span>
                             </td>
-                            <td>@item.LastUpdatedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td>@(item.AssignedAgent?.UserName ?? "Not Assigned")</td>
+                            <td>@item.LastUpdatedDate.ToLocalTime().ToString("dd MMM, yyyy HH:mm") IST</td> @* CONVERTED TO LOCAL TIME & ADDED IST SUFFIX *@
+                            <td>@(item.AssignedAgent?.FullName ?? item.AssignedAgent?.UserName ?? "Not Assigned")</td> @* Show FullName if available *@
                             <td class="text-center">
                                 <a asp-action="Details" asp-route-id="@item.TicketId" class="btn btn-sm btn-outline-info rounded-pill px-3" title="View Details"><i class="bi bi-eye-fill"></i> View</a>
                             </td>

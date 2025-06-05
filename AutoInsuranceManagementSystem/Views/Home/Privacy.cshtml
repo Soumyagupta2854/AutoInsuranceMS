@@ -2,46 +2,199 @@
     ViewData["Title"] = "Privacy Policy";
 }
 
+@section Styles {
+    <style>
+        :root {
+            /* Assuming --brand-primary, --brand-primary-darker are from _Layout.cshtml */
+            /* You can define them here if not available globally or if you want specific shades */
+            --brand-primary-privacy: var(--brand-primary, #007bff);
+            --brand-primary-darker-privacy: var(--brand-primary-darker, #0056b3);
+            --privacy-header-bg: linear-gradient(135deg, var(--brand-primary-darker-privacy), var(--brand-primary-privacy));
+            --privacy-section-title-color: #2c3e50; /* Dark blue-grey for titles */
+            --privacy-icon-color: var(--brand-primary-privacy);
+            --privacy-list-item-border: #e9ecef;
+            --privacy-text-color: #495057; /* Softer than pure black for body text */
+            --privacy-card-radius: 0.75rem; /* Match global card radius from _Layout */
+        }
+
+        .privacy-policy-card {
+            /* Inherits border-radius, shadow, and border from global .card style in _Layout.cshtml */
+            /* Ensure _Layout.cshtml .card style has:
+                   border-radius: var(--privacy-card-radius);
+                   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+                   border: 1px solid #e0e7ff; (or similar)
+                */
+        }
+
+            .privacy-policy-card .card-header {
+                background: var(--privacy-header-bg) !important; /* Override Bootstrap bg-* */
+                color: #fff !important;
+                border-bottom: none;
+                padding: 1.25rem 1.75rem; /* Generous padding */
+                /* Top border-radius will be inherited from global .card-header if defined in _Layout.cshtml
+                   or ensure it matches --privacy-card-radius */
+                border-top-left-radius: var(--privacy-card-radius) !important; /* Override if Bootstrap class was stronger */
+                border-top-right-radius: var(--privacy-card-radius) !important;
+            }
+
+                .privacy-policy-card .card-header h3 {
+                    font-family: 'Poppins', sans-serif; /* From _Layout */
+                    font-weight: 600;
+                    font-size: 1.6rem; /* Slightly adjusted */
+                    margin-bottom: 0; /* Remove default h3 margin */
+                }
+
+                .privacy-policy-card .card-header .bi {
+                    font-size: 1.2em; /* Relative to h3 */
+                    vertical-align: -0.12em; /* Fine-tune alignment */
+                    margin-right: 0.6rem !important; /* Override Bootstrap me-2 if needed */
+                }
+
+            .privacy-policy-card .card-body {
+                padding: 2rem 2.5rem; /* More generous padding */
+                color: var(--privacy-text-color);
+                line-height: 1.75; /* Improved readability for dense text */
+            }
+
+                .privacy-policy-card .card-body p.lead {
+                    font-size: 1.15rem; /* Slightly larger lead */
+                    font-weight: 400; /* Inter */
+                    color: #343a40; /* Darker lead text */
+                    margin-bottom: 2rem;
+                    padding-bottom: 1.5rem;
+                    border-bottom: 1px solid var(--privacy-list-item-border);
+                }
+
+            .privacy-policy-card .section-heading { /* Applied to h5 tags */
+                font-family: 'Poppins', sans-serif; /* From _Layout */
+                font-weight: 600;
+                color: var(--privacy-section-title-color);
+                margin-top: 2.5rem;
+                margin-bottom: 1.25rem; /* Increased space after heading */
+                font-size: 1.25rem; /* Clearer section title */
+                display: flex; /* For icon alignment */
+                align-items: center;
+            }
+
+                .privacy-policy-card .section-heading .bi {
+                    color: var(--privacy-icon-color);
+                    margin-right: 0.75rem; /* More space for icon */
+                    font-size: 1.2em; /* Relative to h5 */
+                    /* vertical-align: middle; or rely on flex align-items */
+                }
+
+            .privacy-policy-card .card-body > .section-heading:first-of-type { /* First section heading after lead */
+                margin-top: 0; /* No extra margin if it's the first after the lead's border */
+            }
+
+
+            .privacy-policy-card .list-group-item {
+                padding: 0.8rem 0.1rem; /* More vertical padding, minimal horizontal (flush effect) */
+                border-color: var(--privacy-list-item-border);
+                background-color: transparent;
+                font-size: 0.95rem; /* Inter */
+                color: var(--privacy-text-color);
+                position: relative; /* For custom bullet pseudo-element */
+                padding-left: 1.5rem; /* Space for custom bullet */
+            }
+
+                .privacy-policy-card .list-group-item::before {
+                    content: '\2022'; /* Bullet character */
+                    color: var(--privacy-icon-color); /* Brand color bullet */
+                    font-weight: bold;
+                    display: inline-block;
+                    position: absolute;
+                    left: 0.25rem;
+                    top: 0.8rem; /* Adjust for vertical alignment */
+                    line-height: 1; /* Ensure bullet aligns with first line */
+                }
+
+            .privacy-policy-card .list-group-flush {
+                margin-bottom: 2rem !important; /* Increased space after lists */
+            }
+
+
+            .privacy-policy-card .content-paragraph { /* For p tags under sections 3-6 */
+                margin-bottom: 1.25rem; /* Consistent paragraph spacing */
+                font-size: 0.95rem; /* Inter */
+                color: var(--privacy-text-color);
+            }
+            /* Add more space if a paragraph follows another directly under an h5 */
+            .privacy-policy-card .section-heading + .content-paragraph {
+                margin-top: -0.25rem; /* Adjust if needed after h5 margin-bottom */
+            }
+
+
+            .privacy-policy-card .contact-info-box { /* Replaces alert-secondary */
+                background-color: #f0f5fa; /* Lighter, slightly blue-tinted background */
+                border-left: 5px solid var(--privacy-icon-color);
+                padding: 1.5rem;
+                margin-top: 3rem;
+                border-radius: 0.375rem; /* Inherit from _Layout if .alert is styled there */
+                font-size: 0.95rem;
+            }
+
+                .privacy-policy-card .contact-info-box strong {
+                    font-family: 'Poppins', sans-serif;
+                    color: var(--privacy-section-title-color);
+                }
+
+                .privacy-policy-card .contact-info-box a {
+                    color: var(--privacy-icon-color);
+                    font-weight: 600; /* Poppins */
+                    text-decoration: none;
+                }
+
+                    .privacy-policy-card .contact-info-box a:hover {
+                        text-decoration: underline;
+                    }
+    </style>
+}
+
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-info text-white rounded-top-3">
-                    <h3 class="mb-0"><i class="bi bi-shield-lock-fill me-2"></i>@ViewData["Title"]</h3>
+            <div class="card privacy-policy-card">
+                @* Removed shadow-sm, border-0 to inherit from _Layout global card styles *@
+                <div class="card-header text-white">
+                    @* Removed bg-info, rounded-top-3 *@
+                    <h3 class="mb-0"><i class="bi bi-shield-lock-fill"></i>@ViewData["Title"]</h3>
                 </div>
                 <div class="card-body p-4">
                     <p class="lead">
                         Your privacy is important to us. This Privacy Policy explains how AutoInsurance Pro collects, uses, and protects your personal information.
                     </p>
 
-                    <h5 class="mt-4"><i class="bi bi-person-lines-fill me-2 text-primary"></i>1. Information We Collect</h5>
-                    <ul class="list-group list-group-flush mb-3">
+                    <h5 class="section-heading"><i class="bi bi-person-lines-fill"></i>1. Information We Collect</h5>
+                    <ul class="list-group list-group-flush">
+                        @* mb-3 removed, new CSS handles spacing *@
                         <li class="list-group-item">Personal details such as name, address, contact information, and vehicle details.</li>
                         <li class="list-group-item">Policy and claim information including claim history, uploaded documents, and payment records.</li>
                         <li class="list-group-item">Login and usage data for account security and system improvement.</li>
                     </ul>
 
-                    <h5><i class="bi bi-gear-fill me-2 text-primary"></i>2. How We Use Your Information</h5>
-                    <ul class="list-group list-group-flush mb-3">
+                    <h5 class="section-heading"><i class="bi bi-gear-fill"></i>2. How We Use Your Information</h5>
+                    <ul class="list-group list-group-flush">
                         <li class="list-group-item">To manage your insurance policies and claims.</li>
                         <li class="list-group-item">To communicate important updates and notifications.</li>
                         <li class="list-group-item">To comply with legal and regulatory requirements.</li>
                     </ul>
 
-                    <h5><i class="bi bi-shield-check me-2 text-primary"></i>3. Data Protection</h5>
-                    <p>We implement industry-standard security measures to protect your data from unauthorized access, alteration, or disclosure.</p>
+                    <h5 class="section-heading"><i class="bi bi-shield-check"></i>3. Data Protection</h5>
+                    <p class="content-paragraph">We implement industry-standard security measures to protect your data from unauthorized access, alteration, or disclosure.</p>
 
-                    <h5><i class="bi bi-people-fill me-2 text-primary"></i>4. Sharing of Information</h5>
-                    <p>We do not sell your personal information. We may share data with trusted partners for claim processing, fraud prevention, or legal compliance.</p>
+                    <h5 class="section-heading"><i class="bi bi-people-fill"></i>4. Sharing of Information</h5>
+                    <p class="content-paragraph">We do not sell your personal information. We may share data with trusted partners for claim processing, fraud prevention, or legal compliance.</p>
 
-                    <h5><i class="bi bi-person-check-fill me-2 text-primary"></i>5. Your Rights</h5>
-                    <p>You have the right to access, update, or delete your personal information. Contact our support team for assistance.</p>
+                    <h5 class="section-heading"><i class="bi bi-person-check-fill"></i>5. Your Rights</h5>
+                    <p class="content-paragraph">You have the right to access, update, or delete your personal information. Contact our support team for assistance.</p>
 
-                    <h5><i class="bi bi-arrow-repeat me-2 text-primary"></i>6. Changes to This Policy</h5>
-                    <p>We may update this policy from time to time. Please review it periodically for any changes.</p>
+                    <h5 class="section-heading"><i class="bi bi-arrow-repeat"></i>6. Changes to This Policy</h5>
+                    <p class="content-paragraph">We may update this policy from time to time. Please review it periodically for any changes.</p>
 
-                    <div class="alert alert-secondary mt-4" role="alert">
-                        <strong>Questions?</strong> Contact us at <a href="mailto:support@autoinsure.com">support@autoinsure.com</a>.
+                    <div class="contact-info-box">
+                        @* Replaced alert alert-secondary mt-4 *@
+                        <strong>Questions?</strong> Contact us at <a href="mailto:support@autoinsure.com">support@autoinsure.pro</a>. @* Updated email domain to .pro *@
                     </div>
                 </div>
             </div>

@@ -3,16 +3,150 @@
     ViewData["Title"] = "Edit User Role";
 }
 
+@section Styles {
+    <style>
+        :root {
+            /* Assuming --brand-primary and --brand-primary-darker are defined in _Layout.cshtml */
+            --edit-role-card-radius: 0.75rem; /* Match global card style from _Layout */
+            --edit-role-header-bg: linear-gradient(135deg, var(--brand-primary-darker, #1e5abc), var(--brand-primary, #2a6fdb));
+            --edit-role-section-title-color: #2c3e50;
+            --edit-role-icon-color: var(--brand-primary, #2a6fdb);
+            --form-field-border: #ced4da;
+            --form-focus-border: var(--brand-primary, #2a6fdb);
+            /* Assuming --bs-primary-rgb is available if using Bootstrap 5.2+ for box-shadow */
+            --form-focus-shadow: rgba(var(--bs-primary-rgb, 42, 111, 219), 0.25);
+        }
+
+        .edit-role-card {
+            /* Base card styles (shadow, border) should be inherited from global .card in _Layout.cshtml */
+            border-radius: var(--edit-role-card-radius);
+            background-color: #fff; /* Ensure white background if not default */
+        }
+
+            .edit-role-card .card-header {
+                background: var(--edit-role-header-bg) !important;
+                color: #fff !important;
+                border-bottom: none;
+                padding: 1.25rem 1.75rem;
+                border-top-left-radius: var(--edit-role-card-radius) !important;
+                border-top-right-radius: var(--edit-role-card-radius) !important;
+            }
+
+                .edit-role-card .card-header h4 {
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.5rem; /* Adjusted for card header context */
+                    margin-bottom: 0;
+                }
+
+                .edit-role-card .card-header .bi {
+                    font-size: 1.2em; /* Relative to h4 */
+                    vertical-align: -0.1em; /* Fine-tune for Poppins */
+                    margin-right: 0.6rem;
+                }
+
+            .edit-role-card .card-body {
+                padding: 2rem 2.25rem; /* Generous padding */
+            }
+
+            .edit-role-card .card-title { /* User: @Model.UserName
+                */ font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                color: var(--edit-role-section-title-color);
+                font-size: 1.35rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .edit-role-card .user-details p {
+                font-size: 0.95rem; /* Inter */
+                color: #495057;
+                margin-bottom: 0.3rem; /* Tighter spacing for details block */
+                line-height: 1.6;
+            }
+
+                .edit-role-card .user-details p.current-role-info {
+                    margin-top: 0.75rem; /* More space before current role */
+                    margin-bottom: 1.25rem; /* Space before HR */
+                    font-size: 1rem;
+                }
+
+
+            .edit-role-card hr {
+                margin-top: 1rem;
+                margin-bottom: 1.75rem;
+                border-color: #e9ecef; /* Lighter HR */
+            }
+
+        .form-label.fw-semibold { /* Already styled in _Layout, but can be overridden */
+            font-weight: 500 !important; /* Inter */
+            color: #343a40; /* Slightly darker label */
+            margin-bottom: 0.4rem;
+        }
+
+        .form-select.rounded-pill {
+            /* Assuming global .form-select styling from _Layout, this just ensures specificity */
+            border-radius: 50px !important;
+            border: 1px solid var(--form-field-border);
+            padding: 0.6rem 1rem; /* Consistent padding */
+        }
+
+            .form-select.rounded-pill:focus {
+                border-color: var(--form-focus-border);
+                box-shadow: 0 0 0 0.2rem var(--form-focus-shadow);
+            }
+
+        .alert.fs-small { /* Customizing the warning alert */
+            font-size: 0.875rem !important; /* Inter */
+            padding: 0.85rem 1.25rem;
+            /* Using Bootstrap alert colors by default, but can customize further: */
+            /* background-color: #fff3cd; */
+            /* border-color: #ffeeba; */
+            /* color: #664d03; */
+        }
+
+            .alert.fs-small .bi {
+                vertical-align: -0.125em; /* Align icon better */
+            }
+
+        .action-buttons {
+            margin-top: 2rem; /* More space above buttons */
+        }
+
+            .action-buttons .btn {
+                /* Assuming global .btn styling from _Layout for font, weight, base padding */
+                min-width: 130px; /* Ensure buttons have a decent min width */
+                padding-top: 0.65rem; /* Slightly taller buttons */
+                padding-bottom: 0.65rem;
+            }
+
+                .action-buttons .btn .bi {
+                    vertical-align: -0.1em; /* Align icons in buttons */
+                }
+        /* Specific button styling if needed, otherwise inherit from _Layout */
+        /* .btn-success {} */
+        /* .btn-outline-secondary {} */
+
+    </style>
+}
+
 <div class="row justify-content-center">
-    <div class="col-md-7 col-lg-6">
-        <div class="card shadow-sm rounded-3">
-            <div class="card-header bg-primary text-white rounded-top-3">
-                <h4 class="mb-0"><i class="bi bi-person-gear me-2"></i>@ViewData["Title"]</h4>
+    <div class="col-md-8 col-lg-7">
+        @* Increased col width slightly for better spacing *@
+        <div class="card edit-role-card">
+            @* Removed shadow-sm and rounded-3 to rely on CSS or _Layout styles *@
+            <div class="card-header">
+                @* Removed bg-primary, text-white, rounded-top-3 *@
+                <h4 class="mb-0"><i class="bi bi-person-gear"></i>@ViewData["Title"]</h4>
             </div>
             <div class="card-body p-4">
-                <h5 class="card-title">User: @Model.UserName</h5>
-                <p class="text-muted">Email: @Model.Email <br /> Full Name: @(Model.FullName ?? "N/A")</p>
-                <p>Current Custom Role: <span class="badge bg-secondary rounded-pill">@Model.CurrentCustomRoleName</span></p>
+                <div class="user-details mb-3">
+                    @* Wrapper for user info *@
+                    <h5 class="card-title">User: @Model.UserName</h5>
+                    <p class="text-muted">Email: @Model.Email</p>
+                    <p class="text-muted">Full Name: @(Model.FullName ?? "N/A")</p>
+                    <p class="current-role-info">Current Custom Role: <span class="badge bg-info text-dark rounded-pill">@Model.CurrentCustomRoleName</span></p>
+                    @* Changed badge color for better contrast and distinction from other UI elements *@
+                </div>
                 <hr />
                 <form asp-action="EditUserRole" method="post">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
@@ -22,10 +156,12 @@
                     <input type="hidden" asp-for="FullName" />
                     <input type="hidden" asp-for="CurrentCustomRoleName" />
 
-
                     <div class="mb-3">
-                        <label asp-for="NewCustomRole" class="form-label fw-semibold"></label>
-                        <select asp-for="NewCustomRole" asp-items="Model.AvailableRoles" class="form-select rounded-pill"></select>
+                        <label asp-for="NewCustomRole" class="form-label fw-semibold">Assign New Role:</label>
+                        <select asp-for="NewCustomRole" asp-items="Model.AvailableRoles" class="form-select rounded-pill">
+                            @* Optional: Add a default "Select a Role" option if not already present in Model.AvailableRoles *@
+                            @* <option value="">-- Select New Role --</option> *@
+                        </select>
                         <span asp-validation-for="NewCustomRole" class="text-danger small"></span>
                     </div>
 
@@ -33,7 +169,7 @@
                         <i class="bi bi-exclamation-triangle-fill me-1"></i> Changing the role will also update the user's system permissions accordingly.
                     </div>
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end action-buttons">
                         <button type="submit" class="btn btn-success rounded-pill px-4"><i class="bi bi-save-fill me-2"></i>Save Role Change</button>
                         <a asp-action="UserManagement" class="btn btn-outline-secondary rounded-pill px-4"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
                     </div>
@@ -42,9 +178,9 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
 }

@@ -5,60 +5,233 @@
     var recentClaimsAssigned = ViewBag.RecentClaimsAssigned as List<Claim>;
     var agentName = ViewBag.AgentName as string;
 }
+
+@section Styles {
+    <style>
+        :root {
+            --agent-dashboard-card-radius: 0.75rem; /* Match global _Layout */
+            --agent-card-hover-shadow: 0 12px 20px rgba(0,0,0,0.1); /* User's preferred hover-lift */
+
+            --tickets-header-bg: linear-gradient(135deg, #005f99, #007bff); /* Primary Blue */
+            --tickets-accent: #007bff;
+            --assigned-claims-header-bg: linear-gradient(135deg, #c85100, #ff8c00); /* Warning/Amber */
+            --assigned-claims-accent: #ff8c00;
+            --card-header-text-color: #fff;
+            --card-body-link-color: #0056b3; /* Darker blue for links in card body */
+            --card-body-link-hover-color: #003d80;
+        }
+
+        .agent-dashboard-header h1 {
+            font-weight: 700 !important; /* Poppins from _Layout */
+            color: #2c3e50;
+            /* Optional: border-bottom: 1px solid #dee2e6; padding-bottom: 1rem; */
+        }
+
+        .agent-task-card { /* Common class for these dashboard cards */
+            border-radius: var(--agent-dashboard-card-radius);
+            background-color: #fff;
+            border: 1px solid #e9ecef; /* Consistent with other styled cards */
+            display: flex;
+            flex-direction: column; /* Ensure footer is at bottom */
+        }
+
+            .agent-task-card .card-header {
+                color: var(--card-header-text-color);
+                padding: 1.15rem 1.35rem;
+                border-bottom: none;
+                border-top-left-radius: var(--agent-dashboard-card-radius);
+                border-top-right-radius: var(--agent-dashboard-card-radius);
+            }
+
+                .agent-task-card .card-header h5 {
+                    font-weight: 600; /* Poppins */
+                    margin-bottom: 0;
+                }
+
+                .agent-task-card .card-header .bi {
+                    font-size: 1.3em;
+                    margin-right: 0.6rem;
+                    vertical-align: -0.18em;
+                }
+
+        /* Specific card header backgrounds */
+        .tickets-card .card-header {
+            background: var(--tickets-header-bg);
+        }
+
+        .assigned-claims-card .card-header {
+            background: var(--assigned-claims-header-bg);
+        }
+
+        .agent-task-card .card-body {
+            padding: 0; /* Remove card-body padding if list-group-flush is the direct child */
+            flex-grow: 1; /* Allow body to take up space */
+        }
+
+        .agent-task-card .list-group-item {
+            padding: 0.9rem 1.25rem; /* Add padding to list items directly */
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+            background-color: transparent;
+        }
+
+            .agent-task-card .list-group-item:last-child {
+                border-bottom: none;
+            }
+
+            .agent-task-card .list-group-item:hover {
+                background-color: #f8f9fa;
+            }
+
+            .agent-task-card .list-group-item a {
+                font-weight: 500; /* Inter font for readability */
+                color: var(--card-body-link-color);
+                text-decoration: none;
+                transition: color 0.2s ease;
+                display: inline-block; /* Was block, inline-block is better if not full width click target */
+                margin-bottom: 0.15rem; /* Space before small text */
+            }
+
+                .agent-task-card .list-group-item a:hover {
+                    color: var(--card-body-link-hover-color);
+                    text-decoration: underline;
+                }
+
+            .agent-task-card .list-group-item .text-muted {
+                font-size: 0.85em;
+            }
+
+        /* Styling for "no items" message */
+        .agent-task-card .no-items-message {
+            padding: 2rem 1.25rem; /* Padding for the message itself */
+            text-align: center;
+            color: #6c757d;
+            min-height: 150px; /* Give some space for the message */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .agent-task-card .no-items-message .bi {
+                font-size: 2.8rem; /* Larger icon */
+                display: block;
+                margin-bottom: 0.75rem;
+                opacity: 0.7;
+            }
+
+        .agent-task-card .card-footer {
+            background-color: #f9fafb;
+            border-top: 1px solid #e9ecef;
+            padding: 1rem 1.25rem;
+            border-bottom-left-radius: var(--agent-dashboard-card-radius);
+            border-bottom-right-radius: var(--agent-dashboard-card-radius);
+            margin-top: auto; /* Push footer to bottom if card-body content is short */
+        }
+
+            .agent-task-card .card-footer .btn {
+                font-size: 0.9rem;
+                padding: 0.5rem 1.2rem;
+            }
+
+        /* Card specific button styling in footer */
+        .tickets-card .card-footer .btn-outline-primary {
+            border-color: var(--tickets-accent);
+            color: var(--tickets-accent);
+        }
+
+            .tickets-card .card-footer .btn-outline-primary:hover {
+                background-color: var(--tickets-accent);
+                color: #fff;
+            }
+
+        .assigned-claims-card .card-footer .btn-outline-warning {
+            border-color: var(--assigned-claims-accent);
+            color: var(--assigned-claims-accent);
+        }
+
+            .assigned-claims-card .card-footer .btn-outline-warning:hover {
+                background-color: var(--assigned-claims-accent);
+                color: #fff;
+            }
+
+        /* Hover lift effect for cards */
+        .hover-lift {
+            transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+        }
+
+            .hover-lift:hover {
+                transform: translateY(-5px); /* User's preferred lift */
+                box-shadow: var(--agent-card-hover-shadow) !important; /* User's preferred shadow */
+            }
+
+    </style>
+}
+
 <div class="container mt-4">
-    <h1 class="display-6 fw-bold mb-4">Welcome, Agent @agentName!</h1>
+    <div class="agent-dashboard-header mb-4">
+        <h1 class="display-6 fw-bold">Welcome, Agent @agentName!</h1>
+    </div>
 
     <div class="row g-4">
         <div class="col-lg-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-primary text-white"><h5 class="mb-0"><i class="bi bi-headset me-2"></i>Your Active Support Tickets</h5></div>
+            <div class="card h-100 agent-task-card tickets-card hover-lift">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-headset"></i>Your Active Support Tickets</h5>
+                </div>
                 <div class="card-body">
                     @if (assignedTickets != null && assignedTickets.Any())
                     {
                         <ul class="list-group list-group-flush">
-                            @foreach (var ticket in assignedTickets)
+                            @foreach (var ticket in assignedTickets.Take(5)) @* Show up to 5 recent tickets *@
                             {
                                 <li class="list-group-item">
-                                    <a asp-controller="SupportTickets" asp-action="Update" asp-route-id="@ticket.TicketId">TIC-@ticket.TicketId.ToString("D5"): @ticket.Subject</a>
-                                    <small class="d-block text-muted">By: @ticket.User?.UserName | Priority: @ticket.Priority</small>
+                                    <a asp-controller="SupportTickets" asp-action="Update" asp-route-id="@ticket.TicketId" class="fw-semibold">TIC-@ticket.TicketId.ToString("D5"): @ticket.Subject</a>
+                                    <small class="d-block text-muted">By: @(ticket.User?.UserName ?? "N/A") | Priority: @ticket.Priority</small>
                                 </li>
                             }
                         </ul>
                     }
                     else
                     {
-
-                        <p class="text-muted">No active tickets assigned to you.</p>
+                        <div class="no-items-message">
+                            <i class="bi bi-ticket-detailed"></i>
+                            <p class="mb-0">No active tickets assigned to you.</p>
+                        </div>
                     }
                 </div>
-                <div class="card-footer text-center bg-light">
+                <div class="card-footer text-center">
                     <a asp-controller="SupportTickets" asp-action="AgentQueue" class="btn btn-sm btn-outline-primary rounded-pill">View Full Queue</a>
                 </div>
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-warning text-dark"><h5 class="mb-0"><i class="bi bi-file-earmark-medical-fill me-2"></i>Claims Awaiting Your Attention</h5></div>
+            <div class="card h-100 agent-task-card assigned-claims-card hover-lift">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-medical-fill"></i>Claims Awaiting Your Attention</h5>
+                </div>
                 <div class="card-body">
                     @if (recentClaimsAssigned != null && recentClaimsAssigned.Any())
                     {
                         <ul class="list-group list-group-flush">
-                            @foreach (var claim in recentClaimsAssigned)
+                            @foreach (var claim in recentClaimsAssigned.Take(5)) @* Show up to 5 recent claims *@
                             {
                                 <li class="list-group-item">
-                                    <a asp-controller="Claims" asp-action="Edit" asp-route-id="@claim.ClaimId">CLM-@claim.ClaimId.ToString("D5") for Policy @claim.Policy?.PolicyNumber</a>
-                                    <small class="d-block text-muted">Status: @claim.ClaimStatus | Submitted: @claim.DateSubmitted.ToShortDateString()</small>
+                                    <a asp-controller="Claims" asp-action="Edit" asp-route-id="@claim.ClaimId" class="fw-semibold">CLM-@claim.ClaimId.ToString("D5") for Policy @claim.Policy?.PolicyNumber</a>
+                                    <small class="d-block text-muted">Status: @claim.ClaimStatus.ToString().Replace("_", " ") | Submitted: @claim.DateSubmitted.ToString("MMM dd, yyyy")</small>
                                 </li>
                             }
                         </ul>
                     }
                     else
                     {
-
-                        <p class="text-muted">No claims currently requiring your attention.</p>
+                        <div class="no-items-message">
+                            <i class="bi bi-journal-x"></i>
+                            <p class="mb-0">No claims currently requiring your attention.</p>
+                        </div>
                     }
                 </div>
-                <div class="card-footer text-center bg-light">
+                <div class="card-footer text-center">
                     <a asp-controller="Claims" asp-action="Index" class="btn btn-sm btn-outline-warning rounded-pill">View All Claims</a>
                 </div>
             </div>

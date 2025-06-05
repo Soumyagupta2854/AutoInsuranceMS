@@ -2,64 +2,299 @@
     ViewData["Title"] = "Administrator Dashboard";
     var adminName = ViewBag.AdminName as string;
 }
+
+@section Styles {
+    <style>
+        :root {
+            --admin-card-radius: 0.75rem; /* From _Layout */
+            /* Using box-shadow from _Layout's .card style as base */
+            --admin-card-hover-shadow: 0 12px 20px rgba(0,0,0,0.1); /* User's preferred hover-lift shadow */
+            /* Accent colors for stat cards - using Bootstrap variable names for clarity */
+            --admin-stat-user-accent: var(--bs-primary);
+            --admin-stat-user-accent-darker: var(--bs-primary-darker); /* Assuming you have this, or define manually e.g. #0056b3 */
+
+            --admin-stat-policy-accent: var(--bs-success);
+            --admin-stat-policy-accent-darker: var(--bs-success-darker); /* e.g. #146c43 */
+
+            --admin-stat-claim-accent: var(--bs-warning);
+            --admin-stat-claim-accent-darker: var(--bs-warning-darker); /* e.g. #d9a000 */
+
+            --admin-stat-ticket-accent: var(--bs-info);
+            --admin-stat-ticket-accent-darker: var(--bs-info-darker); /* e.g. #0a98b7 */
+            /* If darker Bootstrap vars aren't available, define them: */
+            --bs-primary-darker-custom: #0056b3; /* Example */
+            --bs-success-darker-custom: #146c43; /* Example */
+            --bs-warning-darker-custom: #cc9a00; /* Example for warning, ensure text contrast */
+            --bs-info-darker-custom: #087990; /* Example */
+        }
+
+        .admin-dashboard-header {
+            /* Optional: Add border or specific styling if needed */
+            /* margin-bottom: 2rem !important; */ /* Already mb-4 on h1 */
+        }
+
+            .admin-dashboard-header h1 {
+                font-weight: 700 !important; /* Poppins from _Layout */
+                color: #2c3e50; /* Dark, serious blue/grey */
+            }
+
+        /* --- Stat Cards (Top Row) --- */
+        .stat-card {
+            background-color: #fff;
+            border-radius: var(--admin-card-radius);
+            /* box-shadow: var(--admin-card-shadow); Inherits from .card in _Layout */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-left-width: 5px; /* Common border for all, color will be specific */
+            border-left-style: solid;
+            overflow: hidden; /* Ensure border radius clips content */
+        }
+
+            .stat-card .card-body {
+                padding: 1.25rem 1.5rem; /* Adjusted padding */
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between; /* Pushes button to bottom */
+                flex-grow: 1;
+            }
+
+            .stat-card .stat-icon {
+                font-size: 2.8rem; /* Slightly smaller than display-4 for balance */
+                margin-bottom: 0.5rem; /* Space between icon and title */
+            }
+
+            .stat-card .card-title { /* The number */
+                font-size: 2.25rem;
+                font-weight: 700; /* Poppins */
+                color: #2c3e50;
+                margin-top: 0;
+                margin-bottom: 0.15rem;
+            }
+
+            .stat-card .card-text { /* Description "Total Users" */
+                font-size: 0.9rem;
+                color: #6c757d;
+                margin-bottom: 1rem;
+            }
+
+            .stat-card .btn {
+                padding: 0.45rem 1.1rem;
+                font-size: 0.8rem;
+                font-weight: 500; /* Inter or Poppins if overridden in _Layout for .btn */
+                border-radius: 50px; /* Keep rounded-pill */
+                color: #fff; /* Default text color for solid buttons */
+            }
+
+                .stat-card .btn:hover { /* Override global button hover if needed */
+                    transform: translateY(-1px); /* More subtle lift for small buttons */
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                }
+
+
+        /* Specific Accent Colors for Stat Cards */
+        .stat-card-users {
+            border-left-color: var(--admin-stat-user-accent);
+        }
+
+            .stat-card-users .stat-icon {
+                color: var(--admin-stat-user-accent);
+            }
+
+            .stat-card-users .btn {
+                background-color: var(--admin-stat-user-accent);
+                border-color: var(--admin-stat-user-accent);
+            }
+
+                .stat-card-users .btn:hover {
+                    background-color: var(--bs-primary-darker-custom);
+                    border-color: var(--bs-primary-darker-custom);
+                }
+
+        .stat-card-policies {
+            border-left-color: var(--admin-stat-policy-accent);
+        }
+
+            .stat-card-policies .stat-icon {
+                color: var(--admin-stat-policy-accent);
+            }
+
+            .stat-card-policies .btn {
+                background-color: var(--admin-stat-policy-accent);
+                border-color: var(--admin-stat-policy-accent);
+            }
+
+                .stat-card-policies .btn:hover {
+                    background-color: var(--bs-success-darker-custom);
+                    border-color: var(--bs-success-darker-custom);
+                }
+
+        .stat-card-claims {
+            border-left-color: var(--admin-stat-claim-accent);
+        }
+
+            .stat-card-claims .stat-icon {
+                color: var(--admin-stat-claim-accent);
+            }
+
+            .stat-card-claims .btn { /* Warning buttons often need dark text for accessibility */
+                background-color: var(--admin-stat-claim-accent);
+                border-color: var(--admin-stat-claim-accent);
+                color: #212529; /* Dark text for warning */
+            }
+
+                .stat-card-claims .btn:hover {
+                    background-color: var(--bs-warning-darker-custom);
+                    border-color: var(--bs-warning-darker-custom);
+                    color: #212529;
+                }
+
+        .stat-card-tickets {
+            border-left-color: var(--admin-stat-ticket-accent);
+        }
+
+            .stat-card-tickets .stat-icon {
+                color: var(--admin-stat-ticket-accent);
+            }
+
+            .stat-card-tickets .btn {
+                background-color: var(--admin-stat-ticket-accent);
+                border-color: var(--admin-stat-ticket-accent);
+                color: #fff; /* Default text color, adjust if needed for your info shade */
+            }
+
+                .stat-card-tickets .btn:hover {
+                    background-color: var(--bs-info-darker-custom);
+                    border-color: var(--bs-info-darker-custom);
+                }
+
+
+        /* --- Action Cards (Bottom Row) --- */
+        .action-card {
+            background-color: #fff; /* Ensure white background if not default */
+            /* Inherits .card styling from _Layout.cshtml (border, radius, base shadow) */
+        }
+
+            .action-card .card-header {
+                /* Uses global .card-header from _Layout (light grey bg) which is fine */
+                padding: 1rem 1.25rem; /* Consistent padding */
+            }
+
+                .action-card .card-header h5 {
+                    margin-bottom: 0; /* From Bootstrap */
+                    font-weight: 600; /* From _Layout's .card-header */
+                }
+
+                .action-card .card-header .bi {
+                    margin-right: 0.6rem;
+                    color: var(--brand-primary); /* Use main brand color for icons here */
+                    font-size: 1.1em; /* Adjust size as needed */
+                    vertical-align: -0.1em;
+                }
+
+            .action-card .card-body {
+                padding: 1.5rem;
+                text-align: center;
+            }
+
+                .action-card .card-body p {
+                    color: #495057;
+                    margin-bottom: 1.5rem;
+                    font-size: 0.95rem;
+                }
+
+            .action-card .btn-primary {
+                /* Uses global btn-primary, which is good */
+                padding: 0.6rem 1.5rem;
+                font-weight: 500; /* Or 600 if buttons are Poppins and need to match */
+            }
+
+        /* Hover lift effect for all cards on this page */
+        .hover-lift { /* Applied to each card div in HTML */
+            transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+        }
+
+            .hover-lift:hover {
+                transform: translateY(-5px); /* User's preferred lift */
+                box-shadow: var(--admin-card-hover-shadow) !important; /* User's preferred shadow */
+            }
+
+    </style>
+}
+
 <div class="container mt-4">
-    <h1 class="display-6 fw-bold mb-4">Administrator Dashboard - Welcome, @adminName!</h1>
+    <div class="admin-dashboard-header mb-4">
+        <h1 class="display-6 fw-bold">Administrator Dashboard - Welcome, @adminName!</h1>
+    </div>
+
     <div class="row g-4">
         <div class="col-md-3">
-            <div class="card text-center text-bg-primary shadow-sm h-100">
+            <div class="card stat-card stat-card-users hover-lift h-100">
                 <div class="card-body">
-                    <i class="bi bi-people-fill display-4"></i>
-                    <h3 class="card-title mt-2">@ViewBag.TotalUsers</h3>
-                    <p class="card-text">Total Users</p>
-                    <a asp-controller="Admin" asp-action="UserManagement" class="btn btn-outline-light rounded-pill btn-sm">Manage Users</a>
+                    <div>
+                        @* Wrapper for top content to push button down *@
+                        <i class="bi bi-people-fill stat-icon"></i>
+                        <h3 class="card-title mt-2">@ViewBag.TotalUsers</h3>
+                        <p class="card-text">Total Users</p>
+                    </div>
+                    <a asp-controller="Admin" asp-action="UserManagement" class="btn rounded-pill btn-sm">Manage Users</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center text-bg-success shadow-sm h-100">
+            <div class="card stat-card stat-card-policies hover-lift h-100">
                 <div class="card-body">
-                    <i class="bi bi-journal-check display-4"></i>
-                    <h3 class="card-title mt-2">@ViewBag.TotalPolicies</h3>
-                    <p class="card-text">Total Policies</p>
-                    <a asp-controller="Policies" asp-action="Index" class="btn btn-outline-light rounded-pill btn-sm">View Policies</a>
+                    <div>
+                        <i class="bi bi-journal-check stat-icon"></i>
+                        <h3 class="card-title mt-2">@ViewBag.TotalPolicies</h3>
+                        <p class="card-text">Total Policies</p>
+                    </div>
+                    <a asp-controller="Policies" asp-action="Index" class="btn rounded-pill btn-sm">View Policies</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center text-bg-warning shadow-sm h-100">
+            <div class="card stat-card stat-card-claims hover-lift h-100">
                 <div class="card-body">
-                    <i class="bi bi-file-earmark-medical-fill display-4"></i>
-                    <h3 class="card-title mt-2">@ViewBag.TotalClaims</h3>
-                    <p class="card-text">Total Claims</p>
-                    <a asp-controller="Claims" asp-action="Index" class="btn btn-outline-dark rounded-pill btn-sm">View Claims</a>
+                    <div>
+                        <i class="bi bi-file-earmark-medical-fill stat-icon"></i>
+                        <h3 class="card-title mt-2">@ViewBag.TotalClaims</h3>
+                        <p class="card-text">Total Claims</p>
+                    </div>
+                    <a asp-controller="Claims" asp-action="Index" class="btn rounded-pill btn-sm">View Claims</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center text-bg-info shadow-sm h-100">
+            <div class="card stat-card stat-card-tickets hover-lift h-100">
                 <div class="card-body">
-                    <i class="bi bi-headset display-4"></i>
-                    <h3 class="card-title mt-2">@ViewBag.OpenTickets</h3>
-                    <p class="card-text">Open Support Tickets</p>
-                    <a asp-controller="SupportTickets" asp-action="AdminIndex" class="btn btn-outline-light rounded-pill btn-sm">View Tickets</a>
+                    <div>
+                        <i class="bi bi-headset stat-icon"></i>
+                        <h3 class="card-title mt-2">@ViewBag.OpenTickets</h3>
+                        <p class="card-text">Open Support Tickets</p>
+                    </div>
+                    <a asp-controller="SupportTickets" asp-action="AdminIndex" class="btn rounded-pill btn-sm">View Tickets</a>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="row mt-4 g-4">
         <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header"><h5 class="mb-0"><i class="bi bi-tags-fill me-2"></i>Manage Policy Offerings</h5></div>
-                <div class="card-body text-center">
+            <div class="card action-card hover-lift">
+                <div class="card-header"><h5 class="mb-0"><i class="bi bi-tags-fill"></i>Manage Policy Offerings</h5></div>
+                <div class="card-body">
                     <p>Create, update, and manage the types of insurance policies offered to customers.</p>
                     <a asp-controller="PolicyOfferings" asp-action="Index" class="btn btn-primary rounded-pill">Go to Offerings</a>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header"><h5 class="mb-0"><i class="bi bi-credit-card-2-front-fill me-2"></i>View All Payments</h5></div>
-                <div class="card-body text-center">
+            <div class="card action-card hover-lift">
+                <div class="card-header"><h5 class="mb-0"><i class="bi bi-credit-card-2-front-fill"></i>View All Payments</h5></div>
+                <div class="card-body">
                     <p>Oversee and manage all payment transactions within the system.</p>
                     <a asp-controller="Payments" asp-action="Index" class="btn btn-primary rounded-pill">Go to Payments</a>
                 </div>

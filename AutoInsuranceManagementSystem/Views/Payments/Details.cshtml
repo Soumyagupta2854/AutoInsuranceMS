@@ -3,47 +3,178 @@
     ViewData["Title"] = "Payment Details";
 }
 
+@section Styles {
+    <style>
+        :root {
+            /* Assuming --brand-primary and other color vars are in _Layout.cshtml */
+            --payment-details-card-radius: 0.75rem;
+            --payment-header-bg: linear-gradient(135deg, #0D9488, #14B8A6); /* Teal/Info inspired gradient */
+            --payment-dt-color: #2c3e50; /* Dark blue-grey for definition terms */
+            --payment-dd-color: #495057; /* Softer color for definition details */
+            --payment-section-border: #e9ecef;
+        }
+
+        .payment-details-card {
+            border-radius: var(--payment-details-card-radius);
+            background-color: #fff;
+            /* Base shadow/border should come from global .card in _Layout.cshtml */
+        }
+
+            .payment-details-card .card-header {
+                background: var(--payment-header-bg) !important; /* Override Bootstrap bg-info */
+                color: #fff !important;
+                border-bottom: none;
+                padding: 1.25rem 1.75rem;
+                border-top-left-radius: var(--payment-details-card-radius) !important;
+                border-top-right-radius: var(--payment-details-card-radius) !important;
+            }
+
+                .payment-details-card .card-header h4 {
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.5rem;
+                    margin-bottom: 0;
+                }
+
+                .payment-details-card .card-header .bi {
+                    font-size: 1.2em;
+                    vertical-align: -0.1em;
+                    margin-right: 0.6rem;
+                }
+
+            .payment-details-card .card-body {
+                padding: 2rem 2.25rem;
+            }
+
+            .payment-details-card dl.row dt {
+                font-family: 'Inter', sans-serif; /* Ensure consistent font */
+                font-weight: 600 !important; /* Override fw-semibold if needed for more emphasis */
+                color: var(--payment-dt-color);
+                padding-top: 0.75rem; /* Add some top padding for spacing */
+                padding-bottom: 0.75rem;
+                border-bottom: 1px solid var(--payment-section-border);
+            }
+
+            .payment-details-card dl.row dd {
+                font-family: 'Inter', sans-serif;
+                color: var(--payment-dd-color);
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+                margin-bottom: 0; /* Reset default dd margin */
+                border-bottom: 1px solid var(--payment-section-border);
+                display: flex; /* For vertical alignment of badges */
+                align-items: center;
+            }
+                /* Remove bottom border from the very last dt and dd if desired */
+                .payment-details-card dl.row dt:last-of-type,
+                .payment-details-card dl.row dd:last-of-type {
+                    /* border-bottom: none; */ /* Optional: Keep if you want border on all */
+                }
+                /* Special styling for the first dt/dd to remove top padding if it looks too spaced from header */
+                .payment-details-card dl.row dt:first-of-type,
+                .payment-details-card dl.row dd:first-of-type {
+                    /* padding-top: 0.5rem; */ /* Example: reduce if needed */
+                }
+
+
+            .payment-details-card .badge {
+                font-weight: 500; /* Inter */
+                padding: 0.45em 0.8em; /* Balanced padding */
+                font-size: 0.85rem; /* Slightly larger than fs-tiny */
+            }
+            /* Ensuring Bootstrap 5.3 bg-*-subtle and text-*-emphasis classes work or have fallbacks */
+            .payment-details-card .bg-success-subtle {
+                background-color: rgba(var(--bs-success-rgb), 0.15) !important;
+            }
+
+            .payment-details-card .text-success-emphasis {
+                color: var(--bs-success-text-emphasis) !important;
+            }
+
+            .payment-details-card .bg-danger-subtle {
+                background-color: rgba(var(--bs-danger-rgb), 0.15) !important;
+            }
+
+            .payment-details-card .text-danger-emphasis {
+                color: var(--bs-danger-text-emphasis) !important;
+            }
+
+            .payment-details-card .bg-warning-subtle {
+                background-color: rgba(var(--bs-warning-rgb), 0.15) !important;
+            }
+
+            .payment-details-card .text-warning-emphasis {
+                color: var(--bs-warning-text-emphasis) !important;
+            }
+
+
+            .payment-details-card .card-footer {
+                background-color: #f8f9fa; /* Light grey, consistent with other footers */
+                border-top: 1px solid #e0e7ff; /* Consistent border */
+                padding: 1.25rem 1.75rem;
+                border-bottom-left-radius: var(--payment-details-card-radius) !important;
+                border-bottom-right-radius: var(--payment-details-card-radius) !important;
+            }
+
+                .payment-details-card .card-footer .btn {
+                    /* General button styling (font, weight, min-width) should come from _Layout.cshtml */
+                    padding-top: 0.65rem; /* Consistent button height */
+                    padding-bottom: 0.65rem;
+                }
+
+                    .payment-details-card .card-footer .btn .bi {
+                        vertical-align: -0.1em;
+                    }
+        /* Ensure btn-primary and btn-outline-secondary styles from _Layout are applied */
+
+    </style>
+}
+
 <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-7">
-        <div class="card shadow-sm rounded-3">
-            <div class="card-header bg-info text-white rounded-top-3">
-                <h4 class="mb-0"><i class="bi bi-receipt-cutoff me-2"></i>@ViewData["Title"] - PAY-@Model.PaymentId.ToString("D5")</h4>
+    <div class="col-md-9 col-lg-8">
+        @* Slightly wider for better content fit *@
+        <div class="card payment-details-card">
+            @* Removed shadow-sm, rounded-3 *@
+            <div class="card-header">
+                @* Removed bg-info, text-white, rounded-top-3 *@
+                <h4 class="mb-0"><i class="bi bi-receipt-cutoff"></i>@ViewData["Title"] - PAY-@Model.PaymentId.ToString("D5")</h4>
             </div>
             <div class="card-body p-4">
                 <dl class="row">
-                    <dt class="col-sm-4 fw-semibold">Policy Number</dt>
+                    <dt class="col-sm-4">Policy Number</dt> @* Removed fw-semibold, handled by CSS *@
                     <dd class="col-sm-8"><a asp-controller="Policies" asp-action="Details" asp-route-id="@Model.PolicyId">@Model.Policy?.PolicyNumber</a></dd>
 
-                    <dt class="col-sm-4 fw-semibold">Customer</dt>
-                    <dd class="col-sm-8">@Model.Policy?.Customer?.UserName</dd>
+                    <dt class="col-sm-4">Customer</dt>
+                    <dd class="col-sm-8">@Model.Policy?.Customer?.FullName (@Model.Policy?.Customer?.UserName)</dd> @* Added FullName for better display *@
 
-                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Amount)</dt>
-                    <dd class="col-sm-8">@Model.Amount.ToString("C")</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Amount)</dt>
+                    <dd class="col-sm-8">@Model.Amount.ToString("C", new System.Globalization.CultureInfo("en-IN"))</dd> @* Specify Indian Rupee format *@
 
-                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.PaymentDate)</dt>
-                    <dd class="col-sm-8">@Model.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PaymentDate)</dt>
+                    <dd class="col-sm-8">@Model.PaymentDate.ToString("dd MMM yyyy, hh:mm tt")</dd> @* More readable date format *@
 
-                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Method)</dt>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Method)</dt>
                     <dd class="col-sm-8">@Html.DisplayFor(model => model.Method)</dd>
 
-                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Status)</dt>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
                     <dd class="col-sm-8">
-                        <span class="badge @(Model.Status == PaymentStatus.SUCCESS ? "bg-success-subtle text-success-emphasis" : Model.Status == PaymentStatus.FAILED ? "bg-danger-subtle text-danger-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                        <span class="badge @(Model.Status == PaymentStatus.SUCCESS ? "bg-success-subtle text-success-emphasis" : Model.Status == PaymentStatus.FAILED ? "bg-danger-subtle text-danger-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill">
                             @Html.DisplayFor(model => model.Status)
                         </span>
                     </dd>
 
-                    <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.TransactionId)</dt>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TransactionId)</dt>
                     <dd class="col-sm-8">@Html.DisplayFor(model => model.TransactionId)</dd>
 
                     @if (!string.IsNullOrEmpty(Model.Notes))
                     {
-                        <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.Notes)</dt>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Notes)</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.Notes)</dd>
                     }
                 </dl>
             </div>
-            <div class="card-footer bg-light d-flex justify-content-end gap-2 rounded-bottom-3">
+            <div class="card-footer d-flex justify-content-end gap-2">
+                @* Removed bg-light, rounded-bottom-3 *@
                 @if (User.IsInRole("Admin"))
                 {
                     <a asp-action="Edit" asp-route-id="@Model.PaymentId" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-fill me-2"></i>Edit Payment</a>

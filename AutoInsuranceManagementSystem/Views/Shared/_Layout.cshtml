@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using AutoInsuranceManagementSystem.Models 
+@using AutoInsuranceManagementSystem.Models
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -22,14 +22,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --brand-primary: #2a6fdb; /* Main brand blue */
+            --brand-primary-darker: #1e5abc;
+            --body-bg: #f4f8fb; /* Lighter, slightly bluish background */
+            --text-color: #333;
+            --text-muted-color: #495057; /* For nav links, secondary text */
+            --footer-bg: #2c3e50; /* Dark blue-grey for footer */
+            --footer-text: #bdc3c7;
+            --footer-link: #ecf0f1;
+            --footer-link-hover: #3498db; /* Lighter blue for footer link hover */
+        }
+
         body {
             font-family: 'Inter', sans-serif; /* Primary font */
-            background-color: #f4f8fb; /* Lighter, slightly bluish background */
+            background-color: var(--body-bg);
             padding-top: 76px; 
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            color: #333;
+            color: var(--text-color);
         }
         h1, h2, h3, h4, h5, h6, .navbar-brand, .nav-link.dropdown-toggle, .btn {
             font-family: 'Poppins', sans-serif; /* Secondary font for headings and important elements */
@@ -42,24 +54,66 @@
         .navbar-brand {
             font-weight: 700;
             font-size: 1.6rem; 
-            color: #2a6fdb !important; /* A more vibrant blue */
+            color: var(--brand-primary) !important;
         }
         .navbar-brand .bi {
             font-size: 1.8rem; 
-            vertical-align: sub; /* Align icon better with text */
+            vertical-align: sub; 
             margin-right: 0.3rem;
         }
+
+        /* --- Updated Nav Link Styling --- */
         .nav-link {
-            color: #495057 !important; /* Darker gray for nav links for better contrast */
+            color: var(--text-muted-color) !important; 
             font-weight: 500;
-            padding: 0.6rem 1rem !important;
-            border-radius: 0.375rem;
+            padding: 0.7rem 1rem !important; /* Adjusted vertical padding for better spacing */
+            border-radius: 0.375rem; /* Retain for focus outline consistency */
             margin: 0 0.2rem;
+            transition: color 0.2s ease-in-out;
+            position: relative; /* Required for the ::after pseudo-element */
+            background-color: transparent !important; /* Ensure no background initially */
+            text-decoration: none; /* Remove default underlines */
         }
-        .nav-link:hover, .nav-link.active, .nav-link.show { /* .show for active dropdown toggle */
-            color: #2a6fdb !important; 
-            background-color: #e7f0ff; /* Light blue background on hover/active */
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0.25rem; /* Position underline within the padding area */
+            left: 50%;
+            transform: translateX(-50%); /* Center the line */
+            width: 0; /* Initially hidden */
+            height: 2px;
+            background-color: var(--brand-primary);
+            border-radius: 1px; /* Slightly rounded ends for the underline */
+            transition: width 0.25s ease-out;
         }
+
+        /* Text color change on hover & when dropdown is shown */
+        .nav-link:hover, 
+        .nav-link.show { /* .show is for when dropdown toggle is active/open */
+            color: var(--brand-primary) !important; 
+            /* background-color: #e7f0ff; /* REMOVED original background fill */
+        }
+
+        /* Underline animation on hover & when dropdown is shown */
+        .nav-link:hover::after,
+        .nav-link.show::after {
+            width: 70%; /* Width of the underline, adjust as desired (e.g., 'calc(100% - 2rem)' for text width) */
+        }
+        
+        /* Styles for the currently active nav item (current page) */
+        .navbar-nav .nav-link.active {
+            color: var(--brand-primary) !important;
+            font-weight: 600; /* Bolder text for active link */
+            /* background-color: #e0e9f8; /* REMOVED original background fill */
+        }
+
+        .navbar-nav .nav-link.active::after {
+            width: 70%; /* Ensure active link always has the underline */
+            background-color: var(--brand-primary); /* Ensure it uses the primary color */
+        }
+        /* --- End of Updated Nav Link Styling --- */
+
         .nav-link .bi { 
             margin-right: 0.5rem;
             vertical-align: text-bottom; 
@@ -73,74 +127,83 @@
         .dropdown-item {
             font-weight: 500;
             padding: 0.5rem 1rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
         .dropdown-item:active {
-             background-color: #2a6fdb;
-             color: #fff !important;
+            background-color: var(--brand-primary);
+            color: #fff !important;
+        }
+         .dropdown-item:hover {
+            background-color: #e7f0ff;
+            color: var(--brand-primary);
         }
         .dropdown-item .bi {
-             margin-right: 0.6rem;
-             width: 20px; 
-             text-align: center;
-             color: #2a6fdb;
+            margin-right: 0.6rem;
+            width: 20px; 
+            text-align: center;
+            color: var(--brand-primary);
+            transition: color 0.2s ease;
         }
         .dropdown-item:hover .bi, .dropdown-item:active .bi {
-            color: inherit; /* Icon color matches text on hover/active */
+            color: inherit; 
         }
 
         .btn {
             border-radius: 0.375rem; 
-            font-weight: 600; /* Bolder buttons */
-            padding: 0.5rem 1.25rem; /* More padding */
+            font-weight: 600;
+            padding: 0.6rem 1.35rem; 
             transition: all 0.25s ease-in-out;
             letter-spacing: 0.025em;
         }
-         .btn:hover {
+        .btn:hover {
             transform: translateY(-2px); 
             box-shadow: 0 6px 12px rgba(0,0,0,.15);
         }
         .btn-primary {
-            background-color: #2a6fdb;
-            border-color: #2a6fdb;
+            background-color: var(--brand-primary);
+            border-color: var(--brand-primary);
+            color: #fff;
         }
         .btn-primary:hover {
-            background-color: #1e5abc;
-            border-color: #1c53ae;
+            background-color: var(--brand-primary-darker);
+            border-color: var(--brand-primary-darker);
+            color: #fff;
         }
         .btn-success {
-             background-color: #198754; 
-             border-color: #198754;
+            background-color: #198754; 
+            border-color: #198754;
         }
-         .btn-success:hover {
-             background-color: #146c43;
-             border-color: #13653f;
+        .btn-success:hover {
+            background-color: #146c43;
+            border-color: #13653f;
         }
         .btn-outline-primary {
-            color: #2a6fdb;
-            border-color: #2a6fdb;
+            color: var(--brand-primary);
+            border-color: var(--brand-primary);
         }
         .btn-outline-primary:hover {
-            background-color: #2a6fdb;
+            background-color: var(--brand-primary);
             color: #fff;
         }
 
-
         .card {
-            border: none; /* Remove default border, rely on shadow */
-            border-radius: 0.75rem; /* More pronounced rounding */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Softer shadow */
+            border: 1px solid #e0e7ff; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            background-color: #fff; 
         }
         .card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
         .card-header {
             font-weight: 600;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            border-top-left-radius: 0.75rem;
-            border-top-right-radius: 0.75rem;
+            background-color: #f8f9fc; 
+            border-bottom: 1px solid #e0e7ff;
+            padding: 1rem 1.25rem; 
+            border-top-left-radius: calc(0.75rem - 1px); 
+            border-top-right-radius: calc(0.75rem - 1px);
         }
         .card-title {
             font-family: 'Poppins', sans-serif;
@@ -149,35 +212,67 @@
         .table th {
             font-weight: 600;
             font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fc;
+            color: var(--text-muted-color);
         }
         .table-hover tbody tr:hover {
-            background-color: #e7f0ff !important; /* Subtle hover for table rows */
+            background-color: #e7f0ff !important; 
         }
         
-        .footer {
-            background-color: #343a40; 
-            padding: 2rem 0;
-            color: #adb5bd; 
-            font-size: 0.9rem;
-            margin-top: auto; 
-        }
-        .footer a {
-            color: #f8f9fa;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            color: #2a6fdb;
-            text-decoration: underline;
+        .main-content-wrapper {
+             flex: 1 0 auto; 
         }
 
-        /* Utility classes */
+        .footer {
+            background-color: var(--footer-bg); 
+            padding: 2.5rem 0; 
+            color: var(--footer-text); 
+            font-size: 0.9rem;
+            margin-top: auto; 
+            border-top: 3px solid var(--brand-primary); 
+        }
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; 
+        }
+        .footer p.copyright-text { 
+            margin-bottom: 0;
+            margin-right: 1rem; 
+        }
+        @@media (max-width: 767px) { 
+            .footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer p.copyright-text {
+                margin-bottom: 0.5rem;
+                margin-right: 0;
+            }
+        }
+        .footer a {
+            color: var(--footer-link);
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+        .footer a:hover {
+            color: var(--footer-link-hover);
+            text-decoration: underline;
+        }
+        .footer .footer-links a { 
+            margin-left: 1rem;
+        }
+        .footer .footer-links a:first-child {
+            margin-left: 0;
+        }
+
         .fs-tiny { font-size: 0.8rem !important; }
         .fs-small { font-size: 0.9rem !important; }
         .fw-medium { font-weight: 500 !important; }
         .fw-semibold { font-weight: 600 !important; }
         .fw-bold { font-weight: 700 !important; }
 
-        /* Alert styling */
         .alert {
             border-left-width: 5px;
             border-radius: 0.375rem;
@@ -187,6 +282,27 @@
         .alert-warning { border-left-color: var(--bs-warning); }
         .alert-info { border-left-color: var(--bs-info); }
 
+        ::-webkit-scrollbar {
+            width: 10px; 
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #eef2f5; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d0d8e0; 
+            border-radius: 10px;
+            border: 2px solid #eef2f5; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b8c1cc; 
+        }
+
+        ::selection {
+            background-color: var(--brand-primary); 
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -208,9 +324,9 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer2"></i>Dashboard</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer2"></i>Dashboard</a>
+                                </li>
 
                             if (User.IsInRole("Admin"))
                             {
@@ -245,9 +361,9 @@
                         }
                         else // Not signed in
                         {
-                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Policies" asp-action="AvailableOfferings"><i class="bi bi-patch-check-fill"></i>View Policy Offerings</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Policies" asp-action="AvailableOfferings"><i class="bi bi-patch-check-fill"></i>View Policy Offerings</a>
+                                </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />
@@ -256,16 +372,18 @@
         </nav>
     </header>
     
-    <div class="container mt-4 mb-5"> 
+    <div class="main-content-wrapper container mt-4 mb-5"> 
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="footer border-top text-center">
+    <footer class="footer"> 
         <div class="container">
-            &copy; @DateTime.Now.Year - AutoInsurance Pro. All Rights Reserved.
-            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="ms-3">Privacy Policy</a>
+            <p class="copyright-text">&copy; @DateTime.Now.Year - AutoInsurance Pro. All Rights Reserved.</p>
+            <div class="footer-links">
+                 <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+            </div>
         </div>
     </footer>
 

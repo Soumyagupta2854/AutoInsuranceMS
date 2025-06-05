@@ -7,12 +7,173 @@
     ViewData["Title"] = "Your Trusted Auto Insurance Partner";
     var currentUser = SignInManager.IsSignedIn(User) ? await UserManager.GetUserAsync(User) : null;
     var userRole = currentUser?.Role;
-    var greetingName = currentUser?.FullName ?? currentUser?.UserName ?? "Guest";
+    var greetingName = currentUser?.FullName ?? currentUser?.UserName ?? "Guest"; // Not directly used on this page currently, but good to have
+}
+
+@section Styles {
+    <style>
+        /* General Styles from original, now centralized */
+        .hover-lift {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+
+            .hover-lift:hover {
+                transform: translateY(-6px); /* Slightly more lift */
+                box-shadow: 0 12px 25px rgba(0,0,0,0.12) !important; /* Adjusted shadow */
+            }
+
+        .icon-circle {
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+
+        .bg-gradient-primary { /* Custom gradient for Hero */
+            background: linear-gradient(135deg, #00509e 0%, #007bff 100%) !important; /* Ensure it overrides bootstrap if necessary */
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            color: #fff;
+            position: relative; /* For potential pseudo-elements if added later */
+            overflow: hidden; /* If adding patterns/shapes that might overflow */
+        }
+
+            .hero-section .display-1 { /* Shield icon */
+                font-size: 5rem; /* Larger icon */
+                text-shadow: 0 3px 12px rgba(0,0,0,0.25);
+                color: #fff; /* Ensure icon is white */
+            }
+
+            .hero-section h1.display-4 {
+                text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                font-weight: 700; /* Poppins */
+            }
+
+            .hero-section p.fs-4 {
+                opacity: 0.9;
+            }
+
+            .hero-section .btn {
+                font-weight: 600; /* Poppins for buttons */
+                transition: all 0.25s ease-in-out;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                border-width: 2px; /* For outline buttons */
+            }
+
+            .hero-section .btn-light {
+                background-color: #fff;
+                color: var(--brand-primary, #007bff); /* Use brand color for text */
+            }
+
+                .hero-section .btn-light:hover {
+                    background-color: #f0f0f0;
+                    color: var(--brand-primary-darker, #0056b3);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                }
+
+            .hero-section .btn-outline-light:hover {
+                background-color: rgba(255,255,255,0.15);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            }
+
+        /* --- Section Title Styling --- */
+        .section-title {
+            margin-bottom: 3.5rem !important;
+            color: #2c3e50; /* Dark blue-grey from layout */
+            position: relative;
+            padding-bottom: 1rem;
+            font-weight: 700; /* Poppins */
+        }
+
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90px;
+                height: 4px;
+                background-color: var(--brand-primary, #007bff);
+                border-radius: 2px;
+            }
+
+        /* --- Features Section --- */
+        .features-section {
+            padding: 3rem 0; /* Add some vertical padding to the section */
+        }
+
+            .features-section .card {
+                border: none !important; /* Override layout card border if present */
+                background-color: #fff;
+            }
+
+                .features-section .card:hover .icon-circle {
+                    transform: scale(1.1) rotate(5deg);
+                    box-shadow: 0 0 25px rgba(var(--bs-primary-rgb), 0.3); /* Use BS variable if available */
+                }
+
+            .features-section .card-title {
+                color: #343a40;
+                font-weight: 600; /* Poppins */
+            }
+
+            .features-section .fs-small {
+                line-height: 1.6;
+            }
+
+
+        /* --- How It Works Section --- */
+        .how-it-works-section {
+            padding-top: 4rem !important;
+            padding-bottom: 4rem !important;
+            /* background-color: #fff; from HTML */
+        }
+
+            .how-it-works-section .step-item .icon-circle {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 700;
+                font-size: 1.8rem !important; /* Ensure number is large enough */
+                border: 3px solid rgba(var(--bs-primary-rgb), 0.2); /* Use Bootstrap variable for opacity */
+                color: var(--brand-primary, #007bff);
+                background-color: rgba(var(--bs-primary-rgb), 0.05);
+                width: 70px; /* Ensure width is set for consistency if not by style attr */
+                height: 70px; /* Ensure height is set for consistency if not by style attr */
+                line-height: normal; /* Added to help center number in circle if needed */
+            }
+
+            .how-it-works-section .step-item:hover .icon-circle {
+                background-color: var(--brand-primary, #007bff);
+                color: #fff;
+                border-color: var(--brand-primary, #007bff);
+                transform: scale(1.05);
+            }
+
+            .how-it-works-section .step-item h5 {
+                margin-top: 1rem;
+                color: #343a40;
+                font-weight: 600; /* Poppins */
+            }
+
+            .how-it-works-section .btn-success { /* The "Sign Up & Get Covered Now" button */
+                font-weight: 600; /* Poppins */
+                padding: 0.9rem 2rem;
+                font-size: 1.1rem;
+            }
+
+        /* Styles for Testimonials Section have been REMOVED */
+
+    </style>
 }
 
 <div class="container mt-3">
     @* Hero Section *@
-    <div class="p-5 mb-4 bg-gradient-primary text-white rounded-3 shadow-lg" style="background: linear-gradient(135deg, #00509e 0%, #007bff 100%);">
+    <div class="p-5 mb-4 bg-gradient-primary text-white rounded-3 shadow-lg hero-section">
         <div class="container-fluid py-5 text-center">
             <i class="bi bi-shield-fill-check display-1 mb-3"></i>
             <h1 class="display-4 fw-bold">@ViewData["Title"]</h1>
@@ -46,76 +207,78 @@
     </div>
 
     @* Features Section *@
-    <div class="row text-center mt-5 g-4">
-        <h2 class="fw-bold mb-4 display-6">Why Choose AutoInsurance Pro?</h2>
-        <div class="col-lg-3 col-md-6">
-            <div class="card h-100 border-0 shadow-sm hover-lift">
-                <div class="card-body p-4">
-                    <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
-                        <i class="bi bi-hand-thumbs-up-fill"></i>
+    <div class="features-section">
+        <h2 class="fw-bold display-6 section-title text-center">Why Choose AutoInsurance Pro?</h2>
+        <div class="row text-center g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
+                            <i class="bi bi-hand-thumbs-up-fill"></i>
+                        </div>
+                        <h5 class="card-title fw-semibold mb-2">Trusted & Reliable</h5>
+                        <p class="card-text fs-small text-muted">Join thousands of satisfied customers who trust us for their auto insurance needs.</p>
                     </div>
-                    <h5 class="card-title fw-semibold mb-2">Trusted & Reliable</h5>
-                    <p class="card-text fs-small text-muted">Join thousands of satisfied customers who trust us for their auto insurance needs.</p>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card h-100 border-0 shadow-sm hover-lift">
-                <div class="card-body p-4">
-                    <div class="icon-circle bg-success bg-opacity-10 text-success mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
-                        <i class="bi bi-graph-up-arrow"></i>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-circle bg-success bg-opacity-10 text-success mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <h5 class="card-title fw-semibold mb-2">Competitive Rates</h5>
+                        <p class="card-text fs-small text-muted">Get the best value with our affordable premiums and flexible payment options.</p>
                     </div>
-                    <h5 class="card-title fw-semibold mb-2">Competitive Rates</h5>
-                    <p class="card-text fs-small text-muted">Get the best value with our affordable premiums and flexible payment options.</p>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card h-100 border-0 shadow-sm hover-lift">
-                <div class="card-body p-4">
-                    <div class="icon-circle bg-warning bg-opacity-10 text-warning mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
-                        <i class="bi bi-lightning-charge-fill"></i>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-circle bg-warning bg-opacity-10 text-warning mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                        </div>
+                        <h5 class="card-title fw-semibold mb-2">Fast Claims</h5>
+                        <p class="card-text fs-small text-muted">Our streamlined claims process ensures quick resolutions when you need it most.</p>
                     </div>
-                    <h5 class="card-title fw-semibold mb-2">Fast Claims</h5>
-                    <p class="card-text fs-small text-muted">Our streamlined claims process ensures quick resolutions when you need it most.</p>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card h-100 border-0 shadow-sm hover-lift">
-                <div class="card-body p-4">
-                    <div class="icon-circle bg-info bg-opacity-10 text-info mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
-                        <i class="bi bi-person-check-fill"></i>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-circle bg-info bg-opacity-10 text-info mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px; font-size: 1.75rem;">
+                            <i class="bi bi-person-check-fill"></i>
+                        </div>
+                        <h5 class="card-title fw-semibold mb-2">Personalized Service</h5>
+                        <p class="card-text fs-small text-muted">Our dedicated agents provide personalized advice and support tailored to you.</p>
                     </div>
-                    <h5 class="card-title fw-semibold mb-2">Personalized Service</h5>
-                    <p class="card-text fs-small text-muted">Our dedicated agents provide personalized advice and support tailored to you.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    @* How It Works Section (Example) *@
-    <div class="row mt-5 py-5 bg-white rounded-3 shadow-sm">
+    @* How It Works Section *@
+    <div class="row mt-5 bg-white rounded-3 shadow-sm how-it-works-section">
         <div class="col-lg-10 mx-auto text-center">
-            <h2 class="fw-bold mb-5 display-6">Getting Covered is Easy</h2>
+            <h2 class="fw-bold display-6 section-title">Getting Covered is Easy</h2>
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="p-3">
-                        <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto fs-2" style="width: 70px; height: 70px; line-height: 70px;">1</div>
+                    <div class="p-3 step-item">
+                        <div class="icon-circle mb-3 mx-auto" style="width: 70px; height: 70px; line-height: normal;">1</div>
                         <h5 class="fw-semibold">Choose Your Plan</h5>
                         <p class="fs-small text-muted">Explore our range of policy offerings and select the one that best fits your needs.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="p-3">
-                        <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto fs-2" style="width: 70px; height: 70px; line-height: 70px;">2</div>
+                    <div class="p-3 step-item">
+                        <div class="icon-circle mb-3 mx-auto" style="width: 70px; height: 70px; line-height: normal;">2</div>
                         <h5 class="fw-semibold">Customize & Pay</h5>
                         <p class="fs-small text-muted">Provide your details, customize your policy if needed, and complete a secure payment.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="p-3">
-                        <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto fs-2" style="width: 70px; height: 70px; line-height: 70px;">3</div>
+                    <div class="p-3 step-item">
+                        <div class="icon-circle mb-3 mx-auto" style="width: 70px; height: 70px; line-height: normal;">3</div>
                         <h5 class="fw-semibold">Drive Protected!</h5>
                         <p class="fs-small text-muted">Once active, manage your policy, submit claims, and get support all online.</p>
                     </div>
@@ -129,27 +292,7 @@
             }
         </div>
     </div>
+
+    @* Testimonials Section has been REMOVED *@
+    @* The HTML block for testimonials that was here is now gone *@
 </div>
-
-@* Add this to your site.css or in a <style> tag in _Layout.cshtml for the hover effect *@
-<style>
-    .hover-lift {
-        transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-    }
-
-        .hover-lift:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1) !important;
-        }
-
-    .icon-circle {
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .bg-gradient-primary { /* Custom gradient */
-        background: linear-gradient(135deg, #00509e 0%, #007bff 100%);
-    }
-</style>
