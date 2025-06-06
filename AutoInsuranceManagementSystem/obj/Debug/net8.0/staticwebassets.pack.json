@@ -245,6 +245,10 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "C:\\Users\\2406749\\source\\repos\\AutoInsuranceMS\\AutoInsuranceManagementSystem\\wwwroot\\uploads\\claim_proofs\\claim_2\\photos\\4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg",
+      "PackagePath": "staticwebassets\\uploads\\claim_proofs\\claim_2\\photos\\4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.AutoInsuranceManagementSystem.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

@@ -7223,6 +7223,88 @@
           "Value": "sha256-OZVI+w57FGwS9boYCZpH1ZSpcP7pYhLu4KtIUvPlZ4I="
         }
       ]
+    },
+    {
+      "Route": "uploads/claim_proofs/claim_2/photos/4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.d1jwm5c4zb.jpg",
+      "AssetFile": "uploads/claim_proofs/claim_2/photos/4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "129694"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YfKMqOodH6wNYueD4B2c5JJZe/ZcElHnCbbiRHQvKn4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 06 Jun 2025 05:06:41 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d1jwm5c4zb"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-YfKMqOodH6wNYueD4B2c5JJZe/ZcElHnCbbiRHQvKn4="
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/claim_proofs/claim_2/photos/4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg"
+        }
+      ]
+    },
+    {
+      "Route": "uploads/claim_proofs/claim_2/photos/4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg",
+      "AssetFile": "uploads/claim_proofs/claim_2/photos/4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "129694"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YfKMqOodH6wNYueD4B2c5JJZe/ZcElHnCbbiRHQvKn4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 06 Jun 2025 05:06:41 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-YfKMqOodH6wNYueD4B2c5JJZe/ZcElHnCbbiRHQvKn4="
+        }
+      ]
     }
   ]
 }

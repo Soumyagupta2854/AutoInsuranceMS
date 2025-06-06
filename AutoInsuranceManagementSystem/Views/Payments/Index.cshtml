@@ -59,8 +59,37 @@
                             <td>@item.PaymentDate.ToString("yyyy-MM-dd HH:mm")</td>
                             <td>@Html.DisplayFor(modelItem => item.Method)</td>
                             <td>
-                                <span class="badge @(item.Status == PaymentStatus.SUCCESS ? "bg-success-subtle text-success-emphasis" : item.Status == PaymentStatus.FAILED ? "bg-danger-subtle text-danger-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
-                                    @Html.DisplayFor(modelItem => item.Status)
+                                @{
+                                    string badgeClass = "";
+                                    string statusText = "";
+
+                                    switch (item.Status)
+                                    {
+                                        case PaymentStatus.SUCCESS:
+                                            badgeClass = "bg-success text-white"; // Solid green for success
+                                            statusText = "Success";
+                                            break;
+                                        case PaymentStatus.FAILED:
+                                            badgeClass = "bg-danger text-white"; // Solid red for failed
+                                            statusText = "Failed";
+                                            break;
+                                        case PaymentStatus.PENDING:
+                                            badgeClass = "bg-warning text-dark"; // Brighter yellow for pending
+                                            statusText = "Pending";
+                                            break;
+                                        // Add other payment statuses if you have them, e.g., REFUNDED
+                                        case PaymentStatus.REFUNDED: // Assuming you have a REFUNDED status in your enum
+                                            badgeClass = "bg-info text-white"; // A light blue for refunded
+                                            statusText = "Refunded";
+                                            break;
+                                        default:
+                                            badgeClass = "bg-secondary text-white"; // Fallback for unknown/other
+                                            statusText = "Unknown";
+                                            break;
+                                    }
+                                }
+                                <span class="badge @badgeClass rounded-pill px-3 py-2 fw-semibold">
+                                    @statusText
                                 </span>
                             </td>
                             <td>@Html.DisplayFor(modelItem => item.TransactionId)</td>

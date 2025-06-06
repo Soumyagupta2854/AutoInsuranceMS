@@ -49,8 +49,35 @@
                             <td>@item.User?.UserName</td>
                             <td>@item.Priority</td>
                             <td>
-                                <span class="badge @(item.TicketStatus == TicketStatus.OPEN ? "bg-danger-subtle text-danger-emphasis" : item.TicketStatus == TicketStatus.IN_PROGRESS ? "bg-warning-subtle text-warning-emphasis" : item.TicketStatus == TicketStatus.RESOLVED ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") rounded-pill px-2 py-1 fs-tiny">
-                                    @Html.DisplayFor(modelItem => item.TicketStatus)
+                                @{
+                                    string badgeClass = "";
+                                    string iconClass = "";
+                                    switch (item.TicketStatus)
+                                    {
+                                        case TicketStatus.OPEN:
+                                            badgeClass = "bg-danger text-white"; // Solid red for open
+                                            iconClass = "bi bi-exclamation-circle-fill";
+                                            break;
+                                        case TicketStatus.IN_PROGRESS:
+                                            badgeClass = "bg-warning text-dark"; // Solid yellow for in progress
+                                            iconClass = "bi bi-hourglass-split";
+                                            break;
+                                        case TicketStatus.RESOLVED:
+                                            badgeClass = "bg-success text-white"; // Solid green for resolved
+                                            iconClass = "bi bi-check-circle-fill";
+                                            break;
+                                        case TicketStatus.CLOSED:
+                                            badgeClass = "bg-secondary text-white"; // Solid gray for closed
+                                            iconClass = "bi bi-x-circle-fill";
+                                            break;
+                                        default:
+                                            badgeClass = "bg-info text-dark"; // Default if status is unknown
+                                            iconClass = "bi bi-question-circle-fill";
+                                            break;
+                                    }
+                                }
+                                <span class="badge @badgeClass rounded-pill px-3 py-2">
+                                    <i class="@iconClass me-1"></i> @Html.DisplayFor(modelItem => item.TicketStatus)
                                 </span>
                             </td>
                             <td>@item.CreatedDate.ToString("yyyy-MM-dd")</td>
@@ -67,3 +94,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.js"></script>
+}

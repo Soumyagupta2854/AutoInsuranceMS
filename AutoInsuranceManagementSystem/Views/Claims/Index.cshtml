@@ -58,8 +58,36 @@
                             <td>@item.ClaimAmount.ToString("C")</td>
                             <td>@item.DateSubmitted.ToString("yyyy-MM-dd HH:mm")</td>
                             <td>
-                                <span class="badge @(item.ClaimStatus == ClaimStatus.APPROVED ? "bg-success-subtle text-success-emphasis" : item.ClaimStatus == ClaimStatus.REJECTED ? "bg-danger-subtle text-danger-emphasis" : item.ClaimStatus == ClaimStatus.CLOSED ? "bg-secondary-subtle text-secondary-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
-                                    @Html.DisplayFor(modelItem => item.ClaimStatus)
+                                @{
+                                    string badgeClass = "";
+                                    string statusText = "";
+
+                                    switch (item.ClaimStatus)
+                                    {
+                                        case ClaimStatus.OPEN:
+                                            badgeClass = "bg-warning text-dark"; // Brighter yellow for open/pending
+                                            statusText = "Open";
+                                            break;
+                                        case ClaimStatus.APPROVED:
+                                            badgeClass = "bg-success text-white"; // Solid green for approved
+                                            statusText = "Approved";
+                                            break;
+                                        case ClaimStatus.REJECTED:
+                                            badgeClass = "bg-danger text-white"; // Solid red for rejected
+                                            statusText = "Rejected";
+                                            break;
+                                        case ClaimStatus.CLOSED:
+                                            badgeClass = "bg-secondary text-white"; // Grey for closed
+                                            statusText = "Closed";
+                                            break;
+                                        default:
+                                            badgeClass = "bg-light text-muted"; // Fallback
+                                            statusText = "Unknown";
+                                            break;
+                                    }
+                                }
+                                <span class="badge @badgeClass rounded-pill px-3 py-2 fw-semibold">
+                                    @statusText
                                 </span>
                             </td>
                             <td>@(item.Adjuster?.UserName ?? "Not Assigned")</td>

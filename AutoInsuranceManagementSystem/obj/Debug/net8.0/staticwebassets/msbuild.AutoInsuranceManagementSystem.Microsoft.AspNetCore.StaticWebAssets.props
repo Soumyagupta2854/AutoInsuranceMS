@@ -1098,5 +1098,23 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lib\jquery\LICENSE.txt'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\claim_proofs\claim_2\photos\4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>AutoInsuranceManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/AutoInsuranceManagementSystem</BasePath>
+      <RelativePath>uploads/claim_proofs/claim_2/photos/4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>d1jwm5c4zb</Fingerprint>
+      <Integrity>YfKMqOodH6wNYueD4B2c5JJZe/ZcElHnCbbiRHQvKn4=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\claim_proofs\claim_2\photos\4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
   </ItemGroup>
 </Project>

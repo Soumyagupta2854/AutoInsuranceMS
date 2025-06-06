@@ -26,7 +26,31 @@
                     <dd class="col-sm-8">@Model.DateSubmitted.ToString("yyyy-MM-dd HH:mm")</dd>
                     <dt class="col-sm-4 fw-semibold">@Html.DisplayNameFor(model => model.ClaimStatus)</dt>
                     <dd class="col-sm-8">
-                        <span class="badge @(Model.ClaimStatus == ClaimStatus.APPROVED ? "bg-success-subtle text-success-emphasis" : Model.ClaimStatus == ClaimStatus.REJECTED ? "bg-danger-subtle text-danger-emphasis" : Model.ClaimStatus == ClaimStatus.CLOSED ? "bg-secondary-subtle text-secondary-emphasis" : "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
+                        @{
+                            string badgeClass = "";
+                            string textColorClass = ""; // Added for explicit text color control
+                            switch (Model.ClaimStatus)
+                            {
+                                case ClaimStatus.APPROVED:
+                                    badgeClass = "bg-success"; // Changed from subtle to solid
+                                    textColorClass = "text-white"; // Ensure white text on solid background
+                                    break;
+                                case ClaimStatus.REJECTED:
+                                    badgeClass = "bg-danger"; // Changed from subtle to solid
+                                    textColorClass = "text-white"; // Ensure white text on solid background
+                                    break;
+                                case ClaimStatus.CLOSED:
+                                    badgeClass = "bg-secondary"; // Changed from subtle to solid
+                                    textColorClass = "text-white"; // Ensure white text on solid background
+                                    break;
+                                case ClaimStatus.OPEN:
+                                default:
+                                    badgeClass = "bg-warning"; // Changed from subtle to solid
+                                    textColorClass = "text-dark"; // Ensure dark text on warning background
+                                    break;
+                            }
+                        }
+                        <span class="badge @badgeClass @textColorClass rounded-pill px-3 py-2 fw-semibold claim-status-details-badge">
                             @Html.DisplayFor(model => model.ClaimStatus)
                         </span>
                     </dd>
@@ -68,3 +92,20 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Custom styles for minor enhancements */
+    .fs-tiny {
+        font-size: 0.85em;
+    }
+
+    /* Styles for the Claim Status badge in details view */
+    .claim-status-details-badge {
+        font-weight: 600; /* Bolder font weight for badges */
+        font-size: 0.9em; /* Slightly larger font size for readability */
+        text-transform: uppercase; /* Uppercase for status for better distinction */
+        padding-top: 0.4em; /* Adjust padding for better vertical centering */
+        padding-bottom: 0.4em; /* Adjust padding for better vertical centering */
+        text-shadow: none; /* Crucial: Remove any text shadow that might cause blurriness */
+    }
+</style>
