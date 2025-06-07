@@ -17,237 +17,237 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = AutoInsuranceManagementSystem
 build_property.RootNamespace = AutoInsuranceManagementSystem
-build_property.ProjectDir = C:\Users\2406749\source\repos\AutoInsuranceMS\AutoInsuranceManagementSystem\
+build_property.ProjectDir = C:\Users\krish\source\repos\AutoInsuranceMS\AutoInsuranceManagementSystem\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\2406749\source\repos\AutoInsuranceMS\AutoInsuranceManagementSystem
+build_property.MSBuildProjectDirectory = C:\Users\krish\source\repos\AutoInsuranceMS\AutoInsuranceManagementSystem
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Login.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Logout.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Manage/Index.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Manage/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Manage/_Layout.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Manage/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX01hbmFnZU5hdi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Manage/_ViewImports.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Manage/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Register.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/Account/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfVmlld0ltcG9ydHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/_ViewImports.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/_ViewStart.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Admin/EditUserRole.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Admin/EditUserRole.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFVzZXJSb2xlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Admin/UserManagement.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Admin/UserManagement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlck1hbmFnZW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Create.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Delete.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Details.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Edit.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Index.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/MyClaims.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Claims/MyClaims.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zXE15Q2xhaW1zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Dashboard/AdminDashboard.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Dashboard/AdminDashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEFkbWluRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Dashboard/AgentDashboard.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Dashboard/AgentDashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEFnZW50RGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Dashboard/CustomerDashboard.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Dashboard/CustomerDashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEN1c3RvbWVyRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Home/Index.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Home/Privacy.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/Delete.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/Details.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/Edit.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/Index.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/InitiatePolicyPayment.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/InitiatePolicyPayment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcSW5pdGlhdGVQb2xpY3lQYXltZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/MyPayments.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/MyPayments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcTXlQYXltZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/RecordManualPayment.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Payments/RecordManualPayment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcUmVjb3JkTWFudWFsUGF5bWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/AvailableOfferings.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/AvailableOfferings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWNpZXNcQXZhaWxhYmxlT2ZmZXJpbmdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/DeleteInstantiatedPolicy.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/DeleteInstantiatedPolicy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWNpZXNcRGVsZXRlSW5zdGFudGlhdGVkUG9saWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/Details.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWNpZXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/EditInstantiatedPolicy.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/EditInstantiatedPolicy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWNpZXNcRWRpdEluc3RhbnRpYXRlZFBvbGljeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/Index.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWNpZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/MyPolicies.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/MyPolicies.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWNpZXNcTXlQb2xpY2llcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/PurchaseConfirmation.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Policies/PurchaseConfirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWNpZXNcUHVyY2hhc2VDb25maXJtYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Create.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5T2ZmZXJpbmdzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Delete.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5T2ZmZXJpbmdzXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Details.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5T2ZmZXJpbmdzXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Edit.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5T2ZmZXJpbmdzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Index.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/PolicyOfferings/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5T2ZmZXJpbmdzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Shared/Error.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Shared/_LoginPartial.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/AdminIndex.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/AdminIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydFRpY2tldHNcQWRtaW5JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/AgentQueue.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/AgentQueue.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydFRpY2tldHNcQWdlbnRRdWV1ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/Create.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydFRpY2tldHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/Delete.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydFRpY2tldHNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/Details.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydFRpY2tldHNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/MyTickets.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/MyTickets.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydFRpY2tldHNcTXlUaWNrZXRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/Update.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/SupportTickets/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydFRpY2tldHNcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/_ViewImports.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/_ViewStart.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406749/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Shared/_Layout.cshtml]
+[C:/Users/krish/source/repos/AutoInsuranceMS/AutoInsuranceManagementSystem/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-caap1ueyto
