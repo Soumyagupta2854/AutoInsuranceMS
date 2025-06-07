@@ -1,11 +1,26 @@
 ﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.SupportTicket>
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<ApplicationUser> UserManager
+@using AutoInsuranceManagementSystem.Models
 @{
-    ViewData["Title"] = "Support Ticket Queue";
+    ViewData["Title"] = "My Assigned Tickets";
+
+    // Helper function to determine the style and icon for each ticket status
+    (string BadgeClass, string IconClass, string StatusText) GetStatusAppearance(TicketStatus status)
+    {
+        string statusText = status.ToString().Replace("_", " ");
+        return status switch
+        {
+            TicketStatus.OPEN => ("bg-danger text-white", "bi-exclamation-circle-fill", statusText),
+            TicketStatus.IN_PROGRESS => ("bg-warning text-dark", "bi-arrow-repeat", statusText),
+            TicketStatus.ON_HOLD => ("bg-secondary text-white", "bi-pause-circle-fill", statusText),
+            TicketStatus.RESOLVED => ("bg-success text-white", "bi-check-circle-fill", statusText),
+            TicketStatus.CLOSED => ("bg-dark text-white", "bi-lock-fill", statusText),
+            _ => ("bg-light text-dark", "bi-question-circle-fill", statusText)
+        };
+    }
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="display-6">@ViewData["Title"]</h1>
+
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
@@ -21,7 +36,7 @@
     </div>
 }
 
-<div class="card shadow-sm rounded-3 mt-3">
+<div class="card shadow-sm rounded-3 mt-4">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover align-middle">
@@ -33,38 +48,33 @@
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Created</th>
-                        <th>Assigned To</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (!Model.Any())
                     {
-                        <tr><td colspan="8" class="text-center py-4">No tickets in the queue matching your criteria.</td></tr>
+                        <tr><td colspan="7" class="text-center py-4">You have no tickets assigned to you.</td></tr>
                     }
                     @foreach (var item in Model)
                     {
                         <tr>
                             <td>TIC-@item.TicketId.ToString("D5")</td>
-                            <td><a asp-action="Details" asp-route-id="@item.TicketId">@item.Subject</a></td>
+                            <td><a asp-action="Update" asp-route-id="@item.TicketId" class="fw-bold">@item.Subject</a></td>
                             <td>@item.User?.UserName</td>
                             <td>@item.Priority</td>
                             <td>
-                                <span class="badge @(item.TicketStatus == TicketStatus.OPEN ? "bg-danger-subtle text-danger-emphasis" : item.TicketStatus == TicketStatus.IN_PROGRESS ? "bg-warning-subtle text-warning-emphasis" : "bg-info-subtle text-info-emphasis") rounded-pill px-2 py-1 fs-tiny">
-                                    @Html.DisplayFor(modelItem => item.TicketStatus)
+                                @{
+                                    var status = GetStatusAppearance(item.TicketStatus);
+                                }
+                                <span class="badge d-inline-flex align-items-center gap-1 rounded-pill px-3 py-2 fw-semibold @status.BadgeClass" style="font-size: 0.8rem;">
+                                    <i class="@status.IconClass"></i>
+                                    <span>@status.StatusText</span>
                                 </span>
                             </td>
                             <td>@item.CreatedDate.ToString("yyyy-MM-dd")</td>
-                            <td>@(item.AssignedAgent?.UserName ?? "Unassigned")</td>
                             <td class="text-center">
                                 <a asp-action="Update" asp-route-id="@item.TicketId" class="btn btn-sm btn-primary rounded-pill px-3 me-1" title="Update/View"><i class="bi bi-pencil-square"></i> Update</a>
-                                @if (item.AssignedAgentId == null && item.TicketStatus == TicketStatus.OPEN)
-                                {
-                                    <form asp-action="AssignToSelf" asp-route-id="@item.TicketId" method="post" style="display:inline;">
-                                        @Html.AntiForgeryToken()
-                                        <button type="submit" class="btn btn-sm btn-success rounded-pill px-3" title="Assign to Me"><i class="bi bi-person-check-fill"></i> Assign to Me</button>
-                                    </form>
-                                }
                             </td>
                         </tr>
                     }

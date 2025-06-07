@@ -46,16 +46,34 @@
                         </div>
                         <div class="col-md-6">
                             <label asp-for="Priority" class="form-label fw-semibold"></label>
-                            <select asp-for="Priority" asp-items="Html.GetEnumSelectList<TicketPriority>()" class="form-select rounded-pill"></select>
-                            <span asp-validation-for="Priority" class="text-danger small"></span>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <select asp-for="Priority" asp-items="Html.GetEnumSelectList<TicketPriority>()" class="form-select rounded-pill"></select>
+                                <span asp-validation-for="Priority" class="text-danger small"></span>
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control rounded-pill" value="@Model.Priority" readonly disabled />
+                                <input type="hidden" asp-for="Priority" />
+                            }
                         </div>
                     </div>
                     <div class="mb-3">
                         <label asp-for="AssignedAgentId" class="form-label fw-semibold"></label>
-                        <select asp-for="AssignedAgentId" asp-items="Model.AvailableAgents" class="form-select rounded-pill">
-                            <option value="">-- Unassign / Keep Unassigned --</option>
-                        </select>
-                        <span asp-validation-for="AssignedAgentId" class="text-danger small"></span>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <select asp-for="AssignedAgentId" asp-items="Model.AvailableAgents" class="form-select rounded-pill">
+                                <option value="">-- Unassign / Keep Unassigned --</option>
+                            </select>
+                            <span asp-validation-for="AssignedAgentId" class="text-danger small"></span>
+                        }
+                        else
+                        {
+                            // FIX: Convert the integer ID to a string for comparison with SelectListItem.Value
+                            var assignedAgentName = Model.AvailableAgents.FirstOrDefault(a => a.Value == Model.AssignedAgentId.ToString())?.Text ?? "Unassigned";
+                            <input type="text" class="form-control rounded-pill" value="@assignedAgentName" readonly disabled />
+                            <input type="hidden" asp-for="AssignedAgentId" />
+                        }
                     </div>
                     <div class="mb-3">
                         <label asp-for="ResolutionNotes" class="form-label fw-semibold"></label>
@@ -83,5 +101,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
 }

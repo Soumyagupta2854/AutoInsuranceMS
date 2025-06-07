@@ -1,16 +1,32 @@
 ﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.Claim>
 @using Microsoft.AspNetCore.Identity
+@using AutoInsuranceManagementSystem.Models
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "All Claims";
+    // Dynamically set the title based on the user's role
+    ViewData["Title"] = User.IsInRole("Agent") ? "My Assigned Claims" : "All Claims";
+
+    // Helper function to determine the style and icon for each claim status
+    (string BadgeClass, string IconClass, string StatusText) GetClaimStatusAppearance(ClaimStatus status)
+    {
+        string statusText = status.ToString().Replace("_", " ");
+        return status switch
+        {
+            ClaimStatus.OPEN => ("bg-warning text-dark", "bi-folder2-open", statusText),
+            ClaimStatus.APPROVED => ("bg-success text-white", "bi-check-circle-fill", statusText),
+            ClaimStatus.REJECTED => ("bg-danger text-white", "bi-x-circle-fill", statusText),
+            ClaimStatus.CLOSED => ("bg-secondary text-white", "bi-lock-fill", statusText),
+            _ => ("bg-light text-dark", "bi-question-circle-fill", statusText)
+        };
+    }
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>@ViewData["Title"]</h1>
+    <h1 class="display-6">@ViewData["Title"]</h1>
     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
     {
-        <a asp-action="Create" class="btn btn-success rounded-pill px-4"><i class="bi bi-file-earmark-plus-fill me-2"></i>Submit New Claim (Admin)</a>
+        <a asp-action="Create" class="btn btn-success rounded-pill px-4"><i class="bi bi-file-earmark-plus-fill me-2"></i>Submit New Claim</a>
     }
 </div>
 @if (TempData["SuccessMessage"] != null)
@@ -28,7 +44,7 @@
     </div>
 }
 
-<div class="card shadow-sm rounded-3">
+<div class="card shadow-sm rounded-3 mt-4">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover align-middle">
@@ -47,7 +63,7 @@
                 <tbody>
                     @if (!Model.Any())
                     {
-                        <tr><td colspan="8" class="text-center py-4">No claims found.</td></tr>
+                        <tr><td colspan="8" class="text-center py-4">No claims found matching your criteria.</td></tr>
                     }
                     @foreach (var item in Model)
                     {
@@ -56,44 +72,20 @@
                             <td>@(item.Policy?.PolicyNumber ?? "N/A")</td>
                             <td>@(item.Policy?.Customer?.UserName ?? "N/A")</td>
                             <td>@item.ClaimAmount.ToString("C")</td>
-                            <td>@item.DateSubmitted.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@item.DateSubmitted.ToString("yyyy-MM-dd")</td>
                             <td>
                                 @{
-                                    string badgeClass = "";
-                                    string statusText = "";
-
-                                    switch (item.ClaimStatus)
-                                    {
-                                        case ClaimStatus.OPEN:
-                                            badgeClass = "bg-warning text-dark"; // Brighter yellow for open/pending
-                                            statusText = "Open";
-                                            break;
-                                        case ClaimStatus.APPROVED:
-                                            badgeClass = "bg-success text-white"; // Solid green for approved
-                                            statusText = "Approved";
-                                            break;
-                                        case ClaimStatus.REJECTED:
-                                            badgeClass = "bg-danger text-white"; // Solid red for rejected
-                                            statusText = "Rejected";
-                                            break;
-                                        case ClaimStatus.CLOSED:
-                                            badgeClass = "bg-secondary text-white"; // Grey for closed
-                                            statusText = "Closed";
-                                            break;
-                                        default:
-                                            badgeClass = "bg-light text-muted"; // Fallback
-                                            statusText = "Unknown";
-                                            break;
-                                    }
+                                    var status = GetClaimStatusAppearance(item.ClaimStatus);
                                 }
-                                <span class="badge @badgeClass rounded-pill px-3 py-2 fw-semibold">
-                                    @statusText
+                                <span class="badge d-inline-flex align-items-center gap-1 rounded-pill px-3 py-2 fw-semibold @status.BadgeClass" style="font-size: 0.8rem;">
+                                    <i class="bi @status.IconClass"></i>
+                                    <span>@status.StatusText</span>
                                 </span>
                             </td>
                             <td>@(item.Adjuster?.UserName ?? "Not Assigned")</td>
                             <td class="text-center">
                                 <a asp-action="Details" asp-route-id="@item.ClaimId" class="btn btn-sm btn-outline-info rounded-pill px-3 me-1" title="Details"><i class="bi bi-eye-fill"></i></a>
-                                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Agent")))
+                                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || (User.IsInRole("Agent") && item.AdjusterId.ToString() == UserManager.GetUserId(User))))
                                 {
                                     <a asp-action="Edit" asp-route-id="@item.ClaimId" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1" title="Edit"><i class="bi bi-pencil-fill"></i></a>
                                 }
@@ -106,6 +98,6 @@
                     }
                 </tbody>
             </table>
-        </div>
+        </div>z
     </div>
 </div>

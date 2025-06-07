@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.SupportTicket>
 @using Microsoft.AspNetCore.Identity
-@using AutoInsuranceManagementSystem.Models 
+@using AutoInsuranceManagementSystem.Models
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "My Support Tickets";
@@ -9,227 +9,228 @@
 @section Styles {
     <style>
         :root {
-            /* Assuming --brand-primary and other color vars are in _Layout.cshtml */
-            --table-header-bg: #f8f9fc; /* Light grey, consistent with _Layout */
-            --table-row-hover-bg: #eef2f7; /* Subtle blueish hover */
-            --table-border-color: #e9ecef;
-            /* Badge colors - ensure these Bootstrap 5.3 variables are available or define custom versions */
-            /* Using fallback RGB values as an example if Bootstrap CSS vars for RGB are not directly accessible */
-            --bs-danger-rgb-fallback: 220, 53, 69;
-            --bs-warning-rgb-fallback: 255, 193, 7;
-            --bs-success-rgb-fallback: 25, 135, 84;
-            --bs-secondary-rgb-fallback: 108, 117, 125;
-            --badge-open-bg: rgba(var(--bs-danger-rgb, var(--bs-danger-rgb-fallback)), 0.15);
-            --badge-open-text: var(--bs-danger-text-emphasis);
-            --badge-in-progress-bg: rgba(var(--bs-warning-rgb, var(--bs-warning-rgb-fallback)), 0.15);
-            --badge-in-progress-text: var(--bs-warning-text-emphasis);
-            --badge-resolved-bg: rgba(var(--bs-success-rgb, var(--bs-success-rgb-fallback)), 0.15);
-            --badge-resolved-text: var(--bs-success-text-emphasis);
-            --badge-closed-bg: rgba(var(--bs-secondary-rgb, var(--bs-secondary-rgb-fallback)), 0.15);
-            --badge-closed-text: var(--bs-secondary-text-emphasis);
-            --button-outline-info-hover-bg: var(--bs-info, #0dcaf0); /* Fallback color */
-            --button-outline-info-hover-text: #fff;
-            --button-success-bg: var(--bs-success, #198754); /* Fallback color */
-            --button-success-hover-bg: var(--bs-success-darker, #146c43); /* Define if not in _Layout */
+            --brand-primary: #007bff;
+            --brand-success: #28a745;
+            --brand-warning: #ffc107;
+            --brand-danger: #dc3545;
+            --brand-secondary: #6c757d;
+            --brand-light: #f8f9fa;
+            --brand-dark: #343a40;
         }
 
-        .page-header h1 {
+        .page-header {
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+            .page-header h1 {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                color: var(--brand-dark);
+            }
+
+        .btn-brand-gradient {
+            background-image: linear-gradient(45deg, #198754, #28a745);
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+        }
+
+            .btn-brand-gradient:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+            }
+
+        .ticket-card {
+            background-color: #fff;
+            border: 1px solid #e9ecef;
+            border-left-width: 5px;
+            margin-bottom: 1.5rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .ticket-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            }
+
+        .ticket-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .ticket-id {
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
-            color: #2c3e50;
-            font-size: 2rem;
+            font-size: 1.1rem;
+            color: var(--brand-primary);
         }
 
-        .page-header .btn-success { /* "Create New Ticket" button */
-            background-color: var(--button-success-bg);
-            border-color: var(--button-success-bg);
-            color: #fff;
-            padding: 0.6rem 1.25rem;
-            font-weight: 500; /* Or 600 if Poppins */
-        }
-
-            .page-header .btn-success:hover {
-                background-color: var(--button-success-hover-bg);
-                border-color: var(--button-success-hover-bg);
-            }
-
-            .page-header .btn-success .bi {
-                vertical-align: -0.1em;
-            }
-
-        .tickets-list-card {
-            /* Base card styles (shadow, border, radius) should be inherited from global .card in _Layout.cshtml */
-        }
-
-            .tickets-list-card .card-body {
-                padding: 0;
-            }
-
-        .table.align-middle th {
+        .ticket-subject {
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
-            color: #495057;
-            background-color: var(--table-header-bg);
-            border-bottom-width: 1px;
-            border-top: none;
-            padding: 1rem 1.25rem;
-            vertical-align: middle;
-            white-space: nowrap;
+            font-size: 1.2rem;
+            color: var(--brand-dark);
         }
 
-        .table.align-middle td {
-            padding: 0.9rem 1.25rem;
-            vertical-align: middle;
-            border-top-color: var(--table-border-color);
-            font-size: 0.95rem; /* Inter font */
-            color: #343a40;
+        .ticket-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
         }
 
-        .table.table-hover tbody tr:hover {
-            background-color: var(--table-row-hover-bg) !important;
-        }
-
-        .table .badge {
-            font-weight: 500; /* Inter */
-            font-size: 0.8rem;
-            padding: 0.45em 0.8em;
-            letter-spacing: 0.02em;
-        }
-        /* Specific badge styling using CSS variables */
-        .badge.status-open {
-            background-color: var(--badge-open-bg) !important;
-            color: var(--badge-open-text) !important;
-        }
-
-        .badge.status-in-progress {
-            background-color: var(--badge-in-progress-bg) !important;
-            color: var(--badge-in-progress-text) !important;
-        }
-
-        .badge.status-resolved {
-            background-color: var(--badge-resolved-bg) !important;
-            color: var(--badge-resolved-text) !important;
-        }
-
-        .badge.status-closed {
-            background-color: var(--badge-closed-bg) !important;
-            color: var(--badge-closed-text) !important;
-        }
-
-
-        .table .btn-sm {
-            font-size: 0.8rem;
-            padding: 0.4rem 0.9rem;
-            font-weight: 500; /* Inter */
-        }
-
-            .table .btn-sm .bi {
-                vertical-align: -0.1em;
+            .ticket-meta .bi {
+                vertical-align: -0.15em;
                 margin-right: 0.3rem;
             }
 
-        .table .btn-outline-info { /* View Details */
-            color: var(--bs-info, #0dcaf0); /* Fallback color */
-            border-color: var(--bs-info, #0dcaf0); /* Fallback color */
+        /* Status-specific border colors */
+        .ticket-card.status-open {
+            border-left-color: var(--brand-danger);
         }
 
-            .table .btn-outline-info:hover {
-                background-color: var(--button-outline-info-hover-bg);
-                color: var(--button-outline-info-hover-text);
-                border-color: var(--button-outline-info-hover-bg);
-            }
-
-        .no-tickets-message td {
-            font-style: italic;
-            color: #6c757d;
-            padding-top: 2rem !important;
-            padding-bottom: 2rem !important;
+        .ticket-card.status-in-progress {
+            border-left-color: var(--brand-warning);
         }
 
-            .no-tickets-message td .bi { /* Icon for no tickets */
-                font-size: 2.5rem;
-                display: block;
-                margin-bottom: 0.75rem;
-                opacity: 0.6;
+        .ticket-card.status-resolved {
+            border-left-color: var(--brand-success);
+        }
+
+        .ticket-card.status-closed, .ticket-card.status-on-hold {
+            border-left-color: var(--brand-secondary);
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+            .badge-status .bi {
+                margin-right: 0.4rem;
+                font-size: 1.1em;
             }
 
+        .no-tickets-container {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+            .no-tickets-container .icon-bg {
+                font-size: 4rem;
+                color: #e9ecef;
+            }
+
+            .no-tickets-container h3 {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                margin-top: 1.5rem;
+                color: var(--brand-dark);
+            }
+
+            .no-tickets-container p {
+                color: #6c757d;
+                margin-bottom: 2rem;
+            }
     </style>
 }
 
 <div class="page-header d-flex justify-content-between align-items-center mb-4">
     <h1>@ViewData["Title"]</h1>
-    <a asp-action="Create" class="btn btn-success rounded-pill px-4"><i class="bi bi-plus-square-dotted me-2"></i>Create New Ticket</a>
+    <a asp-action="Create" class="btn btn-success btn-brand-gradient rounded-pill px-4 py-2 text-white"><i class="bi bi-plus-circle-fill me-2"></i>Create New Ticket</a>
 </div>
 
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
-        @TempData["SuccessMessage"]
+        <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
-        @TempData["ErrorMessage"]
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
-<div class="card tickets-list-card">
-    @* Removed shadow-sm rounded-3 for global style inheritance *@
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead>
-                    @* Removed table-light *@
-                    <tr>
-                        <th>Ticket ID</th>
-                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Subject)</th>
-                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Priority)</th>
-                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TicketStatus)</th>
-                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().LastUpdatedDate)</th>
-                        <th>Assigned Agent</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!Model.Any())
-                    {
-                        <tr class="no-tickets-message">
-                            <td colspan="7" class="text-center">
-                                <i class="bi bi-ticket-detailed"></i>
-                                You have not submitted any support tickets.
-                            </td>
-                        </tr>
-                    }
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>TIC-@item.TicketId.ToString("D5")</td>
-                            <td>@Html.DisplayFor(modelItem => item.Subject)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Priority)</td>
-                            <td>
-                                @{
-                                    string statusClass = "status-closed"; // Default for any other status
-                                    if (item.TicketStatus == TicketStatus.OPEN) { statusClass = "status-open"; }
-                                    else if (item.TicketStatus == TicketStatus.IN_PROGRESS) { statusClass = "status-in-progress"; }
-                                    else if (item.TicketStatus == TicketStatus.RESOLVED) { statusClass = "status-resolved"; }
-                                    // CLOSED will use status-closed
-                                }
-                                <span class="badge @statusClass rounded-pill">
-                                    @item.TicketStatus.ToString().Replace("_", " ")
-                                </span>
-                            </td>
-                            <td>@item.LastUpdatedDate.ToLocalTime().ToString("dd MMM, yyyy HH:mm") IST</td> @* CONVERTED TO LOCAL TIME & ADDED IST SUFFIX *@
-                            <td>@(item.AssignedAgent?.FullName ?? item.AssignedAgent?.UserName ?? "Not Assigned")</td> @* Show FullName if available *@
-                            <td class="text-center">
-                                <a asp-action="Details" asp-route-id="@item.TicketId" class="btn btn-sm btn-outline-info rounded-pill px-3" title="View Details"><i class="bi bi-eye-fill"></i> View</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+<div>
+    @if (!Model.Any())
+    {
+        <div class="no-tickets-container">
+            <i class="bi bi-ticket-detailed icon-bg"></i>
+            <h3>No Tickets Found</h3>
+            <p>You haven't created any support tickets yet. Get started by creating a new one.</p>
+            <a asp-action="Create" class="btn btn-success btn-brand-gradient rounded-pill px-4 py-2 text-white"><i class="bi bi-plus-circle-fill me-2"></i>Create Your First Ticket</a>
         </div>
-    </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            string statusClass = item.TicketStatus.ToString().ToLower().Replace("_", "-");
+            string statusIcon = "bi-question-circle";
+            var statusBadgeBg = "bg-secondary";
+
+            switch (item.TicketStatus)
+            {
+                case TicketStatus.OPEN:
+                    statusIcon = "bi-envelope-open-fill";
+                    statusBadgeBg = "bg-danger";
+                    break;
+                case TicketStatus.IN_PROGRESS:
+                    statusIcon = "bi-arrow-repeat";
+                    statusBadgeBg = "bg-warning text-dark";
+                    break;
+                case TicketStatus.RESOLVED:
+                    statusIcon = "bi-check-circle-fill";
+                    statusBadgeBg = "bg-success";
+                    break;
+                case TicketStatus.CLOSED:
+                    statusIcon = "bi-archive-fill";
+                    statusBadgeBg = "bg-secondary";
+                    break;
+                case TicketStatus.ON_HOLD:
+                    statusIcon = "bi-pause-circle-fill";
+                    statusBadgeBg = "bg-info text-dark";
+                    break;
+            }
+
+            <div class="card ticket-card status-@statusClass rounded-3 shadow-sm">
+                <div class="ticket-card-header">
+                    <span class="ticket-id">TIC-@item.TicketId.ToString("D5")</span>
+                    <span class="badge @statusBadgeBg rounded-pill px-3 py-2 badge-status">
+                        <i class="bi @statusIcon"></i>
+                        @item.TicketStatus.ToString().Replace("_", " ")
+                    </span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="ticket-subject mb-3">@Html.DisplayFor(modelItem => item.Subject)</h5>
+                    <div class="row g-3 ticket-meta">
+                        <div class="col-md-6 col-lg-4">
+                            <i class="bi bi-person-check-fill text-muted"></i>
+                            <strong>Assigned Agent:</strong> @(item.AssignedAgent?.FullName ?? item.AssignedAgent?.UserName ?? "Not Assigned")
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <i class="bi bi-clock-history text-muted"></i>
+                            <strong>Last Updated:</strong> @item.LastUpdatedDate.ToLocalTime().ToString("dd MMM, yyyy HH:mm")
+                        </div>
+                        <div class="col-12 col-lg-4 text-lg-end mt-lg-0">
+                            <a asp-action="Details" asp-route-id="@item.TicketId" class="btn btn-sm btn-outline-primary rounded-pill px-3" title="View Details"><i class="bi bi-eye-fill me-1"></i> View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 </div>
+

@@ -1,14 +1,30 @@
 ﻿@model IEnumerable<AutoInsuranceManagementSystem.Models.Policy>
+@using AutoInsuranceManagementSystem.Models
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Customer Policies";
+
+    // Helper function to determine the style and icon for each policy status
+    (string BadgeClass, string IconClass, string StatusText) GetPolicyStatusAppearance(PolicyStatus status)
+    {
+        string statusText = status.ToString().Replace("_", " ");
+        return status switch
+        {
+            PolicyStatus.ACTIVE => ("bg-success text-white", "bi-shield-check", statusText),
+            PolicyStatus.PENDING_PAYMENT => ("bg-info text-dark", "bi-hourglass-split", "PENDING PAYMENT"),
+            PolicyStatus.EXPIRED => ("bg-secondary text-white", "bi-calendar-x-fill", statusText),
+            PolicyStatus.CANCELLED => ("bg-danger text-white", "bi-x-circle-fill", statusText),
+            _ => ("bg-warning text-dark", "bi-question-circle-fill", statusText)
+        };
+    }
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>@ViewData["Title"]</h1>
+    <h1 class="display-6">@ViewData["Title"]</h1>
 </div>
+
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
@@ -23,7 +39,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
-<div class="card shadow-sm rounded-3">
+
+<div class="card shadow-sm rounded-3 mt-4">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover align-middle">
@@ -54,17 +71,17 @@
                             <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
                             <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
                             <td>
-                                <span class="badge @(item.PolicyStatus == PolicyStatus.ACTIVE ? "bg-success-subtle text-success-emphasis" :
-                                                                          item.PolicyStatus == PolicyStatus.PENDING_PAYMENT ? "bg-info-subtle text-info-emphasis" :
-                                                                          item.PolicyStatus == PolicyStatus.EXPIRED ? "bg-secondary-subtle text-secondary-emphasis" :
-                                                                          item.PolicyStatus == PolicyStatus.CANCELLED ? "bg-danger-subtle text-danger-emphasis" :
-                                                                          "bg-warning-subtle text-warning-emphasis") rounded-pill px-2 py-1 fs-tiny">
-                                @Html.DisplayFor(modelItem => item.PolicyStatus)
-                            </span>
-                        </td>
-                        <td class="text-center">
-                            <a asp-action="Details" asp-route-id="@item.PolicyId" class="btn btn-sm btn-outline-info rounded-pill px-3 me-1" title="Details"><i class="bi bi-eye-fill"></i></a>
-                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                                @{
+                                    var status = GetPolicyStatusAppearance(item.PolicyStatus);
+                                }
+                                <span class="badge d-inline-flex align-items-center gap-1 rounded-pill px-3 py-2 fw-semibold @status.BadgeClass" style="font-size: 0.8rem;">
+                                    <i class="bi @status.IconClass"></i>
+                                    <span>@status.StatusText</span>
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@item.PolicyId" class="btn btn-sm btn-outline-info rounded-pill px-3 me-1" title="Details"><i class="bi bi-eye-fill"></i></a>
+                                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                                 {
                                     <a asp-action="EditInstantiatedPolicy" asp-route-id="@item.PolicyId" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1" title="Edit Policy"><i class="bi bi-pencil-fill"></i></a>
                                     <a asp-action="DeleteInstantiatedPolicy" asp-route-id="@item.PolicyId" class="btn btn-sm btn-outline-danger rounded-pill px-3" title="Delete Policy"><i class="bi bi-trash3-fill"></i></a>

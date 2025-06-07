@@ -1,4 +1,4 @@
-﻿using System; // For DateTime
+﻿using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -85,7 +85,8 @@ namespace AutoInsuranceManagementSystem.Controllers
                 PremiumAmount = offering.PremiumAmount,
                 CoverageType = offering.CoverageType,
                 DurationInMonths = offering.DurationInMonths,
-                StartDate = DateTime.Today
+                StartDate = DateTime.Today,
+                VehicleYear = DateTime.Now.Year // Default the year for user convenience
             };
             return View(model);
         }
@@ -114,20 +115,23 @@ namespace AutoInsuranceManagementSystem.Controllers
 
                 if (!ModelState.IsValid)
                 {
+                    // Repopulate non-posted parts of the view model if validation fails
                     purchaseModel.OfferingName = offering.OfferingName;
                     purchaseModel.Description = offering.Description;
                     purchaseModel.CoverageType = offering.CoverageType;
                     purchaseModel.DurationInMonths = offering.DurationInMonths;
-                    // PremiumAmount and CoverageAmount are already on the model
                     return View("PurchaseConfirmation", purchaseModel);
                 }
+
+                // **UPDATED LOGIC**: Combine structured vehicle data into a single string for storage.
+                string vehicleDetailsString = $"{purchaseModel.VehicleMake} {purchaseModel.VehicleModel} ({purchaseModel.VehicleYear}), Reg No: {purchaseModel.VehicleRegistrationNumber.ToUpper()}";
 
                 var newPolicy = new Policy
                 {
                     PolicyOfferingId = offering.PolicyOfferingId,
                     CustomerId = customer.Id,
                     PolicyNumber = $"POL-{DateTime.UtcNow.Ticks.ToString().Substring(8)}",
-                    VehicleDetails = purchaseModel.VehicleDetails,
+                    VehicleDetails = vehicleDetailsString, // Use the combined string here
                     ActualCoverageAmount = offering.CoverageAmount,
                     ActualPremiumAmount = offering.PremiumAmount,
                     StartDate = purchaseModel.StartDate,
@@ -142,6 +146,7 @@ namespace AutoInsuranceManagementSystem.Controllers
                 return RedirectToAction("InitiatePolicyPayment", "Payments", new { policyId = newPolicy.PolicyId });
             }
 
+            // If we get here, something failed; redisplay form
             if (purchaseModel.PolicyOfferingId > 0)
             {
                 var offeringForView = await _context.PolicyOfferings.FindAsync(purchaseModel.PolicyOfferingId);
@@ -151,7 +156,6 @@ namespace AutoInsuranceManagementSystem.Controllers
                     purchaseModel.Description = offeringForView.Description;
                     purchaseModel.CoverageType = offeringForView.CoverageType;
                     purchaseModel.DurationInMonths = offeringForView.DurationInMonths;
-                    // PremiumAmount and CoverageAmount are already on the model
                 }
             }
             return View("PurchaseConfirmation", purchaseModel);

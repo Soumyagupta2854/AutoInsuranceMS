@@ -24,7 +24,7 @@ namespace AutoInsuranceManagementSystem.Controllers
             _userManager = userManager;
         }
 
-        // GET: SupportTickets/MyTickets (Customer)
+        // GET: SupportTickets/MyTickets (For Customers)
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> MyTickets()
         {
@@ -40,7 +40,7 @@ namespace AutoInsuranceManagementSystem.Controllers
             return View(tickets);
         }
 
-        // GET: SupportTickets/Create (Customer)
+        // GET: SupportTickets/Create (For Customers)
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create()
         {
@@ -59,7 +59,7 @@ namespace AutoInsuranceManagementSystem.Controllers
             return View(viewModel);
         }
 
-        // POST: SupportTickets/Create (Customer)
+        // POST: SupportTickets/Create (For Customers)
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Customer")]
@@ -74,13 +74,13 @@ namespace AutoInsuranceManagementSystem.Controllers
                 {
                     Subject = viewModel.Subject,
                     IssueDescription = viewModel.IssueDescription,
-                    Priority = viewModel.Priority,
                     RelatedPolicyId = viewModel.RelatedPolicyId,
                     UserId = user.Id,
                     CreatedDate = DateTime.UtcNow,
                     LastUpdatedDate = DateTime.UtcNow,
                     TicketStatus = TicketStatus.OPEN
                 };
+
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Support ticket created successfully!";
@@ -95,7 +95,7 @@ namespace AutoInsuranceManagementSystem.Controllers
             return View(viewModel);
         }
 
-        // GET: SupportTickets/Details/{id} (Customer, Agent, Admin)
+        // GET: SupportTickets/Details/{id} (For All Authorized Roles)
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -118,6 +118,7 @@ namespace AutoInsuranceManagementSystem.Controllers
             return View(ticket);
         }
 
+        // GET: SupportTickets/AgentQueue (For Agents and Admins)
         [Authorize(Roles = "Agent,Admin")]
         public async Task<IActionResult> AgentQueue()
         {
@@ -126,55 +127,41 @@ namespace AutoInsuranceManagementSystem.Controllers
 
             IQueryable<SupportTicket> ticketsQuery = _context.SupportTickets
                 .Include(t => t.User)
-                .Include(t => t.AssignedAgent)
                 .Include(t => t.RelatedPolicy)
-                .Where(t => t.TicketStatus == TicketStatus.OPEN || t.TicketStatus == TicketStatus.IN_PROGRESS || t.TicketStatus == TicketStatus.ON_HOLD);
+                .Where(t => t.TicketStatus != TicketStatus.RESOLVED && t.TicketStatus != TicketStatus.CLOSED);
 
             if (User.IsInRole("Agent"))
             {
-                ticketsQuery = ticketsQuery.Where(t => t.AssignedAgentId == null || t.AssignedAgentId == user.Id);
+                ticketsQuery = ticketsQuery.Where(t => t.AssignedAgentId == user.Id);
             }
 
-            var tickets = await ticketsQuery.OrderBy(t => t.Priority).ThenBy(t => t.CreatedDate).ToListAsync();
+            var tickets = await ticketsQuery
+                .OrderBy(t => t.Priority)
+                .ThenBy(t => t.CreatedDate)
+                .ToListAsync();
+
             return View(tickets);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Agent")]
-        public async Task<IActionResult> AssignToSelf(int id)
-        {
-            var ticket = await _context.SupportTickets.FindAsync(id);
-            var agent = await _userManager.GetUserAsync(User);
-
-            if (ticket == null || agent == null) return NotFound();
-
-            if (ticket.AssignedAgentId == null && ticket.TicketStatus == TicketStatus.OPEN)
-            {
-                ticket.AssignedAgentId = agent.Id;
-                ticket.TicketStatus = TicketStatus.IN_PROGRESS;
-                ticket.LastUpdatedDate = DateTime.UtcNow;
-                _context.Update(ticket);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = $"Ticket #{ticket.TicketId} assigned to you.";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = $"Ticket #{ticket.TicketId} could not be assigned (already assigned or not open).";
-            }
-            return RedirectToAction(nameof(AgentQueue));
-        }
-
+        // GET: SupportTickets/Update/{id} (For Agents and Admins)
         [Authorize(Roles = "Agent,Admin")]
         public async Task<IActionResult> Update(int? id)
         {
             if (id == null) return NotFound();
+
             var ticket = await _context.SupportTickets
                 .Include(t => t.User)
                 .Include(t => t.RelatedPolicy).ThenInclude(p => p!.PolicyOffering)
                 .FirstOrDefaultAsync(t => t.TicketId == id.Value);
 
             if (ticket == null) return NotFound();
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (User.IsInRole("Agent") && ticket.AssignedAgentId != currentUser.Id)
+            {
+                TempData["ErrorMessage"] = "You can only view/update tickets that are assigned to you.";
+                return RedirectToAction(nameof(AgentQueue));
+            }
 
             var viewModel = new SupportTicketUpdateViewModel
             {
@@ -190,12 +177,17 @@ namespace AutoInsuranceManagementSystem.Controllers
                 ResolutionNotes = ticket.ResolutionNotes
             };
 
-            var agents = await _userManager.Users.Where(u => u.Role == UserRole.AGENT || u.Role == UserRole.ADMIN).OrderBy(u => u.UserName).ToListAsync();
-            viewModel.AvailableAgents = new SelectList(agents, "Id", "UserName", ticket.AssignedAgentId);
+            // **FIX**: Populate the list of agents for BOTH roles.
+            // The view needs this list to display the name of the assigned agent, even for the agent's read-only view.
+            var agents = await _userManager.GetUsersInRoleAsync("Agent");
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            var agentAndAdminUsers = agents.Concat(admins).OrderBy(u => u.UserName).ToList();
+            viewModel.AvailableAgents = new SelectList(agentAndAdminUsers, "Id", "UserName", ticket.AssignedAgentId);
 
             return View(viewModel);
         }
 
+        // POST: SupportTickets/Update/{id} (For Agents and Admins)
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Agent,Admin")]
@@ -203,46 +195,43 @@ namespace AutoInsuranceManagementSystem.Controllers
         {
             if (id != viewModel.TicketId) return NotFound();
 
-            var ticketToUpdate = await _context.SupportTickets.Include(t => t.User).Include(t => t.RelatedPolicy).ThenInclude(p => p!.PolicyOffering).FirstOrDefaultAsync(t => t.TicketId == id);
+            var ticketToUpdate = await _context.SupportTickets.FindAsync(id);
             if (ticketToUpdate == null) return NotFound();
 
             var currentUser = await _userManager.GetUserAsync(User);
-            if (User.IsInRole("Agent") && ticketToUpdate.AssignedAgentId != currentUser.Id && ticketToUpdate.AssignedAgentId != null)
+            if (User.IsInRole("Agent"))
             {
-                TempData["ErrorMessage"] = "You can only update tickets assigned to you or unassigned tickets if you assign them.";
-                var agentsForDropdown = await _userManager.Users.Where(u => u.Role == UserRole.AGENT || u.Role == UserRole.ADMIN).OrderBy(u => u.UserName).ToListAsync();
-                viewModel.AvailableAgents = new SelectList(agentsForDropdown, "Id", "UserName", viewModel.AssignedAgentId);
-                viewModel.Subject = ticketToUpdate.Subject;
-                viewModel.IssueDescription = ticketToUpdate.IssueDescription;
-                viewModel.SubmittedByUserName = ticketToUpdate.User?.UserName ?? "N/A";
-                viewModel.CreatedDate = ticketToUpdate.CreatedDate;
-                viewModel.RelatedPolicyNumber = ticketToUpdate.RelatedPolicy != null ? $"{ticketToUpdate.RelatedPolicy.PolicyNumber} ({ticketToUpdate.RelatedPolicy.PolicyOffering?.OfferingName})" : "N/A";
-                return View(viewModel);
+                if (ticketToUpdate.AssignedAgentId != currentUser.Id)
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to update this ticket.";
+                    return RedirectToAction(nameof(AgentQueue));
+                }
+                ModelState.Remove("Priority");
+                ModelState.Remove("AssignedAgentId");
+                viewModel.Priority = ticketToUpdate.Priority;
+                viewModel.AssignedAgentId = ticketToUpdate.AssignedAgentId;
             }
 
             if (ModelState.IsValid)
             {
                 ticketToUpdate.TicketStatus = viewModel.TicketStatus;
-                ticketToUpdate.Priority = viewModel.Priority;
-                ticketToUpdate.AssignedAgentId = viewModel.AssignedAgentId;
                 ticketToUpdate.ResolutionNotes = viewModel.ResolutionNotes;
                 ticketToUpdate.LastUpdatedDate = DateTime.UtcNow;
 
+                if (User.IsInRole("Admin"))
+                {
+                    ticketToUpdate.Priority = viewModel.Priority;
+                    ticketToUpdate.AssignedAgentId = viewModel.AssignedAgentId;
+                }
+
                 if (viewModel.TicketStatus == TicketStatus.RESOLVED || viewModel.TicketStatus == TicketStatus.CLOSED)
                 {
-                    ticketToUpdate.ResolvedDate = DateTime.UtcNow;
+                    ticketToUpdate.ResolvedDate ??= DateTime.UtcNow;
                 }
                 else
                 {
                     ticketToUpdate.ResolvedDate = null;
                 }
-                if (ticketToUpdate.AssignedAgentId == currentUser.Id && ticketToUpdate.TicketStatus == TicketStatus.OPEN && viewModel.TicketStatus != TicketStatus.OPEN)
-                {
-                    // If agent takes action (other than just re-assigning while keeping it open) and it was OPEN, move to IN_PROGRESS
-                    if (ticketToUpdate.TicketStatus != TicketStatus.RESOLVED && ticketToUpdate.TicketStatus != TicketStatus.CLOSED)
-                        ticketToUpdate.TicketStatus = TicketStatus.IN_PROGRESS;
-                }
-
 
                 try
                 {
@@ -254,19 +243,31 @@ namespace AutoInsuranceManagementSystem.Controllers
                 {
                     TempData["ErrorMessage"] = "Update failed. The record was modified by another user.";
                 }
+
                 if (User.IsInRole("Admin")) return RedirectToAction(nameof(AdminIndex));
                 return RedirectToAction(nameof(AgentQueue));
             }
-            var agents = await _userManager.Users.Where(u => u.Role == UserRole.AGENT || u.Role == UserRole.ADMIN).OrderBy(u => u.UserName).ToListAsync();
-            viewModel.AvailableAgents = new SelectList(agents, "Id", "UserName", viewModel.AssignedAgentId);
-            viewModel.Subject = ticketToUpdate.Subject;
-            viewModel.IssueDescription = ticketToUpdate.IssueDescription;
-            viewModel.SubmittedByUserName = ticketToUpdate.User?.UserName ?? "N/A";
-            viewModel.CreatedDate = ticketToUpdate.CreatedDate;
-            viewModel.RelatedPolicyNumber = ticketToUpdate.RelatedPolicy != null ? $"{ticketToUpdate.RelatedPolicy.PolicyNumber} ({ticketToUpdate.RelatedPolicy.PolicyOffering?.OfferingName})" : "N/A";
+
+            var ticketForViewModel = await _context.SupportTickets.AsNoTracking()
+                .Include(t => t.User)
+                .Include(t => t.RelatedPolicy).ThenInclude(p => p!.PolicyOffering)
+                .FirstAsync(t => t.TicketId == id);
+
+            viewModel.Subject = ticketForViewModel.Subject;
+            viewModel.IssueDescription = ticketForViewModel.IssueDescription;
+            viewModel.SubmittedByUserName = ticketForViewModel.User?.UserName ?? "N/A";
+            viewModel.CreatedDate = ticketForViewModel.CreatedDate;
+            viewModel.RelatedPolicyNumber = ticketForViewModel.RelatedPolicy != null ? $"{ticketForViewModel.RelatedPolicy.PolicyNumber} ({ticketForViewModel.RelatedPolicy.PolicyOffering?.OfferingName})" : "N/A";
+
+            var agents = await _userManager.GetUsersInRoleAsync("Agent");
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            var agentAndAdminUsers = agents.Concat(admins).OrderBy(u => u.UserName).ToList();
+            viewModel.AvailableAgents = new SelectList(agentAndAdminUsers, "Id", "UserName", viewModel.AssignedAgentId);
+
             return View(viewModel);
         }
 
+        // GET: SupportTickets/AdminIndex (For Admins)
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminIndex()
         {
@@ -279,17 +280,21 @@ namespace AutoInsuranceManagementSystem.Controllers
             return View(tickets);
         }
 
+        // GET: SupportTickets/Delete/{id} (For Admins)
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
+
             var ticket = await _context.SupportTickets
                 .Include(t => t.User)
                 .FirstOrDefaultAsync(m => m.TicketId == id);
+
             if (ticket == null) return NotFound();
             return View(ticket);
         }
 
+        // POST: SupportTickets/Delete/{id} (For Admins)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]

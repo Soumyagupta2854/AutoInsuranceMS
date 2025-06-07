@@ -1,4 +1,6 @@
 ﻿@model AutoInsuranceManagementSystem.Models.Claim
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Update Claim Details";
 }
@@ -13,41 +15,85 @@
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
                     <input type="hidden" asp-for="ClaimId" />
-                    <input type="hidden" asp-for="PolicyId" /> <input type="hidden" asp-for="PhotoProofPath" /> <input type="hidden" asp-for="VideoProofPath" />
+                    <input type="hidden" asp-for="PolicyId" />
+                    <input type="hidden" asp-for="PhotoProofPath" />
+                    <input type="hidden" asp-for="VideoProofPath" />
                     <input type="hidden" asp-for="DateSubmitted" />
-
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Policy Number</label>
-                        <input type="text" class="form-control rounded-pill" value="@(Model.Policy != null ? Model.Policy.PolicyNumber : "N/A")" readonly disabled />
+                        <input type="text" class="form-control rounded-pill" value="@(Model.Policy?.PolicyNumber ?? "N/A")" readonly disabled />
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="ClaimDate" class="form-label fw-semibold"></label>
-                        <input asp-for="ClaimDate" type="date" class="form-control rounded-pill" />
-                        <span asp-validation-for="ClaimDate" class="text-danger small"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="ClaimAmount" class="form-label fw-semibold"></label>
-                        <div class="input-group"><span class="input-group-text rounded-start-pill">₹</span><input asp-for="ClaimAmount" type="number" step="0.01" class="form-control rounded-end-pill" /></div>
-                        <span asp-validation-for="ClaimAmount" class="text-danger small"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Description" class="form-label fw-semibold"></label>
-                        <textarea asp-for="Description" class="form-control rounded-3" rows="4"></textarea>
-                        <span asp-validation-for="Description" class="text-danger small"></span>
-                    </div>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="mb-3">
+                            <label asp-for="ClaimDate" class="form-label fw-semibold"></label>
+                            <input asp-for="ClaimDate" type="date" class="form-control rounded-pill" />
+                            <span asp-validation-for="ClaimDate" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ClaimAmount" class="form-label fw-semibold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text rounded-start-pill">₹</span>
+                                <input asp-for="ClaimAmount" type="number" step="0.01" class="form-control rounded-end-pill" />
+                            </div>
+                            <span asp-validation-for="ClaimAmount" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Description" class="form-control rounded-3" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+                            <label asp-for="ClaimDate" class="form-label fw-semibold">Date of Incident</label>
+                            <input type="text" class="form-control rounded-pill" value="@Model.ClaimDate.ToString("yyyy-MM-dd")" readonly disabled />
+                            <input type="hidden" asp-for="ClaimDate" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ClaimAmount" class="form-label fw-semibold"></label>
+                            <input type="text" class="form-control rounded-pill" value="@Model.ClaimAmount.ToString("C")" readonly disabled />
+                            <input type="hidden" asp-for="ClaimAmount" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold">Incident Description</label>
+                            <textarea class="form-control rounded-3" rows="4" readonly disabled>@Model.Description</textarea>
+                            <input type="hidden" asp-for="Description" />
+                        </div>
+                    }
+
                     <div class="mb-3">
                         <label asp-for="ClaimStatus" class="form-label fw-semibold"></label>
                         <select asp-for="ClaimStatus" asp-items="Html.GetEnumSelectList<ClaimStatus>()" class="form-select rounded-pill"></select>
                         <span asp-validation-for="ClaimStatus" class="text-danger small"></span>
                     </div>
+
                     <div class="mb-3">
                         <label asp-for="AdjusterId" class="form-label fw-semibold">Assign Adjuster</label>
-                        <select asp-for="AdjusterId" class="form-select rounded-pill" asp-items="ViewBag.AdjusterId">
-                            <option value="">-- Assign Adjuster (Optional) --</option>
-                        </select>
-                        <span asp-validation-for="AdjusterId" class="text-danger small"></span>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <select asp-for="AdjusterId" class="form-select rounded-pill" asp-items="ViewBag.AdjusterId">
+                                <option value="">-- Assign Adjuster (Optional) --</option>
+                            </select>
+                            <span asp-validation-for="AdjusterId" class="text-danger small"></span>
+                        }
+                        else
+                        {
+                            var adjusterList = ViewBag.AdjusterId as SelectList;
+                            var assignedAdjusterName = "Unassigned";
+                            if (Model.AdjusterId != null && adjusterList != null)
+                            {
+                                // FIX: Convert the integer ID to a string for comparison
+                                assignedAdjusterName = adjusterList.FirstOrDefault(a => a.Value == Model.AdjusterId.ToString())?.Text ?? "Unassigned";
+                            }
+                            <input type="text" class="form-control rounded-pill" value="@assignedAdjusterName" readonly disabled />
+                            <input type="hidden" asp-for="AdjusterId" />
+                        }
                     </div>
+
                     @if (!string.IsNullOrEmpty(Model.PhotoProofPath))
                     {
                         <div class="mb-2">
@@ -72,9 +118,9 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
 }

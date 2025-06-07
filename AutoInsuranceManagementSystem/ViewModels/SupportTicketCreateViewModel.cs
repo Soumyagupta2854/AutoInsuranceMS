@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using AutoInsuranceManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-
 namespace AutoInsuranceManagementSystem.ViewModels
 {
     public class SupportTicketCreateViewModel
@@ -17,12 +16,11 @@ namespace AutoInsuranceManagementSystem.ViewModels
         [Display(Name = "Describe Your Issue")]
         public string IssueDescription { get; set; } = string.Empty;
 
-        [Required]
-        [Display(Name = "Priority")]
-        public TicketPriority Priority { get; set; } = TicketPriority.MEDIUM;
+        // The 'Priority' property has been removed.
 
         [Display(Name = "Related Policy (Optional)")]
         public int? RelatedPolicyId { get; set; }
+
         public SelectList? AvailablePolicies { get; set; }
     }
 }
