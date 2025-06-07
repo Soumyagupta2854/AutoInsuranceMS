@@ -27,7 +27,6 @@ namespace AutoInsuranceManagementSystem.Areas.Identity.Pages.Account
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        // private readonly IEmailSender _emailSender; 
         private readonly RoleManager<IdentityRole<int>> _roleManager;
 
         public RegisterModel(
@@ -35,7 +34,6 @@ namespace AutoInsuranceManagementSystem.Areas.Identity.Pages.Account
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            // IEmailSender emailSender, 
             RoleManager<IdentityRole<int>> roleManager)
         {
             _userManager = userManager;
@@ -43,7 +41,6 @@ namespace AutoInsuranceManagementSystem.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            // _emailSender = emailSender; 
             _roleManager = roleManager;
         }
 
@@ -87,20 +84,13 @@ namespace AutoInsuranceManagementSystem.Areas.Identity.Pages.Account
             [Display(Name = "Date of Birth")]
             public DateTime? DateOfBirth { get; set; }
 
-            [Range(0, 10)]
-            [Display(Name = "Number of Vehicles Owned")]
-            public int? NumberOfVehicles { get; set; }
+            // **REMOVED**: Vehicle properties are no longer part of registration.
+            // public int? NumberOfVehicles { get; set; }
+            // public string? VehicleType { get; set; }
+            // public string? VehicleNumber { get; set; }
 
-            [StringLength(100)]
-            [Display(Name = "Primary Vehicle Type")]
-            public string? VehicleType { get; set; }
-
-            [StringLength(20)]
-            [Display(Name = "Primary Vehicle Number (License Plate)")]
-            public string? VehicleNumber { get; set; }
-
-            [Required(ErrorMessage = "Please select a role for registration.")]
-            [Display(Name = "Register As")]
+            // **NOTE**: This property is no longer displayed on the form,
+            // so it will always use its default value of 'CUSTOMER'.
             public UserRole SelectedRole { get; set; } = UserRole.CUSTOMER;
         }
 
@@ -119,45 +109,39 @@ namespace AutoInsuranceManagementSystem.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                // Assign personal properties
                 user.FullName = Input.FullName;
                 user.Gender = Input.Gender;
                 user.DateOfBirth = Input.DateOfBirth;
-                user.NumberOfVehicles = Input.NumberOfVehicles;
-                user.VehicleType = Input.VehicleType;
-                user.VehicleNumber = Input.VehicleNumber;
+
+                // **REMOVED**: Logic to assign vehicle details.
+                // user.NumberOfVehicles = Input.NumberOfVehicles;
+                // user.VehicleType = Input.VehicleType;
+                // user.VehicleNumber = Input.VehicleNumber;
+
+                // Assign the user role. Since the dropdown is removed from the form,
+                // this will use the default value from the InputModel ('CUSTOMER').
                 user.Role = Input.SelectedRole;
 
-                // Set properties managed by Identity directly on the user object BEFORE CreateAsync
-                user.UserName = Input.Email; // UserManager.CreateAsync will use this
-                user.Email = Input.Email;    // UserManager.CreateAsync will use this
-                user.PhoneNumber = Input.PhoneNumber; // Set directly
-
-                // The calls to _userStore and _emailStore for setting username/email
-                // before CreateAsync are usually handled internally by UserManager.CreateAsync
-                // based on the user object's properties.
-                // However, explicitly setting them via the store is also a valid pattern if needed for specific store implementations.
-                // For simplicity and standard Identity flow, direct assignment to user object is often sufficient before CreateAsync.
-                // await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                // await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-
-                // The problematic call to SetPhoneNumberAsync is removed.
-                // PhoneNumber is set directly on the 'user' object above.
+                user.UserName = Input.Email;
+                user.Email = Input.Email;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"User created a new account with password and selected role: {Input.SelectedRole}.");
+                    _logger.LogInformation($"User created a new account with password and role: {Input.SelectedRole}.");
 
                     string roleName = Input.SelectedRole.ToString();
 
                     if (!await _roleManager.RoleExistsAsync(roleName))
                     {
                         await _roleManager.CreateAsync(new IdentityRole<int>(roleName));
-                        _logger.LogWarning($"Role '{roleName}' did not exist and was created during registration. Ensure roles are pre-seeded.");
+                        _logger.LogWarning($"Role '{roleName}' did not exist and was created during registration.");
                     }
                     await _userManager.AddToRoleAsync(user, roleName);
-                    _logger.LogInformation($"User '{user.UserName}' was assigned to Identity role '{roleName}'.");
+                    _logger.LogInformation($"User '{user.UserName}' was assigned to role '{roleName}'.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -167,7 +151,6 @@ namespace AutoInsuranceManagementSystem.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-                    _logger.LogInformation($"Generated email confirmation URL (if email sending is implemented): {callbackUrl}");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AutoInsurance Pro</title>
     
-    <link rel="icon" type="image/png" href="~/images/favicon.png"> @* Example favicon link *@
+    <link rel="icon" type="image/png" href="~/images/favicon.png">
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -34,22 +34,26 @@
             --footer-link-hover: #3498db; /* Lighter blue for footer link hover */
         }
 
+        /* **MODIFIED**: This structure creates a "sticky" footer */
+        html, body {
+            height: 100%;
+        }
+
         body {
-            font-family: 'Inter', sans-serif; /* Primary font */
+            font-family: 'Inter', sans-serif;
             background-color: var(--body-bg);
             padding-top: 76px; 
+            color: var(--text-color);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            color: var(--text-color);
         }
         h1, h2, h3, h4, h5, h6, .navbar-brand, .nav-link.dropdown-toggle, .btn {
-            font-family: 'Poppins', sans-serif; /* Secondary font for headings and important elements */
+            font-family: 'Poppins', sans-serif;
         }
         .navbar {
             box-shadow: 0 2px 15px rgba(0,0,0,0.08);
             background-color: #ffffff; 
-            border-bottom: 1px solid #e0e7ff; /* Subtle border */
+            border-bottom: 1px solid #e0e7ff;
         }
         .navbar-brand {
             font-weight: 700;
@@ -62,165 +66,50 @@
             margin-right: 0.3rem;
         }
 
-        /* --- Updated Nav Link Styling --- */
+        /* Nav Link Styling remains the same */
         .nav-link {
             color: var(--text-muted-color) !important; 
             font-weight: 500;
-            padding: 0.7rem 1rem !important; /* Adjusted vertical padding for better spacing */
-            border-radius: 0.375rem; /* Retain for focus outline consistency */
+            padding: 0.7rem 1rem !important;
+            border-radius: 0.375rem;
             margin: 0 0.2rem;
             transition: color 0.2s ease-in-out;
-            position: relative; /* Required for the ::after pseudo-element */
-            background-color: transparent !important; /* Ensure no background initially */
-            text-decoration: none; /* Remove default underlines */
+            position: relative; 
+            background-color: transparent !important;
+            text-decoration: none;
         }
-
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 0.25rem; /* Position underline within the padding area */
+            bottom: 0.25rem;
             left: 50%;
-            transform: translateX(-50%); /* Center the line */
-            width: 0; /* Initially hidden */
+            transform: translateX(-50%);
+            width: 0;
             height: 2px;
             background-color: var(--brand-primary);
-            border-radius: 1px; /* Slightly rounded ends for the underline */
+            border-radius: 1px;
             transition: width 0.25s ease-out;
         }
-
-        /* Text color change on hover & when dropdown is shown */
         .nav-link:hover, 
-        .nav-link.show { /* .show is for when dropdown toggle is active/open */
+        .nav-link.show {
             color: var(--brand-primary) !important; 
-            /* background-color: #e7f0ff; /* REMOVED original background fill */
         }
-
-        /* Underline animation on hover & when dropdown is shown */
         .nav-link:hover::after,
         .nav-link.show::after {
-            width: 70%; /* Width of the underline, adjust as desired (e.g., 'calc(100% - 2rem)' for text width) */
+            width: 70%;
         }
-        
-        /* Styles for the currently active nav item (current page) */
         .navbar-nav .nav-link.active {
             color: var(--brand-primary) !important;
-            font-weight: 600; /* Bolder text for active link */
-            /* background-color: #e0e9f8; /* REMOVED original background fill */
+            font-weight: 600;
         }
-
         .navbar-nav .nav-link.active::after {
-            width: 70%; /* Ensure active link always has the underline */
-            background-color: var(--brand-primary); /* Ensure it uses the primary color */
-        }
-        /* --- End of Updated Nav Link Styling --- */
-
-        .nav-link .bi { 
-            margin-right: 0.5rem;
-            vertical-align: text-bottom; 
-            font-size: 1.1rem; 
-        }
-        .navbar-nav .dropdown-menu {
-            border-radius: 0.5rem;
-            border: 1px solid #e0e7ff;
-            box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1);
-        }
-        .dropdown-item {
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-        .dropdown-item:active {
+            width: 70%;
             background-color: var(--brand-primary);
-            color: #fff !important;
-        }
-         .dropdown-item:hover {
-            background-color: #e7f0ff;
-            color: var(--brand-primary);
-        }
-        .dropdown-item .bi {
-            margin-right: 0.6rem;
-            width: 20px; 
-            text-align: center;
-            color: var(--brand-primary);
-            transition: color 0.2s ease;
-        }
-        .dropdown-item:hover .bi, .dropdown-item:active .bi {
-            color: inherit; 
-        }
-
-        .btn {
-            border-radius: 0.375rem; 
-            font-weight: 600;
-            padding: 0.6rem 1.35rem; 
-            transition: all 0.25s ease-in-out;
-            letter-spacing: 0.025em;
-        }
-        .btn:hover {
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 12px rgba(0,0,0,.15);
-        }
-        .btn-primary {
-            background-color: var(--brand-primary);
-            border-color: var(--brand-primary);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background-color: var(--brand-primary-darker);
-            border-color: var(--brand-primary-darker);
-            color: #fff;
-        }
-        .btn-success {
-            background-color: #198754; 
-            border-color: #198754;
-        }
-        .btn-success:hover {
-            background-color: #146c43;
-            border-color: #13653f;
-        }
-        .btn-outline-primary {
-            color: var(--brand-primary);
-            border-color: var(--brand-primary);
-        }
-        .btn-outline-primary:hover {
-            background-color: var(--brand-primary);
-            color: #fff;
-        }
-
-        .card {
-            border: 1px solid #e0e7ff; 
-            border-radius: 0.75rem; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            background-color: #fff; 
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        }
-        .card-header {
-            font-weight: 600;
-            background-color: #f8f9fc; 
-            border-bottom: 1px solid #e0e7ff;
-            padding: 1rem 1.25rem; 
-            border-top-left-radius: calc(0.75rem - 1px); 
-            border-top-right-radius: calc(0.75rem - 1px);
-        }
-        .card-title {
-            font-family: 'Poppins', sans-serif;
         }
         
-        .table th {
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fc;
-            color: var(--text-muted-color);
-        }
-        .table-hover tbody tr:hover {
-            background-color: #e7f0ff !important; 
-        }
-        
+        /* **MODIFIED**: Main content area now grows to fill available space */
         .main-content-wrapper {
-             flex: 1 0 auto; 
+           flex: 1 0 auto; 
         }
 
         .footer {
@@ -228,8 +117,9 @@
             padding: 2.5rem 0; 
             color: var(--footer-text); 
             font-size: 0.9rem;
-            margin-top: auto; 
-            border-top: 3px solid var(--brand-primary); 
+            border-top: 3px solid var(--brand-primary);
+            /* **MODIFIED**: flex-shrink prevents the footer from shrinking */
+            flex-shrink: 0; 
         }
         .footer .container {
             display: flex;
@@ -266,43 +156,6 @@
         .footer .footer-links a:first-child {
             margin-left: 0;
         }
-
-        .fs-tiny { font-size: 0.8rem !important; }
-        .fs-small { font-size: 0.9rem !important; }
-        .fw-medium { font-weight: 500 !important; }
-        .fw-semibold { font-weight: 600 !important; }
-        .fw-bold { font-weight: 700 !important; }
-
-        .alert {
-            border-left-width: 5px;
-            border-radius: 0.375rem;
-        }
-        .alert-success { border-left-color: var(--bs-success); }
-        .alert-danger { border-left-color: var(--bs-danger); }
-        .alert-warning { border-left-color: var(--bs-warning); }
-        .alert-info { border-left-color: var(--bs-info); }
-
-        ::-webkit-scrollbar {
-            width: 10px; 
-            height: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #eef2f5; 
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #d0d8e0; 
-            border-radius: 10px;
-            border: 2px solid #eef2f5; 
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #b8c1cc; 
-        }
-
-        ::selection {
-            background-color: var(--brand-primary); 
-            color: #fff;
-        }
     </style>
 </head>
 <body>
@@ -317,16 +170,16 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0"> @* Centered nav items with mx-auto *@
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door-fill"></i>Home</a>
                         </li>
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer2"></i>Dashboard</a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer2"></i>Dashboard</a>
+                            </li>
 
                             if (User.IsInRole("Admin"))
                             {
@@ -361,9 +214,9 @@
                         }
                         else // Not signed in
                         {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Policies" asp-action="AvailableOfferings"><i class="bi bi-patch-check-fill"></i>View Policy Offerings</a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Policies" asp-action="AvailableOfferings"><i class="bi bi-patch-check-fill"></i>View Policy Offerings</a>
+                            </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />
@@ -378,11 +231,12 @@
         </main>
     </div>
 
+    <!-- **MODIFIED**: Removed 'fixed-bottom' class. CSS now handles the sticky behavior. -->
     <footer class="footer"> 
         <div class="container">
             <p class="copyright-text">&copy; @DateTime.Now.Year - AutoInsurance Pro. All Rights Reserved.</p>
             <div class="footer-links">
-                 <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
             </div>
         </div>
     </footer>
@@ -391,6 +245,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     
+    <!-- **REMOVED**: The script for dynamic padding is no longer needed with the flexbox approach. -->
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

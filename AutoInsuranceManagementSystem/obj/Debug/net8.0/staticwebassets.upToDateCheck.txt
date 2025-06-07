@@ -59,6 +59,5 @@ wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
 wwwroot\uploads\claim_proofs\claim_1\photos\1538d6ac-e34b-4b5b-bdd2-2f2446cf4e81_Screenshot 2025-06-07 141943.png
-wwwroot\uploads\claim_proofs\claim_2\photos\39418514-3b98-4ac5-bacb-61ef9f0f4f3e_Screenshot 2025-04-28 224348.png
 wwwroot\uploads\claim_proofs\claim_2\photos\4ae762cc-7627-483f-8a07-0569eafee5a7_WIN_20250606_10_36_32_Pro.jpg
 wwwroot\uploads\claim_proofs\claim_3\photos\81bb853a-3157-477c-a474-3679f958d4d9_Screenshot 2025-05-03 180312.png

@@ -76,7 +76,7 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <select asp-for="AdjusterId" class="form-select rounded-pill" asp-items="ViewBag.AdjusterId">
-                                <option value="">-- Assign Adjuster (Optional) --</option>
+                                <option value="">Assign Adjuster</option>
                             </select>
                             <span asp-validation-for="AdjusterId" class="text-danger small"></span>
                         }

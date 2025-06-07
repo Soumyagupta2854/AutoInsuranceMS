@@ -363,7 +363,7 @@ namespace AutoInsuranceManagementSystem.Controllers
                 return null;
             }
         }
-
+        
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {

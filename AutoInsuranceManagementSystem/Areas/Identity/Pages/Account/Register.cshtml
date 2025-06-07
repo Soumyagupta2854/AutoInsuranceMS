@@ -102,23 +102,11 @@
             font-size: 0.8em;
         }
 
-        /* Original fw-semibold for links NOT in card-footer */
-        /* We will override for card-footer specifically */
-        .fw-semibold {
-            color: #0056b3 !important;
-            text-decoration: none;
-        }
-
-            .fw-semibold:hover {
-                text-decoration: underline;
-            }
-
         /* Section headings styling */
         h4.mb-3, h4.mt-4.mb-3 {
             color: #0056b3; /* Use a theme color for headings */
             font-weight: 600;
             padding-bottom: 5px;
-            /* border-bottom: 2px solid #007bff; */ /* Optional: if you want an underline for section titles */
         }
 
         /* Card Footer Styling */
@@ -188,7 +176,7 @@
                         </div>
                     </div>
 
-                    <h4 class="mt-4 mb-3">Personal & Vehicle Information</h4>
+                    <h4 class="mt-4 mb-3">Personal Information</h4>
                     <hr />
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -210,45 +198,16 @@
                         <span asp-validation-for="Input.Gender" class="text-danger small"></span>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="Input.NumberOfVehicles" class="form-label fw-semibold"></label>
-                            <input asp-for="Input.NumberOfVehicles" type="number" class="form-control rounded-pill" min="0" />
-                            <span asp-validation-for="Input.NumberOfVehicles" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="Input.VehicleType" class="form-label fw-semibold"></label>
-                            <input asp-for="Input.VehicleType" class="form-control rounded-pill" placeholder="e.g., Sedan, SUV" />
-                            <span asp-validation-for="Input.VehicleType" class="text-danger small"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Input.VehicleNumber" class="form-label fw-semibold"></label>
-                        <input asp-for="Input.VehicleNumber" class="form-control rounded-pill" placeholder="e.g., ABC-1234" />
-                        <span asp-validation-for="Input.VehicleNumber" class="text-danger small"></span>
-                    </div>
-
-                    @* Role Selection - Re-enabled as per user request. *@
-                    @* SECURITY NOTE: For production, this should be removed or heavily restricted. *@
-                    @* <div class="mb-3"> *@
-                    @* <label asp-for="Input.SelectedRole" class="form-label fw-semibold">Register As</label> *@
-                    @* <select asp-for="Input.SelectedRole" asp-items="Html.GetEnumSelectList<UserRole>()" class="form-select rounded-pill"> *@
-                    @* User will see all roles here. Default is Customer as per InputModel *@
-                    @* </select> *@
-                    @* <span asp-validation-for="Input.SelectedRole" class="text-danger small"></span> *@
-                    @* <div class="form-text text-danger fw-bold">Security Warning: Selecting 'Admin' or 'Agent' grants high privileges. This option is intended for authorized personnel during initial setup ONLY. For a public site, this dropdown should be removed, and users should default to 'Customer'.</div> *@
-                    @* </div> *@
                     <div class="d-grid mt-4">
                         <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg rounded-pill">Register</button>
                     </div>
                 </form>
-            </div> @* End of card-body *@
+            </div>
 
-            @* Moved the "Login here" section to a new card-footer *@
             <div class="card-footer">
                 <p class="mb-0">Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="fw-semibold">Login here</a></p>
             </div>
-        </div> @* End of card *@
+        </div>
     </div>
 </div>
 
