@@ -7,114 +7,155 @@
     <style>
         :root {
             /* Assuming --brand-primary is defined in _Layout.cshtml */
-            --table-header-bg: #f8f9fc; /* Light grey, consistent with _Layout */
-            --table-row-hover-bg: #eef2f7; /* Subtle blueish hover */
-            --table-border-color: #e9ecef;
-            --badge-info-bg: rgba(var(--bs-info-rgb), 0.15); /* Bootstrap info with opacity */
-            --badge-info-text: var(--bs-info-text-emphasis); /* Bootstrap variable */
-            --button-outline-primary-hover-bg: var(--brand-primary, #2a6fdb);
+            --table-header-bg: #e0e7ee; /* Slightly darker, more prominent header */
+            --table-row-hover-bg: #f0f5fa; /* Very subtle light blue hover */
+            --table-border-color: #dee2e6; /* Standard Bootstrap border color */
+            --badge-info-bg: #e3f2fd; /* Light blue, consistent with Bootstrap info */
+            --badge-info-text: #0d6efd; /* Darker blue text for contrast */
+            --button-outline-primary-hover-bg: var(--brand-primary, #007bff); /* Bootstrap primary */
             --button-outline-primary-hover-text: #fff;
+            --card-border-color: #e9ecef; /* Lighter border for the card */
+            --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05); /* Softer shadow */
         }
 
-        .page-header h1 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: #2c3e50; /* Dark blue-grey from layout */
-            font-size: 2rem; /* Prominent title */
-        }
-        /* Create New User button styling (if uncommented later) */
-        .page-header .btn-primary .bi {
-            vertical-align: -0.1em;
+        body {
+            background-color: #f4f7f6; /* A very light, subtle background */
         }
 
+        .page-header {
+            border-bottom: 1px solid #e9ecef; /* Adds a subtle separator line */
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem !important; /* Increased margin for better separation */
+            /* Flex properties are no longer needed here if there's no button to align */
+            display: block; /* Ensures the border spans full width */
+        }
+
+            .page-header h1 {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 700; /* Bolder title */
+                color: #212529; /* Even darker, more impactful title color */
+                font-size: 2.25rem; /* Slightly larger title */
+                letter-spacing: -0.02em; /* Tighter letter spacing for a modern look */
+                margin-bottom: 0; /* Remove default h1 margin if it's the only element */
+            }
+
+        /* Removed .page-header .btn-primary styling as button is gone */
 
         .user-management-card {
-            /* Base card styles (shadow, border, radius) should be inherited from global .card in _Layout.cshtml */
-            /* Example: border-radius: 0.75rem; from _Layout */
+            border: 1px solid var(--card-border-color);
+            border-radius: 0.75rem; /* Consistent border radius */
+            box-shadow: var(--card-shadow); /* Apply the softer shadow */
+            overflow: hidden; /* Ensures rounded corners are respected by inner table */
         }
 
             .user-management-card .card-body {
-                padding: 0; /* Remove padding if table is directly inside */
+                padding: 0;
             }
 
-        .table.align-middle th {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500; /* Slightly less bold than global th for a cleaner look */
-            color: #495057; /* Darker grey for header text */
-            background-color: var(--table-header-bg);
-            border-bottom-width: 1px; /* Thinner bottom border for header */
-            border-top: none; /* No top border for thead cells */
-            padding: 1rem 1.25rem; /* Generous padding */
-            vertical-align: middle;
+        .table-responsive {
+            border-radius: 0.75rem; /* Apply border-radius to the responsive container */
         }
 
-        .table.align-middle td {
-            padding: 0.9rem 1.25rem; /* Consistent padding with header */
-            vertical-align: middle;
-            border-top-color: var(--table-border-color); /* Lighter border for rows */
-            font-size: 0.95rem; /* Inter font */
+        .table.align-middle {
+            margin-bottom: 0; /* Remove default table bottom margin */
+            border-collapse: separate; /* Required for border-radius on cells */
+            border-spacing: 0; /* Required for border-radius on cells */
         }
+
+            .table.align-middle th {
+                font-family: 'Inter', sans-serif; /* Use Inter for table headers */
+                font-weight: 600; /* Bolder header text */
+                color: #343a40; /* Darker grey for header text */
+                background-color: var(--table-header-bg);
+                border-bottom: 1px solid var(--table-border-color);
+                padding: 1.1rem 1.5rem; /* More generous padding */
+                vertical-align: middle;
+                text-transform: uppercase; /* Uppercase for header text */
+                font-size: 0.85rem; /* Slightly smaller, more refined header font */
+                letter-spacing: 0.03em; /* Slight letter spacing */
+            }
+
+            .table.align-middle td {
+                font-family: 'Inter', sans-serif; /* Use Inter for table body */
+                padding: 1rem 1.5rem; /* Consistent padding with header */
+                vertical-align: middle;
+                border-top: 1px solid var(--table-border-color);
+                font-size: 0.9rem; /* Slightly smaller body font for a cleaner look */
+                color: #495057; /* Standard text color */
+            }
 
         .table.table-hover tbody tr:hover {
             background-color: var(--table-row-hover-bg) !important;
-            /* color: var(--brand-primary); Optional: change text color on hover */
-        }
-        /* Remove bottom border from last row for cleaner look if card has padding */
-        /* .table tbody tr:last-child td { border-bottom: none; } */
-
-
-        .table .badge { /* Custom styling for badges in table */
-            font-weight: 500; /* Inter */
-            font-size: 0.8rem; /* Slightly larger than default .fs-tiny */
-            padding: 0.4em 0.75em; /* More balanced padding */
+            box-shadow: inset 3px 0 0 0 var(--brand-primary, #007bff); /* Subtle left border on hover */
         }
 
-        .badge.bg-info-subtle.text-info-emphasis { /* From your original code for custom role */
-            /* Ensure these Bootstrap 5.3 classes are available or define custom ones */
-            background-color: var(--badge-info-bg) !important; /* Using CSS var */
-            color: var(--badge-info-text) !important; /* Using CSS var */
+        .table .badge {
+            font-weight: 600; /* Bolder badge text */
+            font-size: 0.75rem; /* Slightly smaller badge font */
+            padding: 0.5em 0.8em; /* Adjusted padding */
+            border-radius: 0.5rem; /* More rounded badges */
+            text-transform: capitalize; /* Capitalize the first letter of roles */
         }
 
+        .badge.bg-info-subtle.text-info-emphasis {
+            background-color: var(--badge-info-bg) !important;
+            color: var(--badge-info-text) !important;
+        }
 
         .table .btn-sm {
-            font-size: 0.8rem; /* Slightly smaller button text */
-            padding: 0.4rem 0.9rem; /* Adjusted padding for small buttons */
+            font-size: 0.85rem; /* Slightly larger button text */
+            padding: 0.5rem 1rem; /* Adjusted padding for small buttons */
             font-weight: 500; /* Inter */
+            border-radius: 0.4rem; /* Slightly rounded buttons */
+            transition: all 0.2s ease-in-out;
         }
 
             .table .btn-sm .bi {
-                vertical-align: -0.1em; /* Align icon */
-                margin-right: 0.3rem;
+                vertical-align: -0.12em; /* Align icon better */
+                margin-right: 0.4rem; /* More space for the icon */
             }
 
-        .table .btn-outline-primary {
-            /* Uses global btn-outline-primary from _Layout */
+        .table .btn-outline-primary:hover {
+            background-color: var(--button-outline-primary-hover-bg);
+            color: var(--button-outline-primary-hover-text);
+            transform: translateY(-1px); /* Slight lift on hover */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
         }
-
-            .table .btn-outline-primary:hover {
-                background-color: var(--button-outline-primary-hover-bg); /* Ensure hover matches global if needed */
-                color: var(--button-outline-primary-hover-text);
-            }
 
         .no-users-found td {
-            font-style: italic;
-            color: #6c757d; /* Muted text */
+            font-family: 'Inter', sans-serif;
+            font-style: normal; /* Remove italic */
+            color: #888; /* Slightly lighter muted text */
+            padding: 2.5rem 1.5rem; /* More vertical padding for empty state */
+            background-color: #fdfdfd; /* A subtle background for the empty state */
+            border-radius: 0 0 0.75rem 0.75rem; /* Rounded bottom corners */
         }
 
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            /* Removed .page-header .btn-primary styling as button is gone */
+
+            .table.align-middle th,
+            .table.align-middle td {
+                padding: 0.8rem 1rem;
+            }
+        }
     </style>
 }
 
-<div class="page-header d-flex justify-content-between align-items-center mb-4">
-    @* Increased margin-bottom *@
+<div class="page-header mb-4">
+    @* Removed d-flex and align-items-center as there's no button to align *@
     <h1>@ViewData["Title"]</h1>
-    @* <a asp-action="CreateUser" class="btn btn-primary rounded-pill px-4 py-2"><i class="bi bi-person-plus-fill me-2"></i>Create New User</a> *@
-    @* Create User functionality can be added later. Adjusted padding if uncommented. *@
+    @* Removed the "Create New User" button markup *@
 </div>
 
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
-        @* Added mb-4 *@
         @Html.Raw(TempData["SuccessMessage"])
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -122,24 +163,21 @@
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
-        @* Added mb-4 *@
         @Html.Raw(TempData["ErrorMessage"])
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
 <div class="card user-management-card">
-    @* Removed shadow-sm, rounded-3 to inherit from global styles *@
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    @* table-light provides a default light grey, overridden by CSS for consistency *@
+                <thead>
                     <tr>
                         <th>Username</th>
                         <th>Email</th>
                         <th>Full Name</th>
-                        <th>Current Role (Custom)</th>
+                        <th>Custom Role</th>
                         <th>Identity Role(s)</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -147,7 +185,7 @@
                 <tbody>
                     @if (!Model.Any())
                     {
-                        <tr class="no-users-found"><td colspan="6" class="text-center py-4">No users found.</td></tr>
+                        <tr class="no-users-found"><td colspan="6" class="text-center">No users found.</td></tr>
                     }
                     @foreach (var user in Model)
                     {
@@ -156,13 +194,13 @@
                             <td>@user.Email</td>
                             <td>@(user.FullName ?? "N/A")</td>
                             <td>
-                                <span class="badge bg-info-subtle text-info-emphasis rounded-pill">
+                                <span class="badge bg-info-subtle text-info-emphasis">
                                     @user.CustomRole
                                 </span>
                             </td>
                             <td>@(user.CurrentIdentityRoleName ?? "None")</td>
                             <td class="text-center">
-                                <a asp-action="EditUserRole" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary rounded-pill px-3" title="Edit Role"><i class="bi bi-pencil-square"></i>Edit Role</a>
+                                <a asp-action="EditUserRole" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary" title="Edit Role"><i class="bi bi-pencil-square"></i>Edit Role</a>
                                 @* Other actions like Lock/Unlock, Delete User can be added here *@
                             </td>
                         </tr>
