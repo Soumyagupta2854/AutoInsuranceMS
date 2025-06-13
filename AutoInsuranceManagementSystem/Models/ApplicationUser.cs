@@ -2,24 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
-using System; // Required for DateTime
 
 namespace AutoInsuranceManagementSystem.Models
 {
     public enum UserRole
     {
-        CUSTOMER, // Default
+        CUSTOMER, // Default role
         AGENT,
         ADMIN
-    }
-
-    public enum Gender
-    {
-        Male,
-        Female,
-        Other,
-        [Display(Name = "Prefer not to say")]
-        PreferNotToSay
     }
 
     public class ApplicationUser : IdentityUser<int>
@@ -30,30 +20,16 @@ namespace AutoInsuranceManagementSystem.Models
 
         [StringLength(100)]
         [Display(Name = "Full Name")]
-        public string? FullName { get; set; }
+        [Required(ErrorMessage = "Full name is required.")]
+        public string FullName { get; set; }
 
-        // Additional properties for Customer registration
-        [Display(Name = "Gender")]
-        public Gender? Gender { get; set; } // Nullable if optional
+        // PhoneNumber is already part of IdentityUser, ensure it's validated
 
-        [DataType(DataType.Date)]
-        [Display(Name = "Date of Birth")]
-        public DateTime? DateOfBirth { get; set; } // Nullable if optional
-
-        // PhoneNumber is already part of IdentityUser, ensure it's used/prompted for
-
-        [Range(0, 10, ErrorMessage = "Number of vehicles must be between 0 and 10.")]
-        [Display(Name = "Number of Vehicles Owned")]
-        public int? NumberOfVehicles { get; set; } // Nullable if optional
-
-        [StringLength(100)]
-        [Display(Name = "Primary Vehicle Type")]
-        public string? VehicleType { get; set; } // e.g., Sedan, SUV, Truck
-
-        [StringLength(20)]
-        [Display(Name = "Primary Vehicle Number")]
-        public string? VehicleNumber { get; set; } // License plate
-
+        [Required(ErrorMessage = "Pincode is required.")]
+        [StringLength(6, ErrorMessage = "Pincode must be exactly 6 digits.", MinimumLength = 6)]
+        [RegularExpression(@"^\d{6}$", ErrorMessage = "Pincode must be numeric and 6 digits long.")]
+        [Display(Name = "Pincode")]
+        public string Pincode { get; set; }
 
         // Navigation properties
         [InverseProperty("Adjuster")]

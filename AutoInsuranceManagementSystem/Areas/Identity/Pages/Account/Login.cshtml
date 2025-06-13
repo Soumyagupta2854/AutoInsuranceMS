@@ -26,9 +26,14 @@
                                 <label asp-for="Input.Email" class="form-label ms-2"><i class="bi bi-envelope-fill me-1"></i>Email address</label>
                                 <span asp-validation-for="Input.Email" class="text-danger small ms-2"></span>
                             </div>
-                            <div class="form-floating mb-3">
-                                <input asp-for="Input.Password" class="form-control rounded-pill" autocomplete="current-password" aria-required="true" placeholder="password" />
+                            <div class="form-floating mb-3 position-relative">
+                                @* Added position-relative here *@
+                                <input asp-for="Input.Password" class="form-control rounded-pill pe-5" autocomplete="current-password" aria-required="true" placeholder="password" /> @* Added pe-5 for padding-right *@
                                 <label asp-for="Input.Password" class="form-label ms-2"><i class="bi bi-lock-fill me-1"></i>Password</label>
+                                <button type="button" id="togglePassword" class="btn btn-link p-0 text-dark position-absolute end-0 top-50 translate-middle-y me-3">
+                                    @* Adjusted position and added me-3 *@
+                                    <i class="bi bi-eye-slash-fill"></i> @* Initial eye icon state *@
+                                </button>
                                 <span asp-validation-for="Input.Password" class="text-danger small ms-2"></span>
                             </div>
                             <div class="checkbox mb-3 ms-2">
@@ -59,19 +64,19 @@
                 @{
                     if ((Model.ExternalLogins?.Count ?? 0) != 0)
                     {
-                        <div class="card-footer text-center bg-light rounded-bottom-3 p-4">
-                            <p class="mb-2 text-muted small">Or sign in with:</p>
-                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                                <div>
+<div class="card-footer text-center bg-light rounded-bottom-3 p-4">
+<p class="mb-2 text-muted small">Or sign in with:</p>
+<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+<div>
                                     @foreach (var provider in Model.ExternalLogins!)
                                     {
-                                        <button type="submit" class="btn btn-outline-secondary rounded-pill mx-1" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                                            <i class="bi bi-@provider.Name.ToLower()"></i> @provider.DisplayName
-                                        </button>
+<button type="submit" class="btn btn-outline-secondary rounded-pill mx-1" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+<i class="bi bi-@provider.Name.ToLower()"></i> @provider.DisplayName
+</button>
                                     }
-                                </div>
-                            </form>
-                        </div>
+</div>
+</form>
+</div>
                     }
                 }
                 *@
@@ -82,6 +87,22 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('Input_Password');
+
+            togglePassword.addEventListener('click', function () {
+                // Toggle the type attribute
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                // Toggle the eye icon
+                this.querySelector('i').classList.toggle('bi-eye-fill');
+                this.querySelector('i').classList.toggle('bi-eye-slash-fill');
+            });
+        });
+    </script>
 }
 
 <style>

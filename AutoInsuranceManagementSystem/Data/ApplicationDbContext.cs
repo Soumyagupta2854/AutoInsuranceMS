@@ -30,7 +30,7 @@ namespace AutoInsuranceManagementSystem.Data
             modelBuilder.Entity<SupportTicket>().Property(st => st.Priority).HasConversion<string>();
 
             modelBuilder.Entity<ApplicationUser>().Property(u => u.Role).HasConversion<string>();
-            modelBuilder.Entity<ApplicationUser>().Property(u => u.Gender).HasConversion<string>().IsRequired(false); // Added based on your ApplicationUser model
+           
 
             modelBuilder.Entity<Policy>().HasOne(p => p.Customer).WithMany(u => u.Policies).HasForeignKey(p => p.CustomerId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Claim>().HasOne(c => c.Policy).WithMany(p => p.Claims).HasForeignKey(c => c.PolicyId).OnDelete(DeleteBehavior.Restrict);

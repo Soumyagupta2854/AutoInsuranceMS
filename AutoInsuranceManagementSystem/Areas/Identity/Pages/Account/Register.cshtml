@@ -8,209 +8,155 @@
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font stack */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .card {
-            border: none; /* Remove default border if adding custom */
-            border-radius: 15px !important; /* Softer rounded corners */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important; /* Softer, more pronounced shadow */
-            overflow: hidden; /* Ensures header/footer rounded corners clip properly */
-            display: flex; /* Added for proper footer attachment if card body is short */
-            flex-direction: column; /* Added for proper footer attachment */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
         .card-header {
-            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important; /* Professional blue gradient */
-            border-bottom: none;
-            padding: 20px 25px !important;
-            border-radius: 15px 15px 0 0 !important; /* Match card's top corners */
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            padding: 20px;
+            color: white;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
         }
-
-            .card-header h1 {
-                font-weight: 600 !important; /* Slightly bolder title */
-                font-size: 1.75rem; /* Adjust size as needed */
-                color: #fff; /* Ensure text is white */
-            }
-
-            .card-header p {
-                opacity: 0.9;
-                color: #fff; /* Ensure text is white */
-            }
 
         .card-body {
-            padding: 30px 35px !important; /* More padding inside the card */
-            flex-grow: 1; /* Allows card-body to expand and push footer down */
+            padding: 30px;
         }
 
-        .form-label.fw-semibold {
-            color: #495057; /* Darker label color for better contrast */
-            font-weight: 500 !important; /* Slightly less bold for a cleaner look */
-            margin-bottom: 0.3rem;
-        }
-
-        .form-control.rounded-pill,
-        .form-select.rounded-pill {
-            border-radius: 50px !important;
-            padding: 10px 20px;
-            border: 1px solid #ced4da;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-            .form-control.rounded-pill:focus,
-            .form-select.rounded-pill:focus {
-                border-color: #007bff;
-                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
-            }
-
-        .form-control::placeholder {
-            color: #adb5bd;
-            opacity: 1; /* Ensure placeholder is visible */
-        }
-
-        hr {
-            border: none;
-            height: 1px;
-            background-color: #e9ecef; /* Lighter, more subtle HR */
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn-primary.btn-lg.rounded-pill {
-            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-            border: none;
-            padding: 12px 30px;
+        .form-label {
             font-weight: 500;
-            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
         }
 
-            .btn-primary.btn-lg.rounded-pill:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
-                background: linear-gradient(135deg, #0069d9 0%, #004085 100%); /* Slightly darker on hover */
-            }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-            border-radius: 8px !important; /* Softer corners for alerts */
+        .form-control.rounded-pill {
+            border-radius: 50px;
+            padding: 10px 15px;
         }
 
-        .text-danger.small {
-            font-size: 0.8em;
+        .input-group-text {
+            background: none;
+            border: none;
+            cursor: pointer;
         }
 
-        /* Section headings styling */
-        h4.mb-3, h4.mt-4.mb-3 {
-            color: #0056b3; /* Use a theme color for headings */
-            font-weight: 600;
-            padding-bottom: 5px;
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-weight: 500;
         }
 
-        /* Card Footer Styling */
         .card-footer {
-            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important; /* Match header */
-            color: white; /* Text color on gradient */
-            padding: 15px 25px !important;
-            border-top: none;
-            border-radius: 0 0 15px 15px !important; /* Match card's bottom corners */
-            text-align: center; /* Ensures content within is centered */
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
         }
-
-            .card-footer p {
-                margin-bottom: 0;
-                color: #fff; /* Ensure paragraph text is white */
-            }
-
-            .card-footer a.fw-semibold { /* Specific styling for links within the new card-footer */
-                color: #ffffff !important; /* Make link white */
-                font-weight: 600 !important; /* Bolder for better visibility */
-                text-decoration: none;
-            }
-
-                .card-footer a.fw-semibold:hover {
-                    color: #e0e0e0 !important; /* Slightly off-white on hover */
-                    text-decoration: underline;
-                }
-
     </style>
 }
 
 <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-7">
-        <div class="card shadow-sm rounded-3 my-5">
-            <div class="card-header text-white text-center rounded-top-3">
-                <h1 class="h3 mb-0 fw-normal">@ViewData["Title"] a New Account</h1>
-                <p class="mb-0 small">Join AutoInsurance Pro today!</p>
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="h3 mb-0 fw-normal">Create a New Account</h1>
+                <p>Join AutoInsurance Pro today!</p>
             </div>
-            <div class="card-body p-4 p-md-5">
+
+            <div class="card-body">
                 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <h4 class="mb-3">Account Details</h4>
-                    <hr />
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label asp-for="Input.Email" class="form-label fw-semibold"></label>
-                            <input asp-for="Input.Email" class="form-control rounded-pill" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                            <label asp-for="Input.FullName" class="form-label"></label>
+                            <input asp-for="Input.FullName" class="form-control rounded-pill" placeholder="Enter your full name" />
+                            <span asp-validation-for="Input.FullName" class="text-danger"></span>
                         </div>
+
                         <div class="col-md-6 mb-3">
-                            <label asp-for="Input.PhoneNumber" class="form-label fw-semibold"></label>
-                            <input asp-for="Input.PhoneNumber" class="form-control rounded-pill" autocomplete="tel" aria-required="true" placeholder="Your phone number" />
-                            <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="Input.Password" class="form-label fw-semibold"></label>
-                            <input asp-for="Input.Password" class="form-control rounded-pill" autocomplete="new-password" aria-required="true" placeholder="Create a password" />
-                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="Input.ConfirmPassword" class="form-label fw-semibold"></label>
-                            <input asp-for="Input.ConfirmPassword" class="form-control rounded-pill" autocomplete="new-password" aria-required="true" placeholder="Confirm your password" />
-                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                            <label asp-for="Input.Email" class="form-label"></label>
+                            <input asp-for="Input.Email" class="form-control rounded-pill" placeholder="Enter your email" autocomplete="username" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
                     </div>
 
-                    <h4 class="mt-4 mb-3">Personal Information</h4>
-                    <hr />
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label asp-for="Input.FullName" class="form-label fw-semibold"></label>
-                            <input asp-for="Input.FullName" class="form-control rounded-pill" placeholder="Your full name" />
-                            <span asp-validation-for="Input.FullName" class="text-danger small"></span>
+                            <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                            <input asp-for="Input.PhoneNumber" class="form-control rounded-pill" placeholder="Enter your mobile number" autocomplete="tel" />
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                         </div>
+
                         <div class="col-md-6 mb-3">
-                            <label asp-for="Input.DateOfBirth" class="form-label fw-semibold"></label>
-                            <input asp-for="Input.DateOfBirth" type="date" class="form-control rounded-pill" />
-                            <span asp-validation-for="Input.DateOfBirth" class="text-danger small"></span>
+                            <label asp-for="Input.Pincode" class="form-label"></label>
+                            <input asp-for="Input.Pincode" class="form-control rounded-pill" placeholder="Enter your pincode" maxlength="6" />
+                            <span asp-validation-for="Input.Pincode" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="Input.Gender" class="form-label fw-semibold"></label>
-                        <select asp-for="Input.Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="form-select rounded-pill">
-                            <option value="">-- Select Gender --</option>
-                        </select>
-                        <span asp-validation-for="Input.Gender" class="text-danger small"></span>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.Password" class="form-label"></label>
+                            <div class="input-group">
+                                <input asp-for="Input.Password" type="password" class="form-control rounded-pill" autocomplete="new-password" placeholder="Create a password" />
+                                <span class="input-group-text">
+                                    <i class="fa fa-eye" id="togglePassword"></i>
+                                </span>
+                            </div>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+                            <div class="input-group">
+                                <input asp-for="Input.ConfirmPassword" type="password" class="form-control rounded-pill" autocomplete="new-password" placeholder="Confirm password" />
+                                <span class="input-group-text">
+                                    <i class="fa fa-eye" id="toggleConfirmPassword"></i>
+                                </span>
+                            </div>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
                     </div>
 
                     <div class="d-grid mt-4">
-                        <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg rounded-pill">Register</button>
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill">Register</button>
                     </div>
                 </form>
             </div>
 
             <div class="card-footer">
-                <p class="mb-0">Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="fw-semibold">Login here</a></p>
+                <p>Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="fw-semibold text-white">Login here</a></p>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let togglePassword = document.getElementById("togglePassword");
+            let passwordField = document.querySelector("input[name='Input.Password']");
+
+            let toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+            let confirmPasswordField = document.querySelector("input[name='Input.ConfirmPassword']");
+
+            togglePassword.addEventListener("click", function () {
+                passwordField.type = passwordField.type === "password" ? "text" : "password";
+                this.classList.toggle("fa-eye-slash");
+            });
+
+            toggleConfirmPassword.addEventListener("click", function () {
+                confirmPasswordField.type = confirmPasswordField.type === "password" ? "text" : "password";
+                this.classList.toggle("fa-eye-slash");
+            });
+        });
+    </script>
+
     <partial name="_ValidationScriptsPartial" />
 }
