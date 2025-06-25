@@ -2,37 +2,33 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AutoInsuranceManagementSystem.Data;
 using AutoInsuranceManagementSystem.Models;
-using Microsoft.Extensions.DependencyInjection; // Required for GetRequiredService
-using Microsoft.Extensions.Logging; // Required for ILogger
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-// If you are using the traditional Program class structure with a namespace:
-// namespace AutoInsuranceManagementSystem // Or your project's root namespace
-// {
 public class Program
 {
-    public static async Task Main(string[] args) // Main method must be static
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // 1. Add services to the container.
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        // 1. Configure services
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-        // === CORRECT AND SUFFICIENT IDENTITY CONFIGURATION ===
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => {
-            options.SignIn.RequireConfirmedAccount = false; // Set to false for easier testing, true for production
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+        {
+            options.SignIn.RequireConfirmedAccount = false;
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequireUppercase = true;
             options.Password.RequireLowercase = true;
-            // options.User.RequireUniqueEmail = true; // Good practice
         })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders()
-            .AddDefaultUI();
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders()
+        .AddDefaultUI();
 
         builder.Services.AddControllersWithViews();
         builder.Services.AddRazorPages();
@@ -44,15 +40,9 @@ public class Program
             options.AccessDeniedPath = "/Identity/Account/AccessDenied";
         });
 
-        // For file uploads, you might want to configure Kestrel's MaxRequestBodySize if dealing with large files
-        // builder.WebHost.ConfigureKestrel(serverOptions =>
-        // {
-        //     serverOptions.Limits.MaxRequestBodySize = 100 * 1024 * 1024; // e.g., 100 MB
-        // });
-
         var app = builder.Build();
 
-        // Seed database with roles and default admin user
+        // Seed database with roles, admin user, and policy offerings
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
@@ -62,9 +52,8 @@ public class Program
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
-                await context.Database.MigrateAsync(); // Ensure migrations are applied
-
-                await SeedData.Initialize(userManager, roleManager); // Call your seeding method
+                await context.Database.MigrateAsync(); // Apply migrations
+                await SeedData.Initialize(userManager, roleManager, context); // Seed data
             }
             catch (Exception ex)
             {
@@ -73,7 +62,7 @@ public class Program
             }
         }
 
-        // 2. Configure the HTTP request pipeline.
+        // 2. Configure middleware
         if (app.Environment.IsDevelopment())
         {
             app.UseMigrationsEndPoint();
@@ -102,30 +91,23 @@ public class Program
     }
 }
 
-// Define a static class for seeding data if you haven't already
-// Ensure this class is accessible, e.g., in the same namespace or add a using directive
+// SeedData class for initializing roles, admin user, and policy offerings
 public static class SeedData
 {
-    public static async Task Initialize(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<int>> roleManager)
+    public static async Task Initialize(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<int>> roleManager, ApplicationDbContext context)
     {
         string[] roleNames = { "Admin", "Agent", "Customer" };
-        IdentityResult roleResult;
-
         foreach (var roleName in roleNames)
         {
-            var roleExist = await roleManager.RoleExistsAsync(roleName);
-            if (!roleExist)
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
-                roleResult = await roleManager.CreateAsync(new IdentityRole<int>(roleName));
-                // You might want to log if role creation fails, e.g., using ILogger
-                // if (!roleResult.Succeeded) { /* Log errors */ }
+                await roleManager.CreateAsync(new IdentityRole<int>(roleName));
             }
         }
 
-        // Create a default Admin user (ensure this runs only once or checks for existence)
-        // Consider making the admin email and password configurable or more secure for initial setup
-        string adminEmail = "admin@yourapp.com"; // CHANGE THIS to your desired admin email
-        string adminPassword = "AdminPassword123!"; // CHANGE THIS to a very strong password
+        // Seed Admin User
+        string adminEmail = "admin@gmail.com";
+        string adminPassword = "Admin1234";
 
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)
@@ -135,18 +117,34 @@ public static class SeedData
                 UserName = adminEmail,
                 Email = adminEmail,
                 FullName = "System Administrator",
-                EmailConfirmed = true, // Set to true to bypass email confirmation for the initial admin
-                Role = UserRole.ADMIN, // Your custom enum
-                                       // Set other custom properties if needed for ApplicationUser
+                EmailConfirmed = true,
+                Role = UserRole.ADMIN,
+                Pincode = "111111",
+                PhoneNumber = "7878787878",
             };
 
             var result = await userManager.CreateAsync(adminUser, adminPassword);
             if (result.Succeeded)
             {
-                await userManager.AddToRoleAsync(adminUser, "Admin"); // Add to ASP.NET Core Identity "Admin" role
+                await userManager.AddToRoleAsync(adminUser, "Admin");
             }
-            // else: Log user creation errors from result.Errors
+        }
+
+        // Seed Policy Offerings
+        var policyOfferings = new List<PolicyOffering>
+        {
+            new PolicyOffering { OfferingName = "Third-Party Bike Insurance", Description = "Covers damages caused to a third party vehicle or property by the insured bike.", CoverageAmount = 50000, CoverageType = "Third-Party", PremiumAmount = 1200, DurationInMonths = 12, IsActive = true },
+            new PolicyOffering { OfferingName = "Own-Damage Bike Insurance", Description = "Provides coverage for damages to the insured bike caused by accidents, theft, or natural disasters.", CoverageAmount = 100000, CoverageType = "Own-Damage", PremiumAmount = 2500, DurationInMonths = 12, IsActive = true },
+            new PolicyOffering { OfferingName = "Comprehensive Bike Insurance", Description = "Includes third-party and own-damage coverage for maximum protection.", CoverageAmount = 200000, CoverageType = "Comprehensive", PremiumAmount = 4000, DurationInMonths = 12, IsActive = true },
+            new PolicyOffering { OfferingName = "Third-Party Car Insurance", Description = "Covers damages caused to a third party vehicle or property by the insured car.", CoverageAmount = 100000, CoverageType = "Third-Party", PremiumAmount = 3500, DurationInMonths = 12, IsActive = true },
+            new PolicyOffering { OfferingName = "Own-Damage Car Insurance", Description = "Provides coverage for damages to the insured car due to accidents, theft, or natural calamities.", CoverageAmount = 500000, CoverageType = "Own-Damage", PremiumAmount = 7000, DurationInMonths = 12, IsActive = true },
+            new PolicyOffering { OfferingName = "Comprehensive Car Insurance", Description = "Includes third-party and own-damage coverage for complete protection.", CoverageAmount = 1000000, CoverageType = "Comprehensive", PremiumAmount = 12000, DurationInMonths = 12, IsActive = true }
+        };
+
+        if (!context.PolicyOfferings.Any()) // Prevent duplicate seeding
+        {
+            context.PolicyOfferings.AddRange(policyOfferings);
+            await context.SaveChangesAsync();
         }
     }
 }
-// } // End of namespace if you used one for Program class
